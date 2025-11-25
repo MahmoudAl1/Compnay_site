@@ -1,5 +1,8 @@
 import { GoogleGenAI, Chat } from "@google/genai";
 
+// Declaration to satisfy TypeScript that process.env exists (it will be replaced by Vite during build)
+declare const process: { env: { [key: string]: string | undefined } };
+
 // Initialize the API client
 // Note: In a production Vercel environment, ensure process.env.API_KEY is set in Project Settings.
 const apiKey = process.env.API_KEY || ''; 

@@ -1,6 +1,5 @@
-
 import React, { useState } from 'react';
-import { Product, Language, ViewState } from '../types';
+import { Product, Language } from '../types';
 import { Star, Eye, X, Battery, Zap, ShieldCheck, PenTool as Tool } from 'lucide-react';
 
 const PRODUCTS_DATA: Product[] = [

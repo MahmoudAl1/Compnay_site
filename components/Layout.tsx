@@ -1,7 +1,6 @@
-
 import React, { useState, useEffect } from 'react';
 import { ViewState, Language } from '../types';
-import { Menu, X, Phone, MapPin, Facebook, Instagram, Twitter, Globe, ChevronDown } from 'lucide-react';
+import { Menu, X, Phone, MapPin, Facebook, Instagram, Twitter, Globe } from 'lucide-react';
 
 interface HeaderProps {
   currentView: ViewState;
