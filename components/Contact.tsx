@@ -1,4 +1,5 @@
-import React from 'react';
+
+import React, { useState } from 'react';
 import { Phone, Mail, MapPin, Clock, Send } from 'lucide-react';
 import { Language } from '../types';
 
@@ -9,6 +10,34 @@ interface ContactProps {
 }
 
 export const Contact: React.FC<ContactProps> = ({ lang, title, subtitle }) => {
+  const [formData, setFormData] = useState({
+    name: '',
+    phone: '',
+    subject: '',
+    message: ''
+  });
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    // Set default subject if empty
+    const subject = formData.subject || (lang === 'ar' ? 'استفسار عام' : 'General Inquiry');
+    
+    const whatsappMessage = lang === 'ar' 
+      ? `*رسالة جديدة من الموقع* 🚗⚡\n\n*الاسم:* ${formData.name}\n*رقم الهاتف:* ${formData.phone}\n*الموضوع:* ${subject}\n*الرسالة:* ${formData.message}`
+      : `*New Website Message* 🚗⚡\n\n*Name:* ${formData.name}\n*Phone:* ${formData.phone}\n*Subject:* ${subject}\n*Message:* ${formData.message}`;
+
+    // The requested WhatsApp number
+    const whatsappNumber = '201287693441';
+    
+    const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`;
+    window.open(url, '_blank');
+  };
+
   return (
     <div className="py-24 bg-slate-950 min-h-screen relative overflow-hidden">
       {/* Background Decor */}
@@ -74,27 +103,47 @@ export const Contact: React.FC<ContactProps> = ({ lang, title, subtitle }) => {
 
           {/* Form */}
           <div className="bg-slate-900 border border-slate-800 p-8 md:p-12 rounded-[2rem] shadow-2xl relative">
-            <h3 className="text-2xl font-bold text-white mb-8">{lang === 'ar' ? 'أرسل رسالة' : 'Send Message'}</h3>
-            <form className="space-y-6">
+            <h3 className="text-2xl font-bold text-white mb-8">{lang === 'ar' ? 'أرسل رسالة (واتساب)' : 'Send Message (WhatsApp)'}</h3>
+            <form className="space-y-6" onSubmit={handleSubmit}>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">{lang === 'ar' ? 'الاسم' : 'Name'}</label>
-                  <input type="text" className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-4 text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition" />
+                  <input 
+                    type="text" 
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    required
+                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-4 text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition" 
+                  />
                 </div>
                 <div>
                   <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">{lang === 'ar' ? 'رقم الهاتف' : 'Phone Number'}</label>
-                  <input type="tel" className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-4 text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition" />
+                  <input 
+                    type="tel" 
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleChange}
+                    required
+                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-4 text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition" 
+                  />
                 </div>
               </div>
               
               <div>
                 <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">{lang === 'ar' ? 'الموضوع' : 'Subject'}</label>
                 <div className="relative">
-                  <select className="w-full appearance-none bg-slate-950 border border-slate-800 rounded-xl px-4 py-4 text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition">
-                    <option>{lang === 'ar' ? 'استفسار عام' : 'General Inquiry'}</option>
-                    <option>{lang === 'ar' ? 'طلب صيانة' : 'Maintenance Request'}</option>
-                    <option>{lang === 'ar' ? 'شراء بطارية' : 'Buy Battery'}</option>
-                    <option>{lang === 'ar' ? 'شكوى' : 'Complaint'}</option>
+                  <select 
+                    name="subject"
+                    value={formData.subject}
+                    onChange={handleChange}
+                    className="w-full appearance-none bg-slate-950 border border-slate-800 rounded-xl px-4 py-4 text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
+                  >
+                    <option value="">{lang === 'ar' ? 'اختر الموضوع...' : 'Select Subject...'}</option>
+                    <option value="General Inquiry">{lang === 'ar' ? 'استفسار عام' : 'General Inquiry'}</option>
+                    <option value="Maintenance Request">{lang === 'ar' ? 'طلب صيانة' : 'Maintenance Request'}</option>
+                    <option value="Buy Battery">{lang === 'ar' ? 'شراء بطارية' : 'Buy Battery'}</option>
+                    <option value="Complaint">{lang === 'ar' ? 'شكوى' : 'Complaint'}</option>
                   </select>
                    <div className={`absolute top-1/2 -translate-y-1/2 pointer-events-none text-gray-500 ${lang === 'ar' ? 'left-4' : 'right-4'}`}>
                       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 9l6 6 6-6"/></svg>
@@ -104,7 +153,14 @@ export const Contact: React.FC<ContactProps> = ({ lang, title, subtitle }) => {
 
               <div>
                 <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">{lang === 'ar' ? 'الرسالة' : 'Message'}</label>
-                <textarea rows={4} className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-4 text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition resize-none"></textarea>
+                <textarea 
+                  rows={4} 
+                  name="message"
+                  value={formData.message}
+                  onChange={handleChange}
+                  required
+                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-4 text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition resize-none"
+                ></textarea>
               </div>
 
               <button type="submit" className="w-full bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-black py-4 rounded-xl hover:from-blue-500 hover:to-cyan-400 transition duration-300 shadow-lg shadow-blue-500/20 flex items-center justify-center gap-2 group">
