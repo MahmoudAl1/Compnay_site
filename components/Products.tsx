@@ -104,7 +104,7 @@ const PRODUCTS_DATA: Product[] = [
     price: "0",
     capacity: "جميع السعات (DIN & JIS)",
     warranty: "متاح",
-    image: "https://5.imimg.com/data5/EK/YX/EV/SELLER-2825475/amaze-2048stj-150ah-tubular-battery.jpg",
+    image: "/images/foltronk.jpg",
     type: "imported"
   },
   {
