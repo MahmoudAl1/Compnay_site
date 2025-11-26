@@ -11,7 +11,7 @@ interface HeroProps {
 
 // Updated Images: Ensure all links are high-quality and reliable
 const IMAGES = [
-  "https://images.unsplash.com/photo-1487754180451-c456f719a1fc?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80", // Mechanic looking at engine
+  "/images/all.jpg", // Mechanic looking at engine
   "https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80", // Big Heavy Truck (New Request)
   "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80", // Car close up dark
   "https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80", // Car hood open
