@@ -16,7 +16,7 @@ const IMAGES = [
   "https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80", // Car hood open
   "https://images.unsplash.com/photo-1558981403-c5f9899a28bc?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80", // Motorcycle
   "https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80", // Large Truck/Semi on road
-  "https://images.unsplash.com/photo-1519003722824-194d4455a60c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80", // Blue Truck on road (Reliable Link)
+  "https://images.unsplash.com/photo-1605218427368-35b861286377?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80", // Heavy Truck (New Reliable Link for Slide 6)
   "https://images.unsplash.com/photo-1580273916550-e323be2ed5fa?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80"  // Heavy Truck Front (Reliable Link)
 ];
 
@@ -26,11 +26,11 @@ const BRANDS = [
   { name: "VARTA", color: "#2563eb" },    // Blue-600 (Vibrant)
   { name: "TAB", color: "#e11d48" },      // Rose-600
   { name: "TopLite", color: "#16a34a" },  // Green-600
-  { name: "Fullstark", color: "#ea580c" },// Orange-600
+  { name: "Fullstark", color: "#3b82f6" },// Blue-500 (UPDATED to Blue)
   { name: "GERMAN", color: "#ca8a04" },   // Yellow-600 (Darker for contrast)
-  { name: "ACDelco", color: "#0284c7" },  // Sky-600
-  { name: "Energizer", color: "#d97706" },// Amber-600
-  { name: "Exide", color: "#4f46e5" },    // Indigo-600
+  { name: "Autolite", color: "#f97316" }, // Orange-500 (NEW)
+  { name: "Starter", color: "#ef4444" },  // Red-500 (NEW)
+  { name: "Voltronic", color: "#06b6d4" },// Cyan-500 (NEW)
 ];
 
 export const Hero: React.FC<HeroProps> = ({ onAction, lang, translations }) => {

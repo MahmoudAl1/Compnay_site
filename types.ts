@@ -16,8 +16,9 @@ export interface Product {
   description: string;
   price: string;
   capacity: string;
+  warranty: string;
   image: string;
-  type: 'car' | 'solar' | 'ups' | 'motorcycle';
+  type: 'local' | 'imported';
 }
 
 export interface ChatMessage {

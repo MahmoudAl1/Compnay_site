@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Header, Footer } from './components/Layout';
 import { Hero } from './components/Hero';
@@ -14,7 +15,7 @@ const TRANSLATIONS = {
     nav: {
       home: 'الرئيسية',
       about: 'من نحن',
-      products: 'البطاريات',
+      products: 'المنتجات',
       blog: 'المدونة',
       contact: 'اتصل بنا',
       orderNow: 'اطلب الآن'
@@ -55,7 +56,7 @@ const TRANSLATIONS = {
     nav: {
       home: 'Home',
       about: 'About Us',
-      products: 'Batteries',
+      products: 'Products',
       blog: 'Blog',
       contact: 'Contact Us',
       orderNow: 'Order Now'

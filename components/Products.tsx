@@ -1,61 +1,131 @@
+
 import React, { useState } from 'react';
 import { Product, Language } from '../types';
 import { Star, Eye, X, Battery, Zap, ShieldCheck, PenTool as Tool } from 'lucide-react';
 
 const PRODUCTS_DATA: Product[] = [
+  // --- Local Batteries (بطاريات محلية) ---
   {
     id: 1,
-    name: "بطارية نسر الألمانية 70",
-    description: "بطارية جافة عالية الكفاءة تدوم طويلاً، مثالية للسيارات الحديثة ذات التجهيزات الكهربائية المتعددة.",
-    price: "0", // Hidden
-    capacity: "70 Ah",
-    image: "https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?auto=format&fit=crop&w=600&q=80", // Battery charger context (generic reliable)
-    type: "car"
+    name: "بطارية فولستارك (Fullstark)",
+    description: "بطارية محلية بمواصفات عالمية. تتميز باللون الأزرق وقوة تحمل عالية لدرجات الحرارة المرتفعة وتكنولوجيا شبك متطورة.",
+    price: "0",
+    capacity: "جميع السعات (35Ah - 200Ah)",
+    warranty: "متاح",
+    image: "https://germanbatteries.com/Products/Images/D31.jpg",
+    type: "local"
   },
   {
     id: 2,
-    name: "بطارية كلورايد جولد 55",
-    description: "الأكثر مبيعاً في السوق المصري، تحمل درجات الحرارة العالية ومناسبة للأجواء الحارة.",
+    name: "بطارية جرمن (German)",
+    description: "البطارية الاقتصادية الأولى. تجمع بين السعر المناسب والأداء الموثوق. متوفرة لجميع أنواع السيارات الملاكي والنقل.",
     price: "0",
-    capacity: "55 Ah",
-    image: "https://images.unsplash.com/photo-1616788494707-ec28f08d05a1?auto=format&fit=crop&w=400&q=80",
-    type: "car"
+    capacity: "جميع السعات (55Ah - 100Ah)",
+    warranty: "متاح",
+    image: "https://api.cezma.cloud/storage/thumbnails/products/web/1700179032%D8%AA%D9%86%D8%B2%D9%8A%D9%84.jpeg.jpg",
+    type: "local"
   },
   {
     id: 3,
-    name: "بطارية فارتا بلو ديناميك",
-    description: "تكنولوجيا ألمانية متطورة، عمر افتراضي طويل وأداء ثابت في بدء التشغيل.",
+    name: "بطارية سي دي ماكس (ACD Max)",
+    description: "مصممة للخدمة الشاقة. خيار مثالي لسيارات العمل وسيارات الأجرة بفضل قدرتها العالية على إعادة الشحن السريع.",
     price: "0",
-    capacity: "80 Ah",
-    image: "https://images.unsplash.com/photo-1487754180451-c456f719a1fc?auto=format&fit=crop&w=600&q=80", // Mechanic context (reliable)
-    type: "car"
+    capacity: "جميع السعات (70Ah - 150Ah)",
+    warranty: "متاح",
+    image: "https://www.germanbatteries.com/Products/Brands/02.png",
+    type: "local"
   },
-   {
+  {
     id: 4,
-    name: "بطارية توب لايت موتوسيكل",
-    description: "بطارية 12 فولت 7 أمبير مناسبة للموتوسيكلات الصيني والدايون، أداء قوي وعمر طويل.",
+    name: "بطارية فولدا (Fulda)",
+    description: "أداء مستقر وعمر افتراضي طويل. تكنولوجيا ألمانية مجمعة محلياً لضمان أفضل جودة مقابل السعر.",
     price: "0",
-    capacity: "7 Ah",
-    image: "https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&w=400&q=80", // Motorcycle
-    type: "motorcycle"
+    capacity: "جميع السعات (35Ah - 200Ah)",
+    warranty: "متاح",
+    image: "https://germanbatteries.com/Products/Images/D31.jpg",
+    type: "local"
   },
   {
     id: 5,
-    name: "بطارية AC Delco 90",
-    description: "بطارية قوية للسيارات الكبيرة وسيارات الدفع الرباعي، طاقة بدء تشغيل عالية.",
+    name: "بطارية أوتولايت (Autolite)",
+    description: "بطارية اعتمادية بتكنولوجيا أمريكية. توفر طاقة بدء تشغيل قوية (CCA) حتى في أبرد أيام الشتاء.",
     price: "0",
-    capacity: "90 Ah",
-    image: "https://images.unsplash.com/photo-1494976388531-d1058494cdd8?auto=format&fit=crop&w=400&q=80", // Car Engine Bay
-    type: "car"
+    capacity: "جميع السعات متوفرة",
+    warranty: "متاح",
+    image: "https://www.germanbatteries.com/Products/Brands/03.png",
+    type: "local"
   },
   {
     id: 6,
-    name: "بطارية ريس (Race) موتوسيكل",
-    description: "بطارية عالية الأداء للموتوسيكلات الريس والسرعات العالية، مقاومة للاهتزازات.",
+    name: "بطارية تايجر (Tiger)",
+    description: "وحش الطاقة المصري. مصممة خصيصاً لتتحمل ظروف الطرق والطقس في مصر. قوية التحمل والاهتزازات.",
     price: "0",
-    capacity: "9 Ah",
-    image: "https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?auto=format&fit=crop&w=400&q=80", // Sport Bike
-    type: "motorcycle"
+    capacity: "جميع السعات (40Ah - 220Ah)",
+    warranty: "متاح",
+    image: "https://germanbatteries.com/Products/Images/D31.jpg",
+    type: "local"
+  },
+
+  // --- Imported Batteries (بطاريات مستوردة) ---
+  {
+    id: 7,
+    name: "بطارية توب لايت (TopLite)",
+    description: "بطارية اتحاد أوروبي فائقة الجودة. تكنولوجيا يواسا (Yuasa) العالمية. متوفرة لجميع التطبيقات من الموتوسيكلات وحتى السيارات الفارهة.",
+    price: "0",
+    capacity: "جميع السعات (سيارات وموتوسيكلات)",
+    warranty: "متاح",
+    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSqHDEh-S3QsU-26EgcauwQeDOXnxf9uuJr6w&s",
+    type: "imported"
+  },
+  {
+    id: 8,
+    name: "بطارية فارتا (Varta)",
+    description: "عملاق الطاقة الألماني (Clarios). الخيار الأول لأغلب مصنعي السيارات الأوروبية. تكنولوجيا PowerFrame لأداء استثنائي وعمر طويل.",
+    price: "0",
+    capacity: "جميع السعات (40Ah - 220Ah)",
+    warranty: "متاح",
+    image: "https://ghataty.com/web/image/1407/ProMotive%20Super%20Heavy%20Duty.jpg",
+    type: "imported"
+  },
+  {
+    id: 9,
+    name: "بطارية بوش (Bosch)",
+    description: "الألمانية رقم 1 في العالم. توفر أعلى معدلات الأمان والأداء. تكنولوجيا PowerFrame لتدفق تيار مثالي.",
+    price: "0",
+    capacity: "جميع السعات متوفرة",
+    warranty: "متاح",
+    image: "https://fitandfix-production.s3.eu-central-1.amazonaws.com/media/catalog/product/b/o/bosch_car_battery_regular_ns_3.jpg?store=ar_EG&image-type=image",
+    type: "imported"
+  },
+  {
+    id: 10,
+    name: "بطارية فولترونك (Voltronic)",
+    description: "هندسة ألمانية دقيقة. مثالية للسيارات الحديثة المزودة بأنظمة Start-Stop والأنظمة الإلكترونية المعقدة.",
+    price: "0",
+    capacity: "جميع السعات (DIN & JIS)",
+    warranty: "متاح",
+    image: "https://5.imimg.com/data5/EK/YX/EV/SELLER-2825475/amaze-2048stj-150ah-tubular-battery.jpg",
+    type: "imported"
+  },
+  {
+    id: 11,
+    name: "بطارية توبلا (Topla)",
+    description: "صناعة سلوفينية (أوروبي). تتميز بعمر افتراضي أطول بنسبة 30% من البطاريات التقليدية بفضل تكنولوجيا الكالسيوم.",
+    price: "0",
+    capacity: "جميع السعات متوفرة",
+    warranty: "متاح",
+    image: "https://www.tab.si/wp-content/uploads/2019/08/118072_TT75.png",
+    type: "imported"
+  },
+  {
+    id: 12,
+    name: "بطارية ستارتر (Starter)",
+    description: "القوة الكورية. توفر طاقة بدء تشغيل موثوقة في جميع الظروف المناخية. هيكل مقوى ضد الاهتزازات.",
+    price: "0",
+    capacity: "جميع السعات (40Ah - 100Ah)",
+    warranty: "متاح",
+    image: "https://cdn.salla.sa/EAgZ/3a274724-e523-4823-b7f6-fc994bbcff5a-1000x840.44233807267-TOhg0YyDF1JdvQVrRBCLUw1uRjLuNm5Z7iXKgiZZ.jpg",
+    type: "imported"
   }
 ];
 
@@ -76,8 +146,8 @@ export const Products: React.FC<ProductsProps> = ({ lang, title, subtitle, onInq
 
   const categories = [
     { id: 'all', label: lang === 'ar' ? 'الكل' : 'All' },
-    { id: 'car', label: lang === 'ar' ? 'بطاريات سيارات' : 'Car Batteries' },
-    { id: 'motorcycle', label: lang === 'ar' ? 'بطاريات موتوسيكلات' : 'Motorcycle Batteries' },
+    { id: 'local', label: lang === 'ar' ? 'بطاريات محلية' : 'Local Batteries' },
+    { id: 'imported', label: lang === 'ar' ? 'بطاريات مستوردة' : 'Imported Batteries' },
   ];
 
   return (
@@ -122,7 +192,7 @@ export const Products: React.FC<ProductsProps> = ({ lang, title, subtitle, onInq
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 opacity-90 group-hover:opacity-100"
                 />
                 <div className="absolute top-4 left-4 bg-black/70 backdrop-blur px-3 py-1 rounded-full text-xs font-bold text-white border border-slate-700 z-10">
-                  {product.capacity}
+                  {lang === 'ar' ? 'جميع السعات' : 'All Capacities'}
                 </div>
                 {/* Overlay on hover */}
                 <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
@@ -182,9 +252,9 @@ export const Products: React.FC<ProductsProps> = ({ lang, title, subtitle, onInq
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent"></div>
                 <div className="absolute bottom-6 left-6 right-6">
                    <span className="inline-block bg-blue-600 text-white px-3 py-1 rounded-full text-xs font-bold mb-2">
-                      {selectedProduct.type === 'car' 
-                        ? (lang === 'ar' ? 'بطارية سيارة' : 'Car Battery')
-                        : (lang === 'ar' ? 'بطارية موتوسيكل' : 'Motorcycle Battery')
+                      {selectedProduct.type === 'local' 
+                        ? (lang === 'ar' ? 'بطارية محلية' : 'Local Battery')
+                        : (lang === 'ar' ? 'بطارية مستوردة' : 'Imported Battery')
                       }
                    </span>
                 </div>
@@ -227,7 +297,7 @@ export const Products: React.FC<ProductsProps> = ({ lang, title, subtitle, onInq
                       <ShieldCheck size={14} className="text-blue-500" />
                       {lang === 'ar' ? 'الضمان' : 'Warranty'}
                     </div>
-                    <div className="text-white font-bold text-lg">{lang === 'ar' ? '12 شهر' : '12 Months'}</div>
+                    <div className="text-white font-bold text-lg">{lang === 'ar' ? 'متاح' : 'Available'}</div>
                   </div>
                   <div className="bg-slate-800 p-4 rounded-xl border border-slate-700">
                     <div className="flex items-center gap-2 text-gray-400 text-xs font-bold uppercase mb-1">
