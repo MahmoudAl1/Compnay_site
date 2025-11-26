@@ -12,7 +12,7 @@ const PRODUCTS_DATA: Product[] = [
     price: "0",
     capacity: "جميع السعات (35Ah - 200Ah)",
     warranty: "متاح",
-    image: "https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?auto=format&fit=crop&w=800&q=80",
+    image: "/images/fullstark.png",
     type: "local"
   },
   {
@@ -32,7 +32,7 @@ const PRODUCTS_DATA: Product[] = [
     price: "0",
     capacity: "جميع السعات (70Ah - 150Ah)",
     warranty: "متاح",
-    image: "https://www.germanbatteries.com/Products/Brands/02.png",
+    image: "/images/max.png",
     type: "local"
   },
   {
@@ -94,7 +94,7 @@ const PRODUCTS_DATA: Product[] = [
     price: "0",
     capacity: "جميع السعات متوفرة",
     warranty: "متاح",
-    image: "https://fitandfix-production.s3.eu-central-1.amazonaws.com/media/catalog/product/b/o/bosch_car_battery_regular_ns_3.jpg?store=ar_EG&image-type=image",
+    image: "/images/bosh.png",
     type: "imported"
   },
   {
