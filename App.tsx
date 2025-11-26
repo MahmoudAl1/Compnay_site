@@ -47,7 +47,7 @@ const TRANSLATIONS = {
       title: 'السرجاني لخدمات البطاريات',
       subtitle: 'الاسم الأول في عالم بطاريات السيارات والموتوسيكلات في مصر',
       whoWeAreTitle: 'من نحن',
-      whoWeAreDesc: 'نحن مركز متخصص في بيع وصيانة واستبدال بطاريات السيارات والدراجات النارية. منذ تأسيسنا، ونحن نلتزم بتقديم أجود أنواع البطاريات العالمية مع خدمة فنية متميزة. ندرك أن البطارية هي قلب المركبة، لذا نوفر لعملائنا الراحة من خلال خدمات الكشف المنزلي والتركيب الفوري.',
+      whoWeAreDesc: 'نحن مركز متخصص في بيع وصيانة واستبدال بطاريات السيارات والدراجات النارية. منذ تأسيسنا، ونحن نلتزم بتقديم أجود أنواع البطاريات العالمية مع خدمة فنية متميزة. ندرك أن البطارية هي قلب المركبة، لذا نوفر لعملائنا الراحة من خلال خدمات الكشف والتركيب الفوري.',
       visionTitle: 'رؤيتنا',
       visionDesc: 'نسعى لأن نكون المرجع الأول والآمن لكل قائد سيارة أو دراجة نارية يواجه مشكلة في البطارية، من خلال توفير حلول سريعة، موثوقة، وبأسعار تنافسية تضمن استمرار رحلتك بسلام.'
     }
@@ -88,7 +88,7 @@ const TRANSLATIONS = {
       title: 'El Sergany Battery Services',
       subtitle: 'The leading name in Car and Motorcycle batteries in Egypt',
       whoWeAreTitle: 'Who We Are',
-      whoWeAreDesc: 'We are a specialized center for selling, maintaining, and replacing car and motorcycle batteries. Since our establishment, we are committed to providing the best global battery brands with outstanding technical service. We understand that the battery is the heart of the vehicle, so we offer home testing and instant installation services.',
+      whoWeAreDesc: 'We are a specialized center for selling, maintaining, and replacing car and motorcycle batteries. Since our establishment, we are committed to providing the best global battery brands with outstanding technical service. We understand that the battery is the heart of the vehicle, so we offer testing and instant installation services.',
       visionTitle: 'Our Vision',
       visionDesc: 'We aim to be the first and safe reference for every car or motorcycle driver facing a battery problem, by providing fast, reliable, and competitive solutions to ensure your journey continues safely.'
     }

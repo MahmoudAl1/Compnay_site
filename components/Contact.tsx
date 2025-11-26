@@ -32,7 +32,7 @@ export const Contact: React.FC<ContactProps> = ({ lang, title, subtitle }) => {
       : `*New Website Message* 🚗⚡\n\n*Name:* ${formData.name}\n*Phone:* ${formData.phone}\n*Subject:* ${subject}\n*Message:* ${formData.message}`;
 
     // The requested WhatsApp number
-    const whatsappNumber = '201287693441';
+    const whatsappNumber = '201204002646';
     
     const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`;
     window.open(url, '_blank');
@@ -64,7 +64,7 @@ export const Contact: React.FC<ContactProps> = ({ lang, title, subtitle }) => {
                 </div>
                 <div>
                   <h4 className="font-bold text-white text-lg mb-2">{lang === 'ar' ? 'الهاتف' : 'Phone'}</h4>
-                  <p className="text-gray-400 mb-1 font-mono text-sm" dir="ltr">+20 122 268 6167</p>
+                  <p className="text-gray-400 mb-1 font-mono text-sm" dir="ltr">+20 120 400 2646</p>
                 </div>
               </div>
 
@@ -74,7 +74,7 @@ export const Contact: React.FC<ContactProps> = ({ lang, title, subtitle }) => {
                 </div>
                 <div>
                   <h4 className="font-bold text-white text-lg mb-2">{lang === 'ar' ? 'العنوان' : 'Address'}</h4>
-                  <p className="text-gray-400 leading-relaxed">{lang === 'ar' ? 'المنزلة، شارع الرياح، شارع عبد المنعم رياض' : 'El Manzala, El Riah St, Abdel Moneim Riad St'}</p>
+                  <p className="text-gray-400 leading-relaxed">{lang === 'ar' ? 'الدقهلية، المنزلة، شارع عبد المنعم رياض' : 'Dakahlia, El Manzala, Abdel Moneim Riad St'}</p>
                 </div>
               </div>
 

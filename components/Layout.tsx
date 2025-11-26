@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { ViewState, Language } from '../types';
 import { Menu, X, Phone, MapPin, Facebook, Instagram, Twitter, Globe } from 'lucide-react';
@@ -263,7 +264,7 @@ export const Footer: React.FC<FooterProps> = ({ lang, onChangeView }) => {
                 </div>
                 <div>
                   <h4 className="text-white text-sm font-bold mb-1">{lang === 'ar' ? 'المقر الرئيسي' : 'Headquarters'}</h4>
-                  <span className="text-sm">{lang === 'ar' ? 'المنزلة، شارع الرياح، شارع عبد المنعم رياض' : 'El Manzala, El Riah St, Abdel Moneim Riad St'}</span>
+                  <span className="text-sm">{lang === 'ar' ? 'الدقهلية، المنزلة، شارع عبد المنعم رياض' : 'Dakahlia, El Manzala, Abdel Moneim Riad St'}</span>
                 </div>
               </li>
               <li className="flex items-center gap-4 text-gray-400 group">
@@ -272,7 +273,7 @@ export const Footer: React.FC<FooterProps> = ({ lang, onChangeView }) => {
                 </div>
                 <div>
                    <h4 className="text-white text-sm font-bold mb-1">{lang === 'ar' ? 'اتصل بنا' : 'Call Us'}</h4>
-                   <span dir="ltr" className="text-sm hover:text-white transition">+20 122 268 6167</span>
+                   <span dir="ltr" className="text-sm hover:text-white transition">+20 120 400 2646</span>
                 </div>
               </li>
             </ul>
