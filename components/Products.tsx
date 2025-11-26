@@ -12,7 +12,7 @@ const PRODUCTS_DATA: Product[] = [
     price: "0",
     capacity: "جميع السعات (35Ah - 200Ah)",
     warranty: "متاح",
-    image: "/images/fullstark.png",
+    image: "/images/fullstark.jpg",
     type: "local"
   },
   {
@@ -32,7 +32,7 @@ const PRODUCTS_DATA: Product[] = [
     price: "0",
     capacity: "جميع السعات (70Ah - 150Ah)",
     warranty: "متاح",
-    image: "/images/max.png",
+    image: "/images/max.jpg",
     type: "local"
   },
   {
@@ -94,7 +94,7 @@ const PRODUCTS_DATA: Product[] = [
     price: "0",
     capacity: "جميع السعات متوفرة",
     warranty: "متاح",
-    image: "/images/bosh.png",
+    image: "/images/bosh.jpg",
     type: "imported"
   },
   {
