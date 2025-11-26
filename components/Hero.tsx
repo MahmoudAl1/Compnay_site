@@ -20,17 +20,58 @@ const IMAGES = [
   "https://images.unsplash.com/photo-1507136566006-cfc505b114fc?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80", // Clean Engine Bay / Maintenance
 ];
 
-// Brand data with specific hex colors for effects
+// Brand data with specific hex colors and logos
 const BRANDS = [
-  { name: "BOSCH", color: "#dc2626" },    // Red-600 (Vibrant)
-  { name: "VARTA", color: "#2563eb" },    // Blue-600 (Vibrant)
-  { name: "TAB", color: "#e11d48" },      // Rose-600
-  { name: "TopLite", color: "#16a34a" },  // Green-600
-  { name: "Fullstark", color: "#3b82f6" },// Blue-500 (UPDATED to Blue)
-  { name: "GERMAN", color: "#ca8a04" },   // Yellow-600 (Darker for contrast)
-  { name: "Autolite", color: "#f97316" }, // Orange-500 (NEW)
-  { name: "Starter", color: "#ef4444" },  // Red-500 (NEW)
-  { name: "Voltronic", color: "#06b6d4" },// Cyan-500 (NEW)
+  { 
+    name: "BOSCH", 
+    color: "#dc2626", 
+    logo: null 
+  },
+  { 
+    name: "VARTA", 
+    color: "#2563eb", 
+    logo: null 
+  },
+  { 
+    name: "TAB", 
+    color: "#e11d48", 
+    logo: null 
+  },
+  { 
+    name: "TopLite", 
+    color: "#16a34a", 
+    logo: null
+  },
+  { 
+    name: "Fullstark", 
+    color: "#3b82f6", 
+    logo: null
+  },
+  { 
+    name: "GERMAN", 
+    color: "#ca8a04", 
+    logo: null
+  },
+  { 
+    name: "Autolite", 
+    color: "#f97316", 
+    logo: null 
+  },
+  { 
+    name: "Starter", 
+    color: "#ef4444", 
+    logo: null
+  },
+  { 
+    name: "Voltronic", 
+    color: "#06b6d4", 
+    logo: null
+  },
+  {
+    name: "Fulda",
+    color: "#333333",
+    logo: null
+  }
 ];
 
 export const Hero: React.FC<HeroProps> = ({ onAction, lang, translations }) => {
@@ -116,7 +157,7 @@ export const Hero: React.FC<HeroProps> = ({ onAction, lang, translations }) => {
         </div>
       </div>
 
-      {/* Brand Marquee Section - High Contrast & Vibrant */}
+      {/* Brand Marquee Section - Logos & High Contrast */}
       <div className="bg-slate-950 py-12 overflow-hidden relative z-20">
         <div className="container mx-auto px-4 mb-10 text-center">
             <p className="text-gray-500 text-xs font-bold tracking-[0.2em] uppercase">{t.hero.brandsTitle}</p>
@@ -138,13 +179,21 @@ export const Hero: React.FC<HeroProps> = ({ onAction, lang, translations }) => {
                     {/* Glossy Overlay */}
                     <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent opacity-50"></div>
                     
-                    {/* Content */}
-                    <span 
-                      className="text-2xl font-black tracking-wider uppercase font-sans z-10 relative drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)] transition-all duration-300 group-hover:tracking-widest"
-                      style={{ color: '#ffffff' }}
-                    >
-                       {brand.name}
-                    </span>
+                    {/* Content: Image Logo or Text */}
+                    {brand.logo ? (
+                      <img 
+                        src={brand.logo} 
+                        alt={brand.name} 
+                        className="h-12 w-auto max-w-[80%] object-contain brightness-0 invert drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)] z-10 relative transition-transform duration-300 group-hover:scale-110"
+                      />
+                    ) : (
+                      <span 
+                        className="text-2xl font-black tracking-wider uppercase font-sans z-10 relative drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)] transition-all duration-300 group-hover:tracking-widest"
+                        style={{ color: '#ffffff' }}
+                      >
+                         {brand.name}
+                      </span>
+                    )}
 
                     {/* Shimmer Effect */}
                     <div className="absolute inset-0 -translate-x-full animate-[shimmer_3s_infinite] bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-12 pointer-events-none"></div>

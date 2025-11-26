@@ -12,7 +12,7 @@ const PRODUCTS_DATA: Product[] = [
     price: "0",
     capacity: "جميع السعات (35Ah - 200Ah)",
     warranty: "متاح",
-    image: "https://germanbatteries.com/Products/Images/D31.jpg",
+    image: "https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?auto=format&fit=crop&w=800&q=80",
     type: "local"
   },
   {
@@ -22,7 +22,7 @@ const PRODUCTS_DATA: Product[] = [
     price: "0",
     capacity: "جميع السعات (55Ah - 100Ah)",
     warranty: "متاح",
-    image: "https://api.cezma.cloud/storage/thumbnails/products/web/1700179032%D8%AA%D9%86%D8%B2%D9%8A%D9%84.jpeg.jpg",
+    image: "/images/german.png",
     type: "local"
   },
   {
@@ -42,7 +42,7 @@ const PRODUCTS_DATA: Product[] = [
     price: "0",
     capacity: "جميع السعات (35Ah - 200Ah)",
     warranty: "متاح",
-    image: "https://germanbatteries.com/Products/Images/D31.jpg",
+    image: "/images/fulda.png",
     type: "local"
   },
   {
@@ -74,7 +74,7 @@ const PRODUCTS_DATA: Product[] = [
     price: "0",
     capacity: "جميع السعات (سيارات وموتوسيكلات)",
     warranty: "متاح",
-    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSqHDEh-S3QsU-26EgcauwQeDOXnxf9uuJr6w&s",
+    image: "/images/toplite.png",
     type: "imported"
   },
   {
@@ -190,6 +190,10 @@ export const Products: React.FC<ProductsProps> = ({ lang, title, subtitle, onInq
                   src={product.image} 
                   alt={product.name} 
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 opacity-90 group-hover:opacity-100"
+                  onError={(e) => {
+                    // Fallback if image not found
+                    (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?auto=format&fit=crop&w=800&q=80';
+                  }}
                 />
                 <div className="absolute top-4 left-4 bg-black/70 backdrop-blur px-3 py-1 rounded-full text-xs font-bold text-white border border-slate-700 z-10">
                   {lang === 'ar' ? 'جميع السعات' : 'All Capacities'}
@@ -248,6 +252,9 @@ export const Products: React.FC<ProductsProps> = ({ lang, title, subtitle, onInq
                   src={selectedProduct.image} 
                   alt={selectedProduct.name} 
                   className="w-full h-full object-cover opacity-90"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?auto=format&fit=crop&w=800&q=80';
+                  }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent"></div>
                 <div className="absolute bottom-6 left-6 right-6">
