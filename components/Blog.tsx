@@ -88,7 +88,14 @@ interface BlogProps {
   subtitle: string;
 }
 
-const BlogPostCard = ({ post, index, onReadMore, lang }: { post: BlogPost; index: number; onReadMore: (post: BlogPost) => void; lang: Language }) => {
+interface BlogPostCardProps {
+  post: BlogPost;
+  index: number;
+  onReadMore: (post: BlogPost) => void;
+  lang: Language;
+}
+
+const BlogPostCard: React.FC<BlogPostCardProps> = ({ post, index, onReadMore, lang }) => {
   const cardRef = useRef<HTMLDivElement>(null);
   const [rotation, setRotation] = useState({ x: 0, y: 0 });
   const [isHovered, setIsHovered] = useState(false);

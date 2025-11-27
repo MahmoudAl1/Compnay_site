@@ -12,7 +12,7 @@ const PRODUCTS_DATA: Product[] = [
     price: "0",
     capacity: "جميع السعات (35Ah - 200Ah)",
     warranty: "متاح",
-    image: "/images/fullstark.jpg",
+    image: "/images/fullstark.png",
     type: "local"
   },
   {
@@ -32,7 +32,7 @@ const PRODUCTS_DATA: Product[] = [
     price: "0",
     capacity: "جميع السعات (70Ah - 150Ah)",
     warranty: "متاح",
-    image: "/images/max.jpg",
+    image: "/images/acdmax.png",
     type: "local"
   },
   {
@@ -94,7 +94,7 @@ const PRODUCTS_DATA: Product[] = [
     price: "0",
     capacity: "جميع السعات متوفرة",
     warranty: "متاح",
-    image: "/images/bosh.jpg",
+    image: "/images/bosch.png",
     type: "imported"
   },
   {
@@ -104,27 +104,7 @@ const PRODUCTS_DATA: Product[] = [
     price: "0",
     capacity: "جميع السعات (DIN & JIS)",
     warranty: "متاح",
-    image: "/images/foltronk.jpg",
-    type: "imported"
-  },
-  {
-    id: 11,
-    name: "بطارية توبلا (Topla)",
-    description: "صناعة سلوفينية (أوروبي). تتميز بعمر افتراضي أطول بنسبة 30% من البطاريات التقليدية بفضل تكنولوجيا الكالسيوم.",
-    price: "0",
-    capacity: "جميع السعات متوفرة",
-    warranty: "متاح",
-    image: "https://www.tab.si/wp-content/uploads/2019/08/118072_TT75.png",
-    type: "imported"
-  },
-  {
-    id: 12,
-    name: "بطارية ستارتر (Starter)",
-    description: "القوة الكورية. توفر طاقة بدء تشغيل موثوقة في جميع الظروف المناخية. هيكل مقوى ضد الاهتزازات.",
-    price: "0",
-    capacity: "جميع السعات (40Ah - 100Ah)",
-    warranty: "متاح",
-    image: "https://cdn.salla.sa/EAgZ/3a274724-e523-4823-b7f6-fc994bbcff5a-1000x840.44233807267-TOhg0YyDF1JdvQVrRBCLUw1uRjLuNm5Z7iXKgiZZ.jpg",
+    image: "https://5.imimg.com/data5/EK/YX/EV/SELLER-2825475/amaze-2048stj-150ah-tubular-battery.jpg",
     type: "imported"
   }
 ];
