@@ -12,7 +12,7 @@ const PRODUCTS_DATA: Product[] = [
     price: "0",
     capacity: "جميع السعات (35Ah - 200Ah)",
     warranty: "متاح",
-    image: "/images/fullstark.jpg",
+    image: "/images/fullstark.png",
     type: "local"
   },
   {
@@ -32,7 +32,7 @@ const PRODUCTS_DATA: Product[] = [
     price: "0",
     capacity: "جميع السعات (70Ah - 150Ah)",
     warranty: "متاح",
-    image: "/images/max.jpg",
+    image: "/images/acdmax.png",
     type: "local"
   },
   {
@@ -94,7 +94,7 @@ const PRODUCTS_DATA: Product[] = [
     price: "0",
     capacity: "جميع السعات متوفرة",
     warranty: "متاح",
-    image: "/images/bosh.jpg",
+    image: "/images/bosch.png",
     type: "imported"
   },
   {
@@ -104,7 +104,7 @@ const PRODUCTS_DATA: Product[] = [
     price: "0",
     capacity: "جميع السعات (DIN & JIS)",
     warranty: "متاح",
-    image: "/images/foltronk.jpg",
+    image: "https://5.imimg.com/data5/EK/YX/EV/SELLER-2825475/amaze-2048stj-150ah-tubular-battery.jpg",
     type: "imported"
   }
 ];

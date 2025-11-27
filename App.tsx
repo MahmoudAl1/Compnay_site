@@ -21,7 +21,7 @@ const TRANSLATIONS = {
       orderNow: 'اطلب الآن'
     },
     hero: {
-      badge: 'خبرة أكثر من 20 عاماً',
+      badge: 'خبرة أكثر من 70 عاماً',
       title1: 'قلب سيارتك',
       title2: 'النابض بالحياة',
       subtitle: 'متخصصون في بطاريات السيارات والموتوسيكلات. خدمة كشف وتركيب واستبدال البطارية أينما كنت بأيدي فنيين محترفين.',
@@ -47,9 +47,9 @@ const TRANSLATIONS = {
       title: 'السرجاني لخدمات البطاريات',
       subtitle: 'الاسم الأول في عالم بطاريات السيارات والموتوسيكلات في مصر',
       whoWeAreTitle: 'من نحن',
-      whoWeAreDesc: 'نحن مركز متخصص في بيع وصيانة واستبدال بطاريات السيارات والدراجات النارية. منذ تأسيسنا، ونحن نلتزم بتقديم أجود أنواع البطاريات العالمية مع خدمة فنية متميزة. ندرك أن البطارية هي قلب المركبة، لذا نوفر لعملائنا الراحة من خلال خدمات الكشف والتركيب الفوري.',
+      whoWeAreDesc: 'تأسست شركة السرجاني عام 1951، وبفضل الابتكار والخبرة الممتدة لعقود طويلة، أصبحت الشركة واحدة من الكيانات البارزة في مصر في مجال توزيع البطاريات. وعلى مدار سنوات عملنا، نجحنا في بناء سمعة قوية قائمة على الثقة والجودة وتلبية احتياجات السوق. توزع شركة السرجاني حالياً تشكيلة واسعة من قطع البطاريات عبر شبكة من العملاء والشركاء، ونسعى باستمرار إلى توسيع محفظة العلامات التجارية التي نمثلها وزيادة حصتنا السوقية، مستندين إلى خبرتنا العميقة في السوق المصرية. شركة السرجاني هي موزّع متخصص ذو قيمة مضافة، ويقع مقرها الرئيسي في مدينة المنزلة – محافظة الدقهلية، والفرع الثاني في محافظة دمياط الجديدة.',
       visionTitle: 'رؤيتنا',
-      visionDesc: 'نسعى لأن نكون المرجع الأول والآمن لكل قائد سيارة أو دراجة نارية يواجه مشكلة في البطارية، من خلال توفير حلول سريعة، موثوقة، وبأسعار تنافسية تضمن استمرار رحلتك بسلام.'
+      visionDesc: 'نفتخر بما حققناه من إنجازات منذ تأسيس الشركة، ونتطلع بخطط طموحة إلى التوسع والوصول إلى آفاق جديدة في أعمالنا. من خلال شبكتنا من الموزعين والشركاء ووجودنا القوي في السوق، نسعى لأن نكون المرجع الأول والآمن لكل قائد سيارة، ونوفر قناة مبيعات فعّالة لموردي قطع غيار السيارات الرائدين.'
     }
   },
   en: {
@@ -62,7 +62,7 @@ const TRANSLATIONS = {
       orderNow: 'Order Now'
     },
     hero: {
-      badge: 'Over 20 Years Experience',
+      badge: 'Over 70 Years Experience',
       title1: 'Your Vehicle\'s',
       title2: 'Beating Heart',
       subtitle: 'Specialized in Car and Motorcycle batteries. Testing, installation, and replacement service wherever you are by professional technicians.',
@@ -88,9 +88,9 @@ const TRANSLATIONS = {
       title: 'El Sergany Battery Services',
       subtitle: 'The leading name in Car and Motorcycle batteries in Egypt',
       whoWeAreTitle: 'Who We Are',
-      whoWeAreDesc: 'We are a specialized center for selling, maintaining, and replacing car and motorcycle batteries. Since our establishment, we are committed to providing the best global battery brands with outstanding technical service. We understand that the battery is the heart of the vehicle, so we offer testing and instant installation services.',
+      whoWeAreDesc: 'El Sergany Company was established in 1951. Thanks to innovation and decades of experience, the company has become one of the prominent entities in Egypt in the field of battery distribution. Over the years, we have succeeded in building a strong reputation based on trust, quality, and meeting market needs. We currently distribute a wide range of batteries through a network of clients and partners. Our headquarters is located in El Manzala (Dakahlia), with a second branch in New Damietta.',
       visionTitle: 'Our Vision',
-      visionDesc: 'We aim to be the first and safe reference for every car or motorcycle driver facing a battery problem, by providing fast, reliable, and competitive solutions to ensure your journey continues safely.'
+      visionDesc: 'We are proud of our achievements since the company\'s inception and look forward with ambitious plans to expand and reach new horizons. Through our network of distributors and partners and our strong market presence, we aim to be the premier and safe reference for every driver, providing an effective sales channel for leading auto parts suppliers.'
     }
   }
 };
@@ -121,7 +121,7 @@ function App() {
       case ViewState.ABOUT:
          return <About lang={lang} translations={TRANSLATIONS} />;
       case ViewState.PRODUCTS:
-        return <Products lang={lang} title={TRANSLATIONS[lang].sectionTitles.products} subtitle={TRANSLATIONS[lang].sectionTitles.productsDesc} onInquire={() => setCurrentView(ViewState.CONTACT)} />;
+        return <Products lang={lang} title={TRANSLATIONS[lang].sectionTitles.products} subtitle={TRANSLATIONS[lang].sectionTitles.productsDesc} onInquire={() => setCurrentView(ViewState.CONTACT)} />
       case ViewState.BLOG:
         return <Blog onReadMore={handleReadMore} activePost={null} onBack={() => {}} lang={lang} title={TRANSLATIONS[lang].sectionTitles.blog} subtitle={TRANSLATIONS[lang].sectionTitles.blogDesc} />;
       case ViewState.POST_DETAIL:
