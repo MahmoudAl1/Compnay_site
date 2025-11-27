@@ -17,7 +17,7 @@ const IMAGES = [
   "/images/pic4.jpg", // Car hood open
   "/images/pic5.jpg", // Motorcycle
   "/images/pic6.jpg", // Mechanic working under hood
-  "/images/foltronk.jpg", // Clean Engine Bay / Maintenance
+  "/images/lite.jpg", // Clean Engine Bay / Maintenance
 ];
 
 // Brand data with specific hex colors and logos
