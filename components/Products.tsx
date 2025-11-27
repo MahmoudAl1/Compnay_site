@@ -94,7 +94,7 @@ const PRODUCTS_DATA: Product[] = [
     price: "0",
     capacity: "جميع السعات متوفرة",
     warranty: "متاح",
-    image: "/images/bosh.png",
+    image: "/images/bosh.jpg",
     type: "imported"
   },
   {
