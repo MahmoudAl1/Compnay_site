@@ -11,13 +11,13 @@ interface HeroProps {
 
 // Updated Images: Ensure all links are high-quality and reliable
 const IMAGES = [
-  "https://images.unsplash.com/photo-1487754180451-c456f719a1fc?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80", // Mechanic looking at engine
-  "https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80", // Big Heavy Truck (New Request)
-  "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80", // Car close up dark
-  "https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80", // Car hood open
-  "https://images.unsplash.com/photo-1558981403-c5f9899a28bc?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80", // Motorcycle
-  "https://images.unsplash.com/photo-1530046339160-ce3e530c7d2f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80", // Mechanic working under hood
-  "https://images.unsplash.com/photo-1507136566006-cfc505b114fc?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80", // Clean Engine Bay / Maintenance
+  "/images/pic1.jpg", // Mechanic looking at engine
+  "/images/pic2.jpg", // Big Heavy Truck (New Request)
+  "/images/pic3.jpg", // Car close up dark
+  "/images/pic4.jpg", // Car hood open
+  "/images/pic5.jpg", // Motorcycle
+  "/images/pic6.jpg", // Mechanic working under hood
+  "/images/foltronk.jpg", // Clean Engine Bay / Maintenance
 ];
 
 // Brand data with specific hex colors and logos
