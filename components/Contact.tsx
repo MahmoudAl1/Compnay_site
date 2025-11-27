@@ -84,7 +84,7 @@ export const Contact: React.FC<ContactProps> = ({ lang, title, subtitle }) => {
                 </div>
                 <div>
                   <h4 className="font-bold text-white text-lg mb-2">{lang === 'ar' ? 'البريد الإلكتروني' : 'Email'}</h4>
-                  <p className="text-gray-400">info@elsergany-batteries.com</p>
+                  <p className="text-gray-400">elsreganycompany@gmail.com</p>
                 </div>
               </div>
 
