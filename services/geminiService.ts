@@ -1,93 +1,33 @@
 
-import { GoogleGenAI, Chat } from "@google/genai";
+// Client-side service to communicate with the full-stack Chat API
 
-// Declaration to satisfy TypeScript that process.env exists (it will be replaced by Vite during build)
-declare const process: { env: { [key: string]: string | undefined } };
-
-// Initialize the API client
-// Note: In a production Vercel environment, ensure process.env.API_KEY is set in Project Settings.
-const apiKey = process.env.API_KEY || ''; 
-const ai = new GoogleGenAI({ apiKey });
-
-const SYSTEM_INSTRUCTION = `
-أنت المساعد الذكي والخبير التقني لشركة "السرجاني للبطاريات" (El Sergany Batteries).
-مهمتك هي مساعدة العملاء في اختيار البطارية المناسبة لسياراتهم أو دراجاتهم النارية من *قائمة منتجاتنا المتاحة فقط*.
-
-🛑 **قواعد صارمة جداً (Inventory Rules):**
-1. **لا ترشح أبداً** أي علامة تجارية أو منتج لا نبيعه.
-2. إذا طلب العميل بطارية غير موجودة لدينا، اعتذر بلطف واقترح "البديل المتاح لدينا" من القائمة أدناه.
-
-📋 **قائمة منتجاتنا المتاحة (المخزون):**
-
-**🇪🇬 بطاريات محلية (Local Batteries):**
-1. **فولستارك (Fullstark):** جودة عالية، مناسبة للأجواء المصرية، متوفرة بقدرات مختلفة (70/80 أمبير).
-2. **جرمن (German):** اعتمادية واقتصادية، الأكثر مبيعاً.
-3. **سي دي ماكس (ACD Max):** قوة تحمل شاقة، مناسبة للسيارات التي تعمل لفترات طويلة.
-4. **فولدا (Fulda):** أداء مستقر.
-5. **أوتولايت (Autolite):** تكنولوجيا حديثة.
-6. **تايجر (Tiger):** قوة وكفاءة عالية.
-
-**🌍 بطاريات مستوردة (Imported Batteries) - (تشمل سيارات وموتوسيكلات):**
-1. **توب لايت (TopLite):** (موتوسيكل وسيارات) تكنولوجيا أوروبية، الأفضل للموتوسيكلات الصيني والدايون، وكذلك السيارات.
-2. **فارتا (Varta):** (سيارة) ألماني، الخيار الأول للسيارات الأوروبية.
-3. **بوش (Bosch):** (سيارة) ألماني، تكنولوجيا أوروبية.
-4. **فولترونك (Voltronic):** (سيارة) استقرار عالي.
-
-**🏷️ العلامات التجارية (Brands) التي نوكيلها فقط:**
-Bosch, Varta, TopLite, Fullstark, German, ACD Max, Fulda, Autolite, Tiger, Voltronic.
-
-**🏢 معلومات الشركة والخدمات:**
-- **تاريخنا:** تأسست الشركة عام 1951 (خبرة أكثر من 70 عاماً).
-- **المقر الرئيسي:** الدقهلية، المنزلة، شارع عبد المنعم رياض.
-- **الفرع الثاني:** دمياط الجديدة.
-- **الهاتف:** 01204002646
-- **الخدمات المجانية:** كشف مجاني على الدينامو والبطارية.
-- **خدمات أخرى:** تركيب فوري، خدمة توصيل (ديليفري) وإنقاذ، استبدال البطارية القديمة بالجديدة.
-- **الضمان:** متاح (يختلف حسب النوع والسعة).
-
-**💬 أسلوب الرد:**
-- تحدث بلهجة مصرية بيضاء مهذبة ومحترفة.
-- إذا سأل العميل عن بطارية سيارة، رشح له الأنواع المحلية (فولستارك، جرمن، تايجر، إلخ) أو المستوردة (بوش، فارتا، فولترونك).
-- إذا سأل عن موتوسيكل، رشح له المستوردة (توب لايت).
-- اختم دائماً بدعوة العميل للاتصال بنا أو زيارة الفرع للكشف المجاني.
-`;
-
-let chatSession: Chat | null = null;
 
 export const initializeChat = (): void => {
-  try {
-    chatSession = ai.chats.create({
-      model: 'gemini-2.5-flash',
-      config: {
-        systemInstruction: SYSTEM_INSTRUCTION,
-        temperature: 0.3, // Lower temperature to be more factual and stick to the inventory
-      },
-    });
-  } catch (error) {
-    console.error("Failed to initialize chat session", error);
-  }
+  // Chat is now initialized on the server
 };
 
 export const sendMessageToGemini = async (message: string): Promise<string> => {
-  if (!apiKey) {
-    return "عذراً، لم يتم إعداد مفتاح API. يرجى التأكد من الإعدادات.";
-  }
-
-  if (!chatSession) {
-    initializeChat();
-  }
-
-  if (!chatSession) {
-    return "عذراً، حدث خطأ في الاتصال بالخادم.";
-  }
-
   try {
-    const response = await chatSession.sendMessage({ message });
-    return response.text || "عذراً، لم أستطع فهم طلبك.";
+    const response = await fetch('/api/chat', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ message }),
+    });
+    
+    const data = await response.json();
+    
+    if (!response.ok) {
+      if (data.error) {
+        return data.error;
+      }
+      return "حدث خطأ أثناء معالجة طلبك. يرجى المحاولة لاحقاً.";
+    }
+    
+    return data.text || "عذراً، لم أستطع فهم طلبك.";
   } catch (error) {
-    console.error("Gemini API Error:", error);
-    // Re-initialize session on error in case of expiry
-    initializeChat(); 
-    return "حدث خطأ أثناء معالجة طلبك. يرجى المحاولة لاحقاً.";
+    console.error("Gemini API Request Error:", error);
+    return "حدث خطأ في الاتصال. يرجى المحاولة لاحقاً.";
   }
 };

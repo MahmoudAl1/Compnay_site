@@ -1,7 +1,10 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Product, Language } from '../types';
 import { Star, Eye, X, Battery, Zap, ShieldCheck, PenTool as Tool } from 'lucide-react';
+import { collection, onSnapshot } from 'firebase/firestore';
+import { db } from '../firebase';
+import { handleFirestoreError, OperationType } from '../firebaseHelper';
 
 const PRODUCTS_DATA: Product[] = [
   // --- Local Batteries (بطاريات محلية) ---
@@ -9,19 +12,15 @@ const PRODUCTS_DATA: Product[] = [
     id: 1,
     name: "بطارية فولستارك (Fullstark)",
     description: "بطارية محلية بمواصفات عالمية. تتميز باللون الأزرق وقوة تحمل عالية لدرجات الحرارة المرتفعة وتكنولوجيا شبك متطورة.",
-    price: "0",
     capacity: "جميع السعات (35Ah - 200Ah)",
-    warranty: "متاح",
-    image: "/images/fullstark.jpg",
+    image: "/images/fullstark.png",
     type: "local"
   },
   {
     id: 2,
     name: "بطارية جرمن (German)",
     description: "البطارية الاقتصادية الأولى. تجمع بين السعر المناسب والأداء الموثوق. متوفرة لجميع أنواع السيارات الملاكي والنقل.",
-    price: "0",
     capacity: "جميع السعات (55Ah - 100Ah)",
-    warranty: "متاح",
     image: "/images/german.png",
     type: "local"
   },
@@ -29,19 +28,15 @@ const PRODUCTS_DATA: Product[] = [
     id: 3,
     name: "بطارية سي دي ماكس (ACD Max)",
     description: "مصممة للخدمة الشاقة. خيار مثالي لسيارات العمل وسيارات الأجرة بفضل قدرتها العالية على إعادة الشحن السريع.",
-    price: "0",
     capacity: "جميع السعات (70Ah - 150Ah)",
-    warranty: "متاح",
-    image: "/images/max.jpg",
+    image: "/images/acdmax.png",
     type: "local"
   },
   {
     id: 4,
     name: "بطارية فولدا (Fulda)",
     description: "أداء مستقر وعمر افتراضي طويل. تكنولوجيا ألمانية مجمعة محلياً لضمان أفضل جودة مقابل السعر.",
-    price: "0",
     capacity: "جميع السعات (35Ah - 200Ah)",
-    warranty: "متاح",
     image: "/images/fulda.png",
     type: "local"
   },
@@ -49,9 +44,7 @@ const PRODUCTS_DATA: Product[] = [
     id: 5,
     name: "بطارية أوتولايت (Autolite)",
     description: "بطارية اعتمادية بتكنولوجيا أمريكية. توفر طاقة بدء تشغيل قوية (CCA) حتى في أبرد أيام الشتاء.",
-    price: "0",
     capacity: "جميع السعات متوفرة",
-    warranty: "متاح",
     image: "https://www.germanbatteries.com/Products/Brands/03.png",
     type: "local"
   },
@@ -59,9 +52,7 @@ const PRODUCTS_DATA: Product[] = [
     id: 6,
     name: "بطارية تايجر (Tiger)",
     description: "وحش الطاقة المصري. مصممة خصيصاً لتتحمل ظروف الطرق والطقس في مصر. قوية التحمل والاهتزازات.",
-    price: "0",
     capacity: "جميع السعات (40Ah - 220Ah)",
-    warranty: "متاح",
     image: "https://germanbatteries.com/Products/Images/D31.jpg",
     type: "local"
   },
@@ -71,9 +62,7 @@ const PRODUCTS_DATA: Product[] = [
     id: 7,
     name: "بطارية توب لايت (TopLite)",
     description: "بطارية اتحاد أوروبي فائقة الجودة. تكنولوجيا يواسا (Yuasa) العالمية. متوفرة لجميع التطبيقات من الموتوسيكلات وحتى السيارات الفارهة.",
-    price: "0",
     capacity: "جميع السعات (سيارات وموتوسيكلات)",
-    warranty: "متاح",
     image: "/images/toplite.png",
     type: "imported"
   },
@@ -81,9 +70,7 @@ const PRODUCTS_DATA: Product[] = [
     id: 8,
     name: "بطارية فارتا (Varta)",
     description: "عملاق الطاقة الألماني (Clarios). الخيار الأول لأغلب مصنعي السيارات الأوروبية. تكنولوجيا PowerFrame لأداء استثنائي وعمر طويل.",
-    price: "0",
     capacity: "جميع السعات (40Ah - 220Ah)",
-    warranty: "متاح",
     image: "https://ghataty.com/web/image/1407/ProMotive%20Super%20Heavy%20Duty.jpg",
     type: "imported"
   },
@@ -91,20 +78,16 @@ const PRODUCTS_DATA: Product[] = [
     id: 9,
     name: "بطارية بوش (Bosch)",
     description: "الألمانية رقم 1 في العالم. توفر أعلى معدلات الأمان والأداء. تكنولوجيا PowerFrame لتدفق تيار مثالي.",
-    price: "0",
     capacity: "جميع السعات متوفرة",
-    warranty: "متاح",
-    image: "/images/bosh.jpg",
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Bosch-logo.svg/500px-Bosch-logo.svg.png?_=20221203224029",
     type: "imported"
   },
   {
     id: 10,
     name: "بطارية فولترونك (Voltronic)",
     description: "هندسة ألمانية دقيقة. مثالية للسيارات الحديثة المزودة بأنظمة Start-Stop والأنظمة الإلكترونية المعقدة.",
-    price: "0",
     capacity: "جميع السعات (DIN & JIS)",
-    warranty: "متاح",
-    image: "/images/foltronk.jpg",
+    image: "https://5.imimg.com/data5/EK/YX/EV/SELLER-2825475/amaze-2048stj-150ah-tubular-battery.jpg",
     type: "imported"
   }
 ];
@@ -119,10 +102,25 @@ interface ProductsProps {
 export const Products: React.FC<ProductsProps> = ({ lang, title, subtitle, onInquire }) => {
   const [filter, setFilter] = useState<string>('all');
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [products, setProducts] = useState<Product[]>(PRODUCTS_DATA);
+
+  useEffect(() => {
+    const unsub = onSnapshot(collection(db, 'products'), snapshot => {
+      const dbProducts: Product[] = [];
+      snapshot.forEach(doc => dbProducts.push({ id: doc.id, ...doc.data() } as unknown as Product));
+      // Combine or replace. Since admin manages from DB, fallback to hardcoded if empty or mix them. Let's just use DB if not empty, otherwise PRODUCTS_DATA. Or better, just show DB + Hardcoded (with dupes avoided if we want, but simple override is better). We will use DB products if any exist, otherwise hardcoded.
+      if (dbProducts.length > 0) {
+        setProducts(dbProducts);
+      } else {
+        setProducts([]);
+      }
+    }, (error) => handleFirestoreError(error, OperationType.LIST, 'products'));
+    return () => unsub();
+  }, []);
 
   const filteredProducts = filter === 'all' 
-    ? PRODUCTS_DATA 
-    : PRODUCTS_DATA.filter(p => p.type === filter);
+    ? products 
+    : products.filter(p => p.type === filter);
 
   const categories = [
     { id: 'all', label: lang === 'ar' ? 'الكل' : 'All' },
@@ -135,26 +133,11 @@ export const Products: React.FC<ProductsProps> = ({ lang, title, subtitle, onInq
       <div className="container mx-auto px-4 md:px-6">
         <div className="text-center max-w-2xl mx-auto mb-16">
           <h2 className="text-3xl md:text-4xl font-extrabold text-white mb-4">{title}</h2>
-          <p className="text-gray-400">
-            {subtitle}
-          </p>
-        </div>
-
-        {/* Filters */}
-        <div className="flex flex-wrap justify-center gap-3 mb-12">
-          {categories.map((cat) => (
-            <button
-              key={cat.id}
-              onClick={() => setFilter(cat.id)}
-              className={`px-6 py-2 rounded-full font-bold text-sm transition-all duration-300 ${
-                filter === cat.id
-                  ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/20 scale-105'
-                  : 'bg-slate-900 text-gray-400 hover:bg-slate-800 border border-slate-800'
-              }`}
-            >
-              {cat.label}
-            </button>
-          ))}
+          {subtitle && (
+            <p className="text-gray-400">
+              {subtitle}
+            </p>
+          )}
         </div>
 
         {/* Grid */}
@@ -264,7 +247,7 @@ export const Products: React.FC<ProductsProps> = ({ lang, title, subtitle, onInq
                 </p>
 
                 {/* Specs Grid */}
-                <div className="grid grid-cols-2 gap-4 mb-8">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
                   <div className="bg-slate-800 p-4 rounded-xl border border-slate-700">
                     <div className="flex items-center gap-2 text-gray-400 text-xs font-bold uppercase mb-1">
                       <Zap size={14} className="text-blue-500" />
@@ -279,19 +262,12 @@ export const Products: React.FC<ProductsProps> = ({ lang, title, subtitle, onInq
                     </div>
                     <div className="text-white font-bold text-lg">{selectedProduct.capacity}</div>
                   </div>
-                  <div className="bg-slate-800 p-4 rounded-xl border border-slate-700">
-                    <div className="flex items-center gap-2 text-gray-400 text-xs font-bold uppercase mb-1">
-                      <ShieldCheck size={14} className="text-blue-500" />
-                      {lang === 'ar' ? 'الضمان' : 'Warranty'}
-                    </div>
-                    <div className="text-white font-bold text-lg">{lang === 'ar' ? 'متاح' : 'Available'}</div>
-                  </div>
-                  <div className="bg-slate-800 p-4 rounded-xl border border-slate-700">
+                  <div className="bg-slate-800 p-4 rounded-xl border border-slate-700 sm:col-span-2">
                     <div className="flex items-center gap-2 text-gray-400 text-xs font-bold uppercase mb-1">
                       <Tool size={14} className="text-blue-500" />
                       {lang === 'ar' ? 'الصيانة' : 'Maintenance'}
                     </div>
-                    <div className="text-white font-bold text-lg">{lang === 'ar' ? 'مجانية' : 'Free'}</div>
+                    <div className="text-white font-bold text-lg">Maintenance Free</div>
                   </div>
                 </div>
 
@@ -305,7 +281,7 @@ export const Products: React.FC<ProductsProps> = ({ lang, title, subtitle, onInq
                   }}
                   className="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-4 rounded-xl transition-all shadow-lg hover:shadow-blue-500/30 flex items-center justify-center gap-2"
                 >
-                  {lang === 'ar' ? 'استفسر عن السعر والتوفر' : 'Inquire Price & Availability'}
+                  {lang === 'ar' ? 'استفسر عن المنتج' : 'Inquire about product'}
                 </button>
               </div>
             </div>

@@ -14,9 +14,7 @@ export interface Product {
   id: number;
   name: string;
   description: string;
-  price: string;
   capacity: string;
-  warranty: string;
   image: string;
   type: 'local' | 'imported';
 }
@@ -33,6 +31,8 @@ export enum ViewState {
   ABOUT = 'ABOUT',
   BLOG = 'BLOG',
   PRODUCTS = 'PRODUCTS',
+  CLIENTS = 'CLIENTS',
   CONTACT = 'CONTACT',
-  POST_DETAIL = 'POST_DETAIL'
+  POST_DETAIL = 'POST_DETAIL',
+  ADMIN_DASHBOARD = 'ADMIN_DASHBOARD'
 }

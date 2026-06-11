@@ -1,5 +1,8 @@
 {
   "name": "El Sergany Company",
   "description": "Modern website for El Sergany Batteries featuring product showcase, blog, and AI technical assistant.",
-  "requestFramePermissions": []
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
 }

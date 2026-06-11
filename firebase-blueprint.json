@@ -1,0 +1,59 @@
+{
+  "entities": {
+    "Product": {
+      "title": "Product",
+      "description": "A battery product",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "description": { "type": "string" },
+        "price": { "type": "string" },
+        "capacity": { "type": "string" },
+        "warranty": { "type": "string" },
+        "image": { "type": "string" },
+        "type": { "type": "string", "enum": ["local", "imported"] }
+      },
+      "required": ["name", "description", "price", "capacity", "warranty", "image", "type"]
+    },
+    "BlogPost": {
+      "title": "Blog Post",
+      "description": "An article or tip",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "excerpt": { "type": "string" },
+        "content": { "type": "string" },
+        "date": { "type": "string" },
+        "image": { "type": "string" },
+        "category": { "type": "string" }
+      },
+      "required": ["title", "excerpt", "content", "date", "image", "category"]
+    },
+    "SiteSettings": {
+      "title": "Site Settings",
+      "description": "Global settings for the website, such as hero images",
+      "type": "object",
+      "properties": {
+        "heroImages": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      },
+      "required": ["heroImages"]
+    }
+  },
+  "firestore": {
+    "products/{productId}": {
+      "schema": { "$ref": "#/entities/Product" },
+      "description": "Collection of all battery products"
+    },
+    "posts/{postId}": {
+      "schema": { "$ref": "#/entities/BlogPost" },
+      "description": "Collection of all blog posts"
+    },
+    "settings/{documentId}": {
+      "schema": { "$ref": "#/entities/SiteSettings" },
+      "description": "Collection for global site settings, typically just one document named 'global'"
+    }
+  }
+}

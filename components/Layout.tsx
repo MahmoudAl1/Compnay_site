@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { ViewState, Language } from '../types';
-import { Menu, X, Phone, MapPin, Facebook, Instagram, Twitter, Globe } from 'lucide-react';
+import { Menu, X, Phone, MapPin, Facebook, Instagram, Twitter, Globe, Mail } from 'lucide-react';
 
 interface HeaderProps {
   currentView: ViewState;
@@ -30,6 +30,7 @@ export const Header: React.FC<HeaderProps> = ({ currentView, onChangeView, lang,
     { label: t.nav.home, view: ViewState.HOME },
     { label: t.nav.about, view: ViewState.ABOUT },
     { label: t.nav.products, view: ViewState.PRODUCTS },
+    { label: t.nav.clients, view: ViewState.CLIENTS },
     { label: t.nav.blog, view: ViewState.BLOG },
     { label: t.nav.contact, view: ViewState.CONTACT },
   ];
@@ -121,14 +122,6 @@ export const Header: React.FC<HeaderProps> = ({ currentView, onChangeView, lang,
             >
               <Globe size={14} className="text-blue-500" />
               {lang === 'ar' ? 'EN' : 'AR'}
-            </button>
-
-            <button 
-              onClick={() => onChangeView(ViewState.CONTACT)}
-              className="group relative overflow-hidden bg-gradient-to-r from-blue-600 to-cyan-500 text-white px-6 py-2.5 rounded-xl text-sm font-black transition-transform hover:scale-105 shadow-lg shadow-blue-500/25"
-            >
-              <span className="relative z-10">{t.nav.orderNow}</span>
-              <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
             </button>
           </div>
 
@@ -273,7 +266,16 @@ export const Footer: React.FC<FooterProps> = ({ lang, onChangeView }) => {
                 </div>
                 <div>
                    <h4 className="text-white text-sm font-bold mb-1">{lang === 'ar' ? 'اتصل بنا' : 'Call Us'}</h4>
-                   <span dir="ltr" className="text-sm hover:text-white transition">+20 120 400 2646</span>
+                   <a href="tel:+201204002646" dir="ltr" className="text-sm hover:text-white transition">+20 120 400 2646</a>
+                </div>
+              </li>
+              <li className="flex items-center gap-4 text-gray-400 group">
+                <div className="bg-slate-900 p-2 rounded-lg text-gray-500 group-hover:text-blue-400 transition-colors">
+                  <Mail size={20} />
+                </div>
+                <div>
+                   <h4 className="text-white text-sm font-bold mb-1">{lang === 'ar' ? 'البريد الإلكتروني' : 'Email'}</h4>
+                   <a href="mailto:elserganycompany@gmail.com" className="text-sm hover:text-white transition">elserganycompany@gmail.com</a>
                 </div>
               </li>
             </ul>
@@ -282,7 +284,7 @@ export const Footer: React.FC<FooterProps> = ({ lang, onChangeView }) => {
 
         <div className="border-t border-slate-900 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-gray-600 text-sm">
           <p>© {new Date().getFullYear()} {lang === 'ar' ? 'السرجاني للبطاريات. جميع الحقوق محفوظة.' : 'El Sergany Batteries. All rights reserved.'}</p>
-          <div className="flex gap-6">
+          <div className="flex gap-6 items-center">
             <button onClick={() => onChangeView(ViewState.CONTACT)} className="hover:text-white transition">{lang === 'ar' ? 'سياسة الخصوصية' : 'Privacy Policy'}</button>
             <button onClick={() => onChangeView(ViewState.CONTACT)} className="hover:text-white transition">{lang === 'ar' ? 'الشروط والأحكام' : 'Terms & Conditions'}</button>
           </div>

@@ -12,22 +12,13 @@ export const About: React.FC<AboutProps> = ({ lang, translations }) => {
   const t = translations[lang].about;
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white pb-20">
-      {/* Hero Section */}
-      <div className="relative h-[400px] w-full overflow-hidden">
-        <img 
-          src="https://images.unsplash.com/photo-1486006920555-c77dcf18193c?auto=format&fit=crop&w=1950&q=80" 
-          alt="Workshop" 
-          className="w-full h-full object-cover opacity-40"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent"></div>
-        <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
-          <h1 className="text-4xl md:text-6xl font-black mb-4">{t.title}</h1>
-          <p className="text-xl text-gray-300 max-w-2xl">{t.subtitle}</p>
+    <div className="bg-slate-950 text-white pb-20 pt-16">
+      <div className="container mx-auto px-4 md:px-6 relative z-10">
+        
+        <div className="text-center mb-16">
+          <h1 className="text-4xl md:text-5xl font-black mb-4">{t.title}</h1>
+          <p className="text-xl text-gray-400 max-w-2xl mx-auto">{t.subtitle}</p>
         </div>
-      </div>
-
-      <div className="container mx-auto px-4 md:px-6 -mt-20 relative z-10">
         
         {/* Who We Are */}
         <div className="bg-slate-900 border border-slate-800 rounded-3xl p-8 md:p-12 shadow-2xl mb-16">
@@ -60,7 +51,7 @@ export const About: React.FC<AboutProps> = ({ lang, translations }) => {
             <div className="relative">
               <div className="absolute inset-0 bg-blue-500 rounded-3xl rotate-3 opacity-20 blur-lg"></div>
               <img 
-                src="/images/pic1.jpg" 
+                src="https://images.unsplash.com/photo-1530046339160-ce3e530c7d2f?auto=format&fit=crop&w=1000&q=80" 
                 alt="Our Team" 
                 className="relative rounded-3xl shadow-2xl border border-slate-800 w-full"
               />
@@ -73,7 +64,7 @@ export const About: React.FC<AboutProps> = ({ lang, translations }) => {
            <div className={`relative ${lang === 'ar' ? 'md:order-1' : ''}`}>
                <div className="absolute inset-0 bg-cyan-500 rounded-3xl -rotate-3 opacity-10 blur-lg"></div>
                <img 
-                src="https://abaadprod.com/wp-content/uploads/2024/01/photo-1453728013993-6d66e9c9123a-1024x683.jpg" 
+                src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=1000&q=80" 
                 alt="Vision" 
                 className="relative rounded-3xl shadow-2xl border border-slate-800 w-full"
               />

@@ -1,7 +1,10 @@
 
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { BlogPost, Language } from '../types';
 import { Calendar, ChevronLeft, ChevronRight, User, ArrowRight, ArrowLeft, Clock } from 'lucide-react';
+import { collection, onSnapshot } from 'firebase/firestore';
+import { db } from '../firebase';
+import { handleFirestoreError, OperationType } from '../firebaseHelper';
 
 const BLOG_POSTS: BlogPost[] = [
   {
@@ -190,6 +193,20 @@ const BlogPostCard: React.FC<BlogPostCardProps> = ({ post, index, onReadMore, la
 
 export const Blog: React.FC<BlogProps> = ({ onReadMore, activePost, onBack, lang, title, subtitle }) => {
   const BackIcon = lang === 'ar' ? ArrowRight : ArrowLeft;
+  const [posts, setPosts] = useState<BlogPost[]>(BLOG_POSTS);
+
+  useEffect(() => {
+    const unsub = onSnapshot(collection(db, 'posts'), snapshot => {
+      const dbPosts: BlogPost[] = [];
+      snapshot.forEach(doc => dbPosts.push({ id: doc.id as any, ...doc.data() } as BlogPost));
+      if (dbPosts.length > 0) {
+        setPosts(dbPosts);
+      } else {
+        setPosts([]);
+      }
+    }, (error) => handleFirestoreError(error, OperationType.LIST, 'posts'));
+    return () => unsub();
+  }, []);
 
   if (activePost) {
     return (
@@ -270,7 +287,7 @@ export const Blog: React.FC<BlogProps> = ({ onReadMore, activePost, onBack, lang
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {BLOG_POSTS.map((post, index) => (
+          {posts.map((post, index) => (
             <BlogPostCard 
               key={post.id} 
               post={post} 

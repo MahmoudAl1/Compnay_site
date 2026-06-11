@@ -13,6 +13,7 @@ export const Contact: React.FC<ContactProps> = ({ lang, title, subtitle }) => {
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
+    email: '',
     subject: '',
     message: ''
   });
@@ -27,15 +28,12 @@ export const Contact: React.FC<ContactProps> = ({ lang, title, subtitle }) => {
     // Set default subject if empty
     const subject = formData.subject || (lang === 'ar' ? 'استفسار عام' : 'General Inquiry');
     
-    const whatsappMessage = lang === 'ar' 
-      ? `*رسالة جديدة من الموقع* 🚗⚡\n\n*الاسم:* ${formData.name}\n*رقم الهاتف:* ${formData.phone}\n*الموضوع:* ${subject}\n*الرسالة:* ${formData.message}`
-      : `*New Website Message* 🚗⚡\n\n*Name:* ${formData.name}\n*Phone:* ${formData.phone}\n*Subject:* ${subject}\n*Message:* ${formData.message}`;
+    const emailBody = lang === 'ar' 
+      ? `رسالة جديدة من الموقع\n\nالاسم: ${formData.name}\nرقم الهاتف: ${formData.phone}\nالبريد الإلكتروني: ${formData.email}\nالموضوع: ${subject}\nالرسالة: ${formData.message}`
+      : `New Website Message\n\nName: ${formData.name}\nPhone: ${formData.phone}\nEmail: ${formData.email}\nSubject: ${subject}\nMessage: ${formData.message}`;
 
-    // The requested WhatsApp number
-    const whatsappNumber = '201204002646';
-    
-    const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`;
-    window.open(url, '_blank');
+    const url = `mailto:elserganycompany@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(emailBody)}`;
+    window.open(url, '_self');
   };
 
   return (
@@ -95,7 +93,6 @@ export const Contact: React.FC<ContactProps> = ({ lang, title, subtitle }) => {
                 <div>
                   <h4 className="font-bold text-white text-lg mb-2">{lang === 'ar' ? 'ساعات العمل' : 'Working Hours'}</h4>
                   <p className="text-gray-400">{lang === 'ar' ? 'يومياً من 9 صباحاً حتى 11 مساءً' : 'Daily 9:00 AM - 11:00 PM'}</p>
-                  <p className="text-gray-500 text-sm mt-1">{lang === 'ar' ? 'الجمعة من 1 ظهراً حتى 11 مساءً' : 'Friday 1:00 PM - 11:00 PM'}</p>
                 </div>
               </div>
             </div>
@@ -103,7 +100,7 @@ export const Contact: React.FC<ContactProps> = ({ lang, title, subtitle }) => {
 
           {/* Form */}
           <div className="bg-slate-900 border border-slate-800 p-8 md:p-12 rounded-[2rem] shadow-2xl relative">
-            <h3 className="text-2xl font-bold text-white mb-8">{lang === 'ar' ? 'أرسل رسالة (واتساب)' : 'Send Message (WhatsApp)'}</h3>
+            <h3 className="text-2xl font-bold text-white mb-8">{lang === 'ar' ? 'أرسل رسالة (البريد الإلكتروني)' : 'Send Message (Email)'}</h3>
             <form className="space-y-6" onSubmit={handleSubmit}>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
@@ -128,6 +125,17 @@ export const Contact: React.FC<ContactProps> = ({ lang, title, subtitle }) => {
                     className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-4 text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition" 
                   />
                 </div>
+              </div>
+              
+              <div>
+                <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">{lang === 'ar' ? 'البريد الإلكتروني' : 'Email'}</label>
+                <input 
+                  type="email" 
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-4 text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition" 
+                />
               </div>
               
               <div>

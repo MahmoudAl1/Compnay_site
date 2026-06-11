@@ -1,7 +1,10 @@
 
 import React, { useState, useEffect } from 'react';
 import { ViewState, Language } from '../types';
-import { ArrowLeft, ArrowRight, ShieldCheck, Truck, Zap } from 'lucide-react';
+import { ArrowLeft, ArrowRight, ShieldCheck, Truck, Zap, Mail, Phone } from 'lucide-react';
+import { doc, onSnapshot } from 'firebase/firestore';
+import { db } from '../firebase';
+import { handleFirestoreError, OperationType } from '../firebaseHelper';
 
 interface HeroProps {
   onAction: (view: ViewState) => void;
@@ -10,14 +13,14 @@ interface HeroProps {
 }
 
 // Updated Images: Ensure all links are high-quality and reliable
-const IMAGES = [
-  "/images/pic1.jpg", // Mechanic looking at engine
-  "/images/pic2.jpg", // Big Heavy Truck (New Request)
-  "/images/pic3.jpg", // Car close up dark
-  "/images/pic4.jpg", // Car hood open
-  "/images/pic5.jpg", // Motorcycle
-  "/images/pic6.jpg", // Mechanic working under hood
-  "/images/lite.jpg", // Clean Engine Bay / Maintenance
+export const IMAGES = [
+  "https://images.unsplash.com/photo-1487754180451-c456f719a1fc?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80", // Mechanic looking at engine
+  "https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80", // Big Heavy Truck (New Request)
+  "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80", // Car close up dark
+  "https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80", // Car hood open
+  "https://images.unsplash.com/photo-1558981403-c5f9899a28bc?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80", // Motorcycle
+  "https://images.unsplash.com/photo-1530046339160-ce3e530c7d2f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80", // Mechanic working under hood
+  "https://images.unsplash.com/photo-1507136566006-cfc505b114fc?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80", // Clean Engine Bay / Maintenance
 ];
 
 // Brand data with specific hex colors and logos
@@ -25,64 +28,84 @@ const BRANDS = [
   { 
     name: "BOSCH", 
     color: "#dc2626", 
-    logo: null 
+    logo: "/images/bosch.png" 
   },
   { 
     name: "VARTA", 
     color: "#2563eb", 
-    logo: null 
-  },
-  { 
-    name: "TAB", 
-    color: "#e11d48", 
-    logo: null 
+    logo: "/images/varta.png" 
   },
   { 
     name: "TopLite", 
     color: "#16a34a", 
-    logo: null
+    logo: "/images/toplite.png"
   },
   { 
     name: "Fullstark", 
     color: "#3b82f6", 
-    logo: null
+    logo: "/images/fullstark.png"
   },
   { 
     name: "GERMAN", 
     color: "#ca8a04", 
-    logo: null
+    logo: "/images/german.png"
   },
   { 
     name: "Autolite", 
     color: "#f97316", 
-    logo: null 
-  },
-  { 
-    name: "Starter", 
-    color: "#ef4444", 
-    logo: null
+    logo: "/images/autolite.png" 
   },
   { 
     name: "Voltronic", 
     color: "#06b6d4", 
-    logo: null
+    logo: "/images/voltronic.png"
   },
   {
-    name: "Fulda",
-    color: "#333333",
-    logo: null
+    name: "FULDA",
+    color: "#000080",
+    logo: "/images/fulda.png"
   }
 ];
 
+const BrandItem = ({ brand }: { brand: any }) => {
+  return (
+    <div className="relative w-40 h-20 flex items-center justify-center transition-transform duration-500 overflow-hidden rounded-lg">
+      <img 
+        src={brand.logo} 
+        alt={brand.name} 
+        referrerPolicy="no-referrer"
+        className="relative z-0 w-full h-full object-contain transition-transform duration-300"
+      />
+      {/* Shine Effect */}
+      <div className="absolute top-0 -left-[150%] h-full w-[50%] bg-gradient-to-r from-transparent via-white/40 to-transparent skew-x-[30deg] blur-[2px] animate-shine pointer-events-none z-10" />
+    </div>
+  );
+};
+
 export const Hero: React.FC<HeroProps> = ({ onAction, lang, translations }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [heroImages, setHeroImages] = useState<string[]>(IMAGES);
+
+  useEffect(() => {
+    const unsub = onSnapshot(doc(db, 'settings', 'global'), snapshot => {
+      if (snapshot.exists()) {
+        const data = snapshot.data();
+        if (data.heroImages !== undefined) {
+          setHeroImages(data.heroImages);
+        } else {
+          setHeroImages(IMAGES);
+        }
+      }
+    }, (error) => handleFirestoreError(error, OperationType.GET, 'settings/global'));
+    return () => unsub();
+  }, []);
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % IMAGES.length);
+      setCurrentSlide((prev) => (prev + 1) % heroImages.length);
     }, 5000);
     return () => clearInterval(timer);
-  }, []);
+  }, [heroImages.length]);
 
   const t = translations[lang];
   const ArrowIcon = lang === 'ar' ? ArrowLeft : ArrowRight;
@@ -91,7 +114,7 @@ export const Hero: React.FC<HeroProps> = ({ onAction, lang, translations }) => {
     <div className="relative bg-slate-950 overflow-hidden flex flex-col">
       {/* Slider Section */}
       <div className="relative h-[600px] md:h-[700px] w-full">
-        {IMAGES.map((img, index) => (
+        {heroImages.map((img, index) => (
           <div 
             key={index}
             className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
@@ -107,45 +130,11 @@ export const Hero: React.FC<HeroProps> = ({ onAction, lang, translations }) => {
           </div>
         ))}
 
-        {/* Hero Content */}
-        <div className="relative z-10 container mx-auto px-4 md:px-6 h-full flex flex-col justify-center items-start">
-          <div className="max-w-2xl mt-10">
-            <div className="inline-block bg-blue-500/20 border border-blue-500/30 rounded-full px-4 py-1 mb-6 backdrop-blur-sm animate-pulse">
-              <span className="text-blue-400 font-bold text-sm tracking-wide">
-                {t.hero.badge}
-              </span>
-            </div>
-            <h1 className="text-4xl md:text-6xl font-extrabold text-white leading-tight mb-6 drop-shadow-lg">
-              {t.hero.title1} <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">
-                {t.hero.title2}
-              </span>
-            </h1>
-            <p className="text-lg text-gray-200 mb-8 leading-relaxed max-w-xl drop-shadow-md">
-              {t.hero.subtitle}
-            </p>
-            
-            <div className="flex flex-col sm:flex-row gap-4">
-              <button 
-                onClick={() => onAction(ViewState.PRODUCTS)}
-                className="bg-blue-600 hover:bg-blue-500 text-white font-bold px-8 py-4 rounded-xl transition flex items-center justify-center gap-2 shadow-lg hover:shadow-blue-500/50"
-              >
-                {t.hero.ctaPrimary}
-                <ArrowIcon size={20} />
-              </button>
-              <button 
-                onClick={() => onAction(ViewState.CONTACT)}
-                className="bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/30 text-white font-bold px-8 py-4 rounded-xl transition"
-              >
-                {t.hero.ctaSecondary}
-              </button>
-            </div>
-          </div>
-        </div>
+        {/* Hero Content Replaced with empty space or removed completely */}
 
         {/* Slide Indicators */}
         <div className="absolute bottom-32 left-1/2 transform -translate-x-1/2 flex gap-2 z-20">
-          {IMAGES.map((_, idx) => (
+          {heroImages.map((_, idx) => (
             <button
               key={idx}
               onClick={() => setCurrentSlide(idx)}
@@ -159,45 +148,23 @@ export const Hero: React.FC<HeroProps> = ({ onAction, lang, translations }) => {
 
       {/* Brand Marquee Section - Logos & High Contrast */}
       <div className="bg-slate-950 py-12 overflow-hidden relative z-20">
-        <div className="container mx-auto px-4 mb-10 text-center">
-            <p className="text-gray-500 text-xs font-bold tracking-[0.2em] uppercase">{t.hero.brandsTitle}</p>
+        {/* First scrolling container - Moves left */}
+        <div dir="ltr" className="w-full inline-flex flex-nowrap overflow-hidden [mask-image:_linear-gradient(to_right,transparent_0,_black_128px,_black_calc(100%-128px),transparent_100%)]">
+          <ul className="flex items-center w-max [&_li]:mx-6 animate-scroll">
+            {[...BRANDS, ...BRANDS, ...BRANDS, ...BRANDS].map((brand, index) => (
+              <li key={`top-${index}`} className="flex items-center">
+                 <BrandItem brand={brand} />
+              </li>
+            ))}
+          </ul>
         </div>
-        
-        {/* The scrolling container */}
-        <div className="w-full inline-flex flex-nowrap overflow-hidden [mask-image:_linear-gradient(to_right,transparent_0,_black_128px,_black_calc(100%-128px),transparent_100%)]">
-          <ul className={`flex items-center justify-center md:justify-start [&_li]:mx-6 ${lang === 'ar' ? 'animate-scroll-reverse' : 'animate-scroll'}`}>
-            {[...BRANDS, ...BRANDS, ...BRANDS].map((brand, index) => (
-              <li key={index} className="flex items-center">
-                 <div 
-                   className="group relative w-56 h-28 flex items-center justify-center rounded-2xl overflow-hidden transition-all duration-500 hover:scale-110 cursor-pointer"
-                   style={{
-                     background: `linear-gradient(135deg, ${brand.color}E6, ${brand.color}66, #0f172a)`, // Heavy vibrant color gradient
-                     boxShadow: `0 10px 40px -10px ${brand.color}66`, // Strong glowing shadow matching brand color
-                     border: `1px solid ${brand.color}88` // Visible border
-                   }}
-                 >
-                    {/* Glossy Overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent opacity-50"></div>
-                    
-                    {/* Content: Image Logo or Text */}
-                    {brand.logo ? (
-                      <img 
-                        src={brand.logo} 
-                        alt={brand.name} 
-                        className="h-12 w-auto max-w-[80%] object-contain brightness-0 invert drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)] z-10 relative transition-transform duration-300 group-hover:scale-110"
-                      />
-                    ) : (
-                      <span 
-                        className="text-2xl font-black tracking-wider uppercase font-sans z-10 relative drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)] transition-all duration-300 group-hover:tracking-widest"
-                        style={{ color: '#ffffff' }}
-                      >
-                         {brand.name}
-                      </span>
-                    )}
 
-                    {/* Shimmer Effect */}
-                    <div className="absolute inset-0 -translate-x-full animate-[shimmer_3s_infinite] bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-12 pointer-events-none"></div>
-                 </div>
+        {/* Second scrolling container - Moves right */}
+        <div dir="ltr" className="w-full inline-flex flex-nowrap overflow-hidden [mask-image:_linear-gradient(to_right,transparent_0,_black_128px,_black_calc(100%-128px),transparent_100%)] mt-2">
+          <ul className="flex items-center w-max [&_li]:mx-6 animate-scroll-reverse">
+            {[...BRANDS].reverse().concat([...BRANDS].reverse(), [...BRANDS].reverse(), [...BRANDS].reverse()).map((brand, index) => (
+              <li key={`bottom-${index}`} className="flex items-center">
+                 <BrandItem brand={brand} />
               </li>
             ))}
           </ul>

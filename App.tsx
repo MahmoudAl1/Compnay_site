@@ -6,7 +6,9 @@ import { Products } from './components/Products';
 import { Blog } from './components/Blog';
 import { Contact } from './components/Contact';
 import { About } from './components/About';
+import { Clients } from './components/Clients';
 import { ChatAssistant } from './components/ChatAssistant';
+import { AdminDashboard } from './components/AdminDashboard';
 import { ViewState, BlogPost, Language } from './types';
 
 // Simple translation dictionary
@@ -16,6 +18,7 @@ const TRANSLATIONS = {
       home: 'الرئيسية',
       about: 'من نحن',
       products: 'المنتجات',
+      clients: 'عملائنا',
       blog: 'المدونة',
       contact: 'اتصل بنا',
       orderNow: 'اطلب الآن'
@@ -37,8 +40,8 @@ const TRANSLATIONS = {
     },
     sectionTitles: {
       products: 'أفضل أنواع البطاريات',
-      productsDesc: 'تشكيلة واسعة من البطاريات الجافة والسائلة المناسبة لجميع أنواع السيارات والموتوسيكلات.',
-      blog: 'نصائح السرجاني',
+      productsDesc: '',
+      blog: 'اعرف اكتر عن بطاريتك',
       blogDesc: 'معلومات تهمك للحفاظ على كهرباء سيارتك وإطالة عمر البطارية.',
       contact: 'تواصل معنا',
       contactDesc: 'خدمة عملاء طوال أيام الأسبوع. تواصل معنا لطلب بطارية أو خدمة إنقاذ.'
@@ -57,6 +60,7 @@ const TRANSLATIONS = {
       home: 'Home',
       about: 'About Us',
       products: 'Products',
+      clients: 'Clients',
       blog: 'Blog',
       contact: 'Contact Us',
       orderNow: 'Order Now'
@@ -97,7 +101,40 @@ const TRANSLATIONS = {
 
 function App() {
   const [currentView, setCurrentView] = useState<ViewState>(ViewState.HOME);
+  const [activeNavView, setActiveNavView] = useState<ViewState>(ViewState.HOME);
   const [activeBlogPost, setActiveBlogPost] = useState<BlogPost | null>(null);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (currentView === ViewState.POST_DETAIL || currentView === ViewState.ADMIN_DASHBOARD) return;
+      
+      const sections = [
+        { id: 'contact', view: ViewState.CONTACT },
+        { id: 'blog', view: ViewState.BLOG },
+        { id: 'clients', view: ViewState.CLIENTS },
+        { id: 'products', view: ViewState.PRODUCTS },
+        { id: 'about', view: ViewState.ABOUT },
+        { id: 'hero', view: ViewState.HOME },
+      ];
+      
+      for (const section of sections) {
+        const el = document.getElementById(section.id);
+        if (el) {
+          const rect = el.getBoundingClientRect();
+          // Check if top is past half screen
+          if (rect.top <= window.innerHeight / 2 - 50) {
+            setActiveNavView(section.view);
+            return;
+          }
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    // Trigger once
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [currentView]);
   const [lang, setLang] = useState<Language>('ar');
 
   useEffect(() => {
@@ -109,40 +146,80 @@ function App() {
     setCurrentView(ViewState.POST_DETAIL);
   };
 
+  const scrollToSection = (id: string, view: ViewState) => {
+    // If not on HOME, switch to HOME first then scroll
+    if (currentView !== ViewState.HOME && view !== ViewState.POST_DETAIL && view !== ViewState.ADMIN_DASHBOARD) {
+      setCurrentView(ViewState.HOME);
+      setTimeout(() => {
+        const element = document.getElementById(id);
+        if (element) {
+          const y = element.getBoundingClientRect().top + window.scrollY - 80; // Header offset
+          window.scrollTo({ top: y, behavior: 'smooth' });
+        }
+      }, 100);
+    } else if (view === ViewState.POST_DETAIL || view === ViewState.ADMIN_DASHBOARD) {
+      setCurrentView(view);
+    } else {
+      const element = document.getElementById(id);
+      if (element) {
+        const y = element.getBoundingClientRect().top + window.scrollY - 80; // Header offset
+        window.scrollTo({ top: y, behavior: 'smooth' });
+      }
+    }
+  };
+
+  const handleNavClick = (view: ViewState) => {
+    let sectionId = 'hero';
+    if (view === ViewState.HOME) sectionId = 'hero';
+    if (view === ViewState.ABOUT) sectionId = 'about';
+    if (view === ViewState.PRODUCTS) sectionId = 'products';
+    if (view === ViewState.CLIENTS) sectionId = 'clients';
+    if (view === ViewState.BLOG) sectionId = 'blog';
+    if (view === ViewState.CONTACT) sectionId = 'contact';
+    
+    scrollToSection(sectionId, view);
+  };
+
   const renderView = () => {
     switch (currentView) {
       case ViewState.HOME:
         return (
           <>
-            <Hero onAction={setCurrentView} lang={lang} translations={TRANSLATIONS} />
-            <Products lang={lang} title={TRANSLATIONS[lang].sectionTitles.products} subtitle={TRANSLATIONS[lang].sectionTitles.productsDesc} onInquire={() => setCurrentView(ViewState.CONTACT)} />
+            <div id="hero"><Hero onAction={handleNavClick} lang={lang} translations={TRANSLATIONS} /></div>
+            <div id="about"><About lang={lang} translations={TRANSLATIONS} /></div>
+            <div id="products"><Products lang={lang} title={TRANSLATIONS[lang].sectionTitles.products} subtitle={TRANSLATIONS[lang].sectionTitles.productsDesc} onInquire={() => handleNavClick(ViewState.CONTACT)} /></div>
+            <div id="clients"><Clients lang={lang} /></div>
+            <div id="blog"><Blog onReadMore={handleReadMore} activePost={null} onBack={() => {}} lang={lang} title={TRANSLATIONS[lang].sectionTitles.blog} subtitle={TRANSLATIONS[lang].sectionTitles.blogDesc} /></div>
+            <div id="contact"><Contact lang={lang} title={TRANSLATIONS[lang].sectionTitles.contact} subtitle={TRANSLATIONS[lang].sectionTitles.contactDesc} /></div>
           </>
         );
       case ViewState.ABOUT:
          return <About lang={lang} translations={TRANSLATIONS} />;
       case ViewState.PRODUCTS:
-        return <Products lang={lang} title={TRANSLATIONS[lang].sectionTitles.products} subtitle={TRANSLATIONS[lang].sectionTitles.productsDesc} onInquire={() => setCurrentView(ViewState.CONTACT)} />
+        return <Products lang={lang} title={TRANSLATIONS[lang].sectionTitles.products} subtitle={TRANSLATIONS[lang].sectionTitles.productsDesc} onInquire={() => handleNavClick(ViewState.CONTACT)} />
       case ViewState.BLOG:
         return <Blog onReadMore={handleReadMore} activePost={null} onBack={() => {}} lang={lang} title={TRANSLATIONS[lang].sectionTitles.blog} subtitle={TRANSLATIONS[lang].sectionTitles.blogDesc} />;
       case ViewState.POST_DETAIL:
         return <Blog onReadMore={handleReadMore} activePost={activeBlogPost} onBack={() => setCurrentView(ViewState.BLOG)} lang={lang} title={TRANSLATIONS[lang].sectionTitles.blog} subtitle={TRANSLATIONS[lang].sectionTitles.blogDesc} />;
       case ViewState.CONTACT:
         return <Contact lang={lang} title={TRANSLATIONS[lang].sectionTitles.contact} subtitle={TRANSLATIONS[lang].sectionTitles.contactDesc} />;
+      case ViewState.ADMIN_DASHBOARD:
+        return <AdminDashboard lang={lang} onBack={() => setCurrentView(ViewState.HOME)} />;
       default:
-        return <Hero onAction={setCurrentView} lang={lang} translations={TRANSLATIONS} />;
+        return <Hero onAction={handleNavClick} lang={lang} translations={TRANSLATIONS} />;
     }
   };
 
   return (
     <div className={`min-h-screen flex flex-col font-sans ${lang === 'ar' ? 'font-sans' : 'font-sans'}`} dir={lang === 'ar' ? 'rtl' : 'ltr'}>
-      <Header currentView={currentView} onChangeView={setCurrentView} lang={lang} setLang={setLang} translations={TRANSLATIONS} />
+      <Header currentView={activeNavView} onChangeView={handleNavClick} lang={lang} setLang={setLang} translations={TRANSLATIONS} />
       
       <main className="flex-grow">
         {renderView()}
       </main>
 
-      <Footer lang={lang} onChangeView={setCurrentView} />
-      <ChatAssistant lang={lang} />
+      <Footer lang={lang} onChangeView={handleNavClick} />
+      <ChatAssistant lang={lang} onAdminAccess={() => setCurrentView(ViewState.ADMIN_DASHBOARD)} />
     </div>
   );
 }
