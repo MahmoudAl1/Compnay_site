@@ -66,9 +66,14 @@ const BRANDS = [
     logo: "/images/f.png"
   },
     {
-    name: "FULDA",
+    name: "Flash",
     color: "#000080",
     logo: "/images/3.png"
+  },
+     {
+    name: "Flash",
+    color: "#000080",
+    logo: "/images/max.png"
   }
 ];
 
