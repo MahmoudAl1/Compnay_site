@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Product, Language } from '../types';
-import { Star, Eye, X, Battery, Zap, ShieldCheck, PenTool as Tool } from 'lucide-react';
+import { Star, Eye, X, Battery, Zap, ShieldCheck, PenTool as Tool, ArrowRight, ArrowLeft } from 'lucide-react';
 import { collection, onSnapshot } from 'firebase/firestore';
 import { db } from '../firebase';
 import { handleFirestoreError, OperationType } from '../firebaseHelper';
@@ -97,11 +97,13 @@ interface ProductsProps {
   title: string;
   subtitle: string;
   onInquire?: () => void;
+  activeProduct?: Product | null;
+  onBack?: () => void;
+  onProductSelect?: (p: Product) => void;
 }
 
-export const Products: React.FC<ProductsProps> = ({ lang, title, subtitle, onInquire }) => {
+export const Products: React.FC<ProductsProps> = ({ lang, title, subtitle, onInquire, activeProduct, onBack, onProductSelect }) => {
   const [filter, setFilter] = useState<string>('all');
-  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [products, setProducts] = useState<Product[]>(PRODUCTS_DATA);
 
   useEffect(() => {
@@ -128,6 +130,89 @@ export const Products: React.FC<ProductsProps> = ({ lang, title, subtitle, onInq
     { id: 'imported', label: lang === 'ar' ? 'بطاريات مستوردة' : 'Imported Batteries' },
   ];
 
+  if (activeProduct) {
+    return (
+      <div className="py-24 min-h-screen bg-slate-950 text-gray-100">
+        <div className="container mx-auto px-4 md:px-6 max-w-4xl">
+          <button 
+            onClick={onBack}
+            className="flex items-center gap-2 text-blue-400 hover:text-blue-300 font-bold mb-8 transition-colors"
+          >
+            {lang === 'ar' ? <ArrowRight size={20} /> : <ArrowLeft size={20} />}
+            {lang === 'ar' ? 'العودة للمنتجات' : 'Back to Products'}
+          </button>
+          
+          <div className="rounded-3xl overflow-hidden mb-8 shadow-2xl shadow-black/50 border border-slate-800 relative bg-slate-800 flex items-center justify-center">
+            <img 
+              src={activeProduct.image} 
+              alt={activeProduct.name} 
+              className="w-full h-64 md:h-[400px] object-contain p-8"
+              onError={(e) => {
+                (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?auto=format&fit=crop&w=800&q=80';
+              }}
+            />
+          </div>
+
+          <div className="mb-8 border-b border-slate-800 pb-6 animate-fade-in-up">
+            <span className="inline-block bg-blue-600/20 text-blue-400 px-4 py-1.5 rounded-full text-sm font-bold mb-4 border border-blue-500/20">
+              {activeProduct.type === 'local' 
+                ? (lang === 'ar' ? 'بطارية محلية' : 'Local Battery')
+                : (lang === 'ar' ? 'بطارية مستوردة' : 'Imported Battery')
+              }
+            </span>
+            <h1 className="text-3xl md:text-5xl font-extrabold text-white mb-4 leading-tight">
+              {activeProduct.name}
+            </h1>
+            <div className="flex items-center gap-2">
+                <div className="flex text-yellow-500">
+                {[1,2,3,4,5].map(i => <Star key={i} size={18} fill="currentColor" />)}
+              </div>
+              <span className="text-gray-500 text-sm">(4.9/5)</span>
+            </div>
+          </div>
+
+          <div className="prose prose-lg prose-invert max-w-none text-gray-300 leading-loose animate-fade-in-up" style={{ animationDelay: '100ms' }}>
+            <p className="font-bold text-xl text-white mb-6 leading-relaxed opacity-90 whitespace-pre-line">{activeProduct.description}</p>
+            <div className="w-20 h-1 bg-blue-500/50 rounded-full mb-10"></div>
+
+            {/* Specs Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10">
+              <div className="bg-slate-900 p-6 rounded-2xl border border-slate-800 hover:border-blue-500/30 transition-colors">
+                <div className="flex items-center gap-2 text-gray-400 text-sm font-bold uppercase mb-2">
+                  <Zap size={16} className="text-blue-500" />
+                  {lang === 'ar' ? 'الجهد الكهربي' : 'Voltage'}
+                </div>
+                <div className="text-white font-black text-2xl">12V</div>
+              </div>
+              <div className="bg-slate-900 p-6 rounded-2xl border border-slate-800 hover:border-blue-500/30 transition-colors">
+                <div className="flex items-center gap-2 text-gray-400 text-sm font-bold uppercase mb-2">
+                  <Battery size={16} className="text-blue-500" />
+                  {lang === 'ar' ? 'السعة' : 'Capacity'}
+                </div>
+                <div className="text-white font-black text-2xl">{activeProduct.capacity}</div>
+              </div>
+              <div className="bg-slate-900 p-6 rounded-2xl border border-slate-800 sm:col-span-2 hover:border-blue-500/30 transition-colors">
+                <div className="flex items-center gap-2 text-gray-400 text-sm font-bold uppercase mb-2">
+                  <Tool size={16} className="text-blue-500" />
+                  {lang === 'ar' ? 'الصيانة' : 'Maintenance'}
+                </div>
+                <div className="text-white font-black text-2xl">Maintenance Free</div>
+              </div>
+            </div>
+
+            {/* CTA */}
+            <button
+              onClick={onInquire}
+              className="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-5 rounded-2xl text-lg transition-all shadow-lg hover:shadow-blue-500/30 flex items-center justify-center gap-2 transform hover:-translate-y-1 mt-4"
+            >
+              {lang === 'ar' ? 'استفسر عن المنتج' : 'Inquire about product'}
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="py-20 bg-slate-950 min-h-screen relative">
       <div className="container mx-auto px-4 md:px-6">
@@ -145,7 +230,7 @@ export const Products: React.FC<ProductsProps> = ({ lang, title, subtitle, onInq
           {filteredProducts.map((product) => (
             <div 
               key={product.id} 
-              onClick={() => setSelectedProduct(product)}
+              onClick={() => onProductSelect ? onProductSelect(product) : undefined}
               className="group cursor-pointer bg-slate-900 rounded-2xl overflow-hidden border border-slate-800 shadow-lg hover:shadow-2xl hover:shadow-blue-500/10 hover:border-blue-500/30 transition-all duration-300 transform hover:-translate-y-2"
             >
               <div className="relative h-64 overflow-hidden bg-slate-800">
@@ -191,103 +276,6 @@ export const Products: React.FC<ProductsProps> = ({ lang, title, subtitle, onInq
           ))}
         </div>
       </div>
-
-      {/* Product Detail Modal */}
-      {selectedProduct && (
-        <div className="fixed inset-0 z-[60] flex items-center justify-center px-4">
-          <div 
-            className="absolute inset-0 bg-black/80 backdrop-blur-sm transition-opacity duration-300"
-            onClick={() => setSelectedProduct(null)}
-          ></div>
-          
-          <div className="relative w-full max-w-4xl bg-slate-900 rounded-3xl overflow-hidden shadow-2xl border border-slate-700 transform transition-all animate-[fadeIn_0.3s_ease-out]">
-            <button 
-              onClick={() => setSelectedProduct(null)} 
-              className="absolute top-4 right-4 z-10 bg-black/50 hover:bg-red-500 text-white p-2 rounded-full transition-colors backdrop-blur-md"
-            >
-              <X size={24} />
-            </button>
-
-            <div className="grid md:grid-cols-2">
-              {/* Image Section */}
-              <div className="relative h-64 md:h-[500px] bg-slate-800">
-                <img 
-                  src={selectedProduct.image} 
-                  alt={selectedProduct.name} 
-                  className="w-full h-full object-cover opacity-90"
-                  onError={(e) => {
-                    (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?auto=format&fit=crop&w=800&q=80';
-                  }}
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent"></div>
-                <div className="absolute bottom-6 left-6 right-6">
-                   <span className="inline-block bg-blue-600 text-white px-3 py-1 rounded-full text-xs font-bold mb-2">
-                      {selectedProduct.type === 'local' 
-                        ? (lang === 'ar' ? 'بطارية محلية' : 'Local Battery')
-                        : (lang === 'ar' ? 'بطارية مستوردة' : 'Imported Battery')
-                      }
-                   </span>
-                </div>
-              </div>
-
-              {/* Details Section */}
-              <div className="p-8 md:p-10 flex flex-col justify-center bg-slate-900">
-                <h2 className="text-3xl md:text-4xl font-black text-white mb-4 leading-tight">
-                  {selectedProduct.name}
-                </h2>
-                <div className="flex items-center gap-2 mb-6">
-                   <div className="flex text-yellow-500">
-                    {[1,2,3,4,5].map(i => <Star key={i} size={16} fill="currentColor" />)}
-                  </div>
-                  <span className="text-gray-500 text-sm">(4.9/5)</span>
-                </div>
-
-                <p className="text-gray-300 leading-relaxed mb-8 border-l-2 border-blue-500 pl-4">
-                  {selectedProduct.description}
-                </p>
-
-                {/* Specs Grid */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
-                  <div className="bg-slate-800 p-4 rounded-xl border border-slate-700">
-                    <div className="flex items-center gap-2 text-gray-400 text-xs font-bold uppercase mb-1">
-                      <Zap size={14} className="text-blue-500" />
-                      {lang === 'ar' ? 'الجهد الكهربي' : 'Voltage'}
-                    </div>
-                    <div className="text-white font-bold text-lg">12V</div>
-                  </div>
-                  <div className="bg-slate-800 p-4 rounded-xl border border-slate-700">
-                    <div className="flex items-center gap-2 text-gray-400 text-xs font-bold uppercase mb-1">
-                      <Battery size={14} className="text-blue-500" />
-                      {lang === 'ar' ? 'السعة' : 'Capacity'}
-                    </div>
-                    <div className="text-white font-bold text-lg">{selectedProduct.capacity}</div>
-                  </div>
-                  <div className="bg-slate-800 p-4 rounded-xl border border-slate-700 sm:col-span-2">
-                    <div className="flex items-center gap-2 text-gray-400 text-xs font-bold uppercase mb-1">
-                      <Tool size={14} className="text-blue-500" />
-                      {lang === 'ar' ? 'الصيانة' : 'Maintenance'}
-                    </div>
-                    <div className="text-white font-bold text-lg">Maintenance Free</div>
-                  </div>
-                </div>
-
-                {/* CTA */}
-                <button
-                  onClick={() => {
-                    setSelectedProduct(null);
-                    if (onInquire) {
-                      onInquire();
-                    }
-                  }}
-                  className="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-4 rounded-xl transition-all shadow-lg hover:shadow-blue-500/30 flex items-center justify-center gap-2"
-                >
-                  {lang === 'ar' ? 'استفسر عن المنتج' : 'Inquire about product'}
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 };

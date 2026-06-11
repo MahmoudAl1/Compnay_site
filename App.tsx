@@ -103,10 +103,11 @@ function App() {
   const [currentView, setCurrentView] = useState<ViewState>(ViewState.HOME);
   const [activeNavView, setActiveNavView] = useState<ViewState>(ViewState.HOME);
   const [activeBlogPost, setActiveBlogPost] = useState<BlogPost | null>(null);
+  const [activeProduct, setActiveProduct] = useState<Product | null>(null);
 
   useEffect(() => {
     const handleScroll = () => {
-      if (currentView === ViewState.POST_DETAIL || currentView === ViewState.ADMIN_DASHBOARD) return;
+      if (currentView === ViewState.POST_DETAIL || currentView === ViewState.PRODUCT_DETAIL || currentView === ViewState.ADMIN_DASHBOARD) return;
       
       const sections = [
         { id: 'contact', view: ViewState.CONTACT },
@@ -139,16 +140,21 @@ function App() {
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, [currentView, activeBlogPost]);
+  }, [currentView, activeBlogPost, activeProduct]);
 
   const handleReadMore = (post: BlogPost) => {
     setActiveBlogPost(post);
     setCurrentView(ViewState.POST_DETAIL);
   };
 
+  const handleProductSelect = (product: Product) => {
+    setActiveProduct(product);
+    setCurrentView(ViewState.PRODUCT_DETAIL);
+  };
+
   const scrollToSection = (id: string, view: ViewState) => {
     // If not on HOME, switch to HOME first then scroll
-    if (currentView !== ViewState.HOME && view !== ViewState.POST_DETAIL && view !== ViewState.ADMIN_DASHBOARD) {
+    if (currentView !== ViewState.HOME && view !== ViewState.POST_DETAIL && view !== ViewState.PRODUCT_DETAIL && view !== ViewState.ADMIN_DASHBOARD) {
       setCurrentView(ViewState.HOME);
       setTimeout(() => {
         const element = document.getElementById(id);
@@ -157,7 +163,7 @@ function App() {
           window.scrollTo({ top: y, behavior: 'smooth' });
         }
       }, 100);
-    } else if (view === ViewState.POST_DETAIL || view === ViewState.ADMIN_DASHBOARD) {
+    } else if (view === ViewState.POST_DETAIL || view === ViewState.PRODUCT_DETAIL || view === ViewState.ADMIN_DASHBOARD) {
       setCurrentView(view);
     } else {
       const element = document.getElementById(id);
@@ -187,7 +193,7 @@ function App() {
           <>
             <div id="hero"><Hero onAction={handleNavClick} lang={lang} translations={TRANSLATIONS} /></div>
             <div id="about"><About lang={lang} translations={TRANSLATIONS} /></div>
-            <div id="products"><Products lang={lang} title={TRANSLATIONS[lang].sectionTitles.products} subtitle={TRANSLATIONS[lang].sectionTitles.productsDesc} onInquire={() => handleNavClick(ViewState.CONTACT)} /></div>
+            <div id="products"><Products lang={lang} title={TRANSLATIONS[lang].sectionTitles.products} subtitle={TRANSLATIONS[lang].sectionTitles.productsDesc} onInquire={() => handleNavClick(ViewState.CONTACT)} onProductSelect={handleProductSelect} /></div>
             <div id="clients"><Clients lang={lang} /></div>
             <div id="blog"><Blog onReadMore={handleReadMore} activePost={null} onBack={() => {}} lang={lang} title={TRANSLATIONS[lang].sectionTitles.blog} subtitle={TRANSLATIONS[lang].sectionTitles.blogDesc} /></div>
             <div id="contact"><Contact lang={lang} title={TRANSLATIONS[lang].sectionTitles.contact} subtitle={TRANSLATIONS[lang].sectionTitles.contactDesc} /></div>
@@ -196,7 +202,9 @@ function App() {
       case ViewState.ABOUT:
          return <About lang={lang} translations={TRANSLATIONS} />;
       case ViewState.PRODUCTS:
-        return <Products lang={lang} title={TRANSLATIONS[lang].sectionTitles.products} subtitle={TRANSLATIONS[lang].sectionTitles.productsDesc} onInquire={() => handleNavClick(ViewState.CONTACT)} />
+        return <Products lang={lang} title={TRANSLATIONS[lang].sectionTitles.products} subtitle={TRANSLATIONS[lang].sectionTitles.productsDesc} onInquire={() => handleNavClick(ViewState.CONTACT)} onProductSelect={handleProductSelect} />
+      case ViewState.PRODUCT_DETAIL:
+        return <Products lang={lang} title={TRANSLATIONS[lang].sectionTitles.products} subtitle={TRANSLATIONS[lang].sectionTitles.productsDesc} onInquire={() => handleNavClick(ViewState.CONTACT)} activeProduct={activeProduct} onBack={() => setCurrentView(ViewState.PRODUCTS)} onProductSelect={handleProductSelect} />
       case ViewState.BLOG:
         return <Blog onReadMore={handleReadMore} activePost={null} onBack={() => {}} lang={lang} title={TRANSLATIONS[lang].sectionTitles.blog} subtitle={TRANSLATIONS[lang].sectionTitles.blogDesc} />;
       case ViewState.POST_DETAIL:
