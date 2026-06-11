@@ -28,42 +28,52 @@ const BRANDS = [
   { 
     name: "BOSCH", 
     color: "#dc2626", 
-    logo: "/images/bosch.png" 
+    logo: "/images/Bosch-logo.svg" 
   },
   { 
     name: "VARTA", 
     color: "#2563eb", 
-    logo: "/images/varta.png" 
+    logo: "/images/330px-varta-logo.svg.png" 
   },
   { 
     name: "TopLite", 
     color: "#16a34a", 
-    logo: "/images/toplite.png"
+    logo: "/images/2.png"
   },
   { 
     name: "Fullstark", 
     color: "#3b82f6", 
-    logo: "/images/fullstark.png"
+    logo: "/images/1.png"
   },
   { 
     name: "GERMAN", 
     color: "#ca8a04", 
-    logo: "/images/german.png"
+    logo: "/images/ger.png"
   },
   { 
     name: "Autolite", 
     color: "#f97316", 
-    logo: "/images/autolite.png" 
+    logo: "/images/tesla.png" 
   },
   { 
     name: "Voltronic", 
     color: "#06b6d4", 
-    logo: "/images/voltronic.png"
+    logo: "/images/4.png"
   },
   {
     name: "FULDA",
     color: "#000080",
-    logo: "/images/fulda.png"
+    logo: "/images/f.png"
+  },
+    {
+    name: "FULDA",
+    color: "#000080",
+    logo: "/images/3.png"
+  },
+    {
+    name: "FULDA",
+    color: "#000080",
+    logo: "/images/max.png"
   }
 ];
 
