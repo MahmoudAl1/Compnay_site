@@ -59,7 +59,14 @@ function initAi() {
   }
   
   try {
-    ai = new GoogleGenAI({ apiKey });
+    ai = new GoogleGenAI({ 
+      apiKey,
+      httpOptions: {
+        headers: {
+          'User-Agent': 'aistudio-build',
+        }
+      }
+    });
     chatSession = ai.chats.create({
       model: 'gemini-3.5-flash',
       config: {
@@ -117,7 +124,7 @@ async function startServer() {
   } else {
     const distPath = path.join(process.cwd(), 'dist');
     app.use(express.static(distPath));
-    app.get('*all', (req, res) => {
+    app.get('*', (req, res) => {
       res.sendFile(path.join(distPath, 'index.html'));
     });
   }
