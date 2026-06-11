@@ -28,7 +28,7 @@ const BRANDS = [
   { 
     name: "BOSCH", 
     color: "#dc2626", 
-    logo: "/images/bosch.png" 
+    logo: "/images/Bosch-logo.svg" 
   },
   { 
     name: "VARTA", 
