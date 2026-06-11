@@ -64,7 +64,7 @@ export const About: React.FC<AboutProps> = ({ lang, translations }) => {
            <div className={`relative ${lang === 'ar' ? 'md:order-1' : ''}`}>
                <div className="absolute inset-0 bg-cyan-500 rounded-3xl -rotate-3 opacity-10 blur-lg"></div>
                <img 
-                src="/images/" 
+                src="/images/vision.jpg" 
                 alt="Vision" 
                 className="relative rounded-3xl shadow-2xl border border-slate-800 w-full"
               />
