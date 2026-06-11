@@ -51,7 +51,7 @@ export const About: React.FC<AboutProps> = ({ lang, translations }) => {
             <div className="relative">
               <div className="absolute inset-0 bg-blue-500 rounded-3xl rotate-3 opacity-20 blur-lg"></div>
               <img 
-                src="https://images.unsplash.com/photo-1530046339160-ce3e530c7d2f?auto=format&fit=crop&w=1000&q=80" 
+                src="/images/team.jpg" 
                 alt="Our Team" 
                 className="relative rounded-3xl shadow-2xl border border-slate-800 w-full"
               />
@@ -64,7 +64,7 @@ export const About: React.FC<AboutProps> = ({ lang, translations }) => {
            <div className={`relative ${lang === 'ar' ? 'md:order-1' : ''}`}>
                <div className="absolute inset-0 bg-cyan-500 rounded-3xl -rotate-3 opacity-10 blur-lg"></div>
                <img 
-                src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=1000&q=80" 
+                src="/images/vision.jpg" 
                 alt="Vision" 
                 className="relative rounded-3xl shadow-2xl border border-slate-800 w-full"
               />
