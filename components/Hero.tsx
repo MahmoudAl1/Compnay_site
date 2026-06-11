@@ -33,7 +33,7 @@ const BRANDS = [
   { 
     name: "VARTA", 
     color: "#2563eb", 
-    logo: "/images/330px-varta-logo.svg.png" 
+    logo: "/images/330px-Varta-Logo.svg.png" 
   },
   { 
     name: "TopLite", 
