@@ -41,6 +41,7 @@ const ProductRow = ({ product, lang, onSave, onDelete }: { product: Product, lan
   const [isModified, setIsModified] = useState(false);
   const [showConfirmSave, setShowConfirmSave] = useState(false);
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
+  const [isTranslating, setIsTranslating] = useState(false);
 
   useEffect(() => {
     setData({ ...product });
@@ -54,9 +55,69 @@ const ProductRow = ({ product, lang, onSave, onDelete }: { product: Product, lan
     setIsModified(true);
   };
 
-  const handleSave = () => {
+  const handleAutoTranslateProduct = async () => {
+    setIsTranslating(true);
+    try {
+      const translate = async (text: string) => {
+        if (!text) return '';
+        const res = await fetch('/api/translate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ text, targetLang: 'English' })
+        });
+        if (!res.ok) throw new Error('Translation failed');
+        const d = await res.json();
+        return d.translatedText;
+      };
+
+      const translatedName = await translate(data.name);
+      const translatedDesc = await translate(data.description);
+      setData(prev => ({ ...prev, name_en: translatedName, description_en: translatedDesc }));
+      setIsModified(true);
+    } catch (error) {
+      console.error(error);
+      alert(lang === 'ar' ? 'حدث خطأ في الترجمة التلقائية' : 'Auto translation failed');
+    } finally {
+      setIsTranslating(false);
+    }
+  };
+
+  const handleSave = async () => {
     if (showConfirmSave) {
-      onSave(String(product.id), data);
+      let finalData = { ...data };
+      
+      // Auto-translate if English fields are empty
+      if (typeof finalData.name === 'string' && !finalData.name_en) {
+        setIsTranslating(true);
+        try {
+          const res = await fetch('/api/translate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ text: finalData.name, targetLang: 'English' })
+          });
+          if (res.ok) {
+            const d = await res.json();
+            finalData.name_en = d.translatedText;
+          }
+        } catch (e) {}
+      }
+      if (typeof finalData.description === 'string' && !finalData.description_en) {
+        setIsTranslating(true);
+        try {
+          const res = await fetch('/api/translate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ text: finalData.description, targetLang: 'English' })
+          });
+          if (res.ok) {
+            const d = await res.json();
+            finalData.description_en = d.translatedText;
+          }
+        } catch (e) {}
+      }
+      setIsTranslating(false);
+
+      onSave(String(product.id), finalData);
       setIsModified(false);
       setShowConfirmSave(false);
     } else {
@@ -85,11 +146,21 @@ const ProductRow = ({ product, lang, onSave, onDelete }: { product: Product, lan
         </label>
       </div>
       <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div><label className="text-xs text-gray-500">{lang === 'ar' ? 'الاسم' : 'Name'}</label><input type="text" value={data.name} onChange={(e) => handleChange('name', e.target.value)} className="w-full bg-slate-900 border border-slate-700 rounded p-2 text-sm text-white" /></div>
+        <div><label className="text-xs text-gray-500">{lang === 'ar' ? 'الاسم (عربي)' : 'Name (AR)'}</label><input type="text" value={data.name} onChange={(e) => handleChange('name', e.target.value)} className="w-full bg-slate-900 border border-slate-700 rounded p-2 text-sm text-white" /></div>
+        <div>
+          <div className="flex justify-between items-center">
+            <label className="text-xs text-gray-500">{lang === 'ar' ? 'الاسم (إنجليزي)' : 'Name (EN)'}</label>
+            <button onClick={handleAutoTranslateProduct} disabled={isTranslating} className="text-[10px] text-blue-400 hover:text-blue-300 disabled:opacity-50">
+              {isTranslating ? <Loader2 size={10} className="animate-spin inline" /> : (lang === 'ar' ? 'ترجمة تلقائية' : 'Auto Translate')}
+            </button>
+          </div>
+          <input type="text" value={data.name_en || ''} onChange={(e) => handleChange('name_en', e.target.value)} className="w-full bg-slate-900 border border-slate-700 rounded p-2 text-sm text-white" />
+        </div>
         <div><label className="text-xs text-gray-500">{lang === 'ar' ? 'السعة' : 'Capacity'}</label><input type="text" value={data.capacity} onChange={(e) => handleChange('capacity', e.target.value)} className="w-full bg-slate-900 border border-slate-700 rounded p-2 text-sm text-white" /></div>
         <div><label className="text-xs text-gray-500">{lang === 'ar' ? 'النوع' : 'Type'}</label><select value={data.type} onChange={(e) => handleChange('type', e.target.value)} className="w-full bg-slate-900 border border-slate-700 rounded p-2 text-sm text-white"><option value="local">{lang === 'ar' ? 'محلي' : 'Local'}</option><option value="imported">{lang === 'ar' ? 'مستورد' : 'Imported'}</option></select></div>
-        <div><label className="text-xs text-gray-500">{lang === 'ar' ? 'رابط الصورة' : 'Image URL'}</label><input type="text" value={data.image} onChange={(e) => handleChange('image', e.target.value)} className="w-full bg-slate-900 border border-slate-700 rounded p-2 text-sm text-white" /></div>
-        <div className="col-span-1 md:col-span-2"><label className="text-xs text-gray-500">{lang === 'ar' ? 'الوصف' : 'Description'}</label><textarea value={data.description} onChange={(e) => handleChange('description', e.target.value)} rows={2} className="w-full bg-slate-900 border border-slate-700 rounded p-2 text-sm text-white"></textarea></div>
+        <div className="col-span-1 md:col-span-2"><label className="text-xs text-gray-500">{lang === 'ar' ? 'رابط الصورة' : 'Image URL'}</label><input type="text" value={data.image} onChange={(e) => handleChange('image', e.target.value)} className="w-full bg-slate-900 border border-slate-700 rounded p-2 text-sm text-white" /></div>
+        <div className="col-span-1 md:col-span-2"><label className="text-xs text-gray-500">{lang === 'ar' ? 'الوصف (عربي)' : 'Description (AR)'}</label><textarea value={data.description} onChange={(e) => handleChange('description', e.target.value)} rows={2} className="w-full bg-slate-900 border border-slate-700 rounded p-2 text-sm text-white"></textarea></div>
+        <div className="col-span-1 md:col-span-2"><label className="text-xs text-gray-500">{lang === 'ar' ? 'الوصف (إنجليزي)' : 'Description (EN)'}</label><textarea value={data.description_en || ''} onChange={(e) => handleChange('description_en', e.target.value)} rows={2} className="w-full bg-slate-900 border border-slate-700 rounded p-2 text-sm text-white"></textarea></div>
       </div>
       <div className="absolute top-4 right-4 flex gap-2 z-10">
         {showConfirmSave && (
@@ -124,6 +195,7 @@ const PostRow = ({ post, lang, onSave, onDelete }: { post: BlogPost, lang: Langu
   const [isModified, setIsModified] = useState(false);
   const [showConfirmSave, setShowConfirmSave] = useState(false);
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
+  const [isTranslating, setIsTranslating] = useState(false);
 
   useEffect(() => {
     setData({ ...post });
@@ -137,9 +209,72 @@ const PostRow = ({ post, lang, onSave, onDelete }: { post: BlogPost, lang: Langu
     setIsModified(true);
   };
 
-  const handleSave = () => {
+  const handleAutoTranslatePost = async () => {
+    setIsTranslating(true);
+    try {
+      const translate = async (text: string) => {
+        if (!text) return '';
+        const res = await fetch('/api/translate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ text, targetLang: 'English' })
+        });
+        if (!res.ok) throw new Error('Translation failed');
+        const d = await res.json();
+        return d.translatedText;
+      };
+
+      const translatedTitle = await translate(data.title);
+      const translatedCategory = await translate(data.category);
+      const translatedExcerpt = await translate(data.excerpt);
+      const translatedContent = await translate(data.content);
+      
+      setData(prev => ({ 
+        ...prev, 
+        title_en: translatedTitle, 
+        category_en: translatedCategory, 
+        excerpt_en: translatedExcerpt, 
+        content_en: translatedContent 
+      }));
+      setIsModified(true);
+    } catch (error) {
+      console.error(error);
+      alert(lang === 'ar' ? 'حدث خطأ في الترجمة التلقائية' : 'Auto translation failed');
+    } finally {
+      setIsTranslating(false);
+    }
+  };
+
+  const handleSave = async () => {
     if (showConfirmSave) {
-      onSave(String(post.id), data);
+      let finalData = { ...data };
+      setIsTranslating(true);
+      
+      const translateIfNeeded = async (text: string, currentEn: string | undefined) => {
+        if (text && !currentEn) {
+          try {
+            const res = await fetch('/api/translate', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ text, targetLang: 'English' })
+            });
+            if (res.ok) {
+              const d = await res.json();
+              return d.translatedText;
+            }
+          } catch (e) {}
+        }
+        return currentEn;
+      };
+
+      finalData.title_en = await translateIfNeeded(finalData.title, finalData.title_en);
+      finalData.category_en = await translateIfNeeded(finalData.category, finalData.category_en);
+      finalData.excerpt_en = await translateIfNeeded(finalData.excerpt, finalData.excerpt_en);
+      finalData.content_en = await translateIfNeeded(finalData.content, finalData.content_en);
+      
+      setIsTranslating(false);
+
+      onSave(String(post.id), finalData);
       setIsModified(false);
       setShowConfirmSave(false);
     } else {
@@ -168,12 +303,24 @@ const PostRow = ({ post, lang, onSave, onDelete }: { post: BlogPost, lang: Langu
         </label>
       </div>
       <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="col-span-1 md:col-span-2"><label className="text-xs text-gray-500">{lang === 'ar' ? 'العنوان' : 'Title'}</label><input type="text" value={data.title} onChange={(e) => handleChange('title', e.target.value)} className="w-full bg-slate-900 border border-slate-700 rounded p-2 text-sm text-white" /></div>
-        <div><label className="text-xs text-gray-500">{lang === 'ar' ? 'التصنيف' : 'Category'}</label><input type="text" value={data.category} onChange={(e) => handleChange('category', e.target.value)} className="w-full bg-slate-900 border border-slate-700 rounded p-2 text-sm text-white" /></div>
+        <div><label className="text-xs text-gray-500">{lang === 'ar' ? 'العنوان (عربي)' : 'Title (AR)'}</label><input type="text" value={data.title} onChange={(e) => handleChange('title', e.target.value)} className="w-full bg-slate-900 border border-slate-700 rounded p-2 text-sm text-white" /></div>
+        <div>
+          <div className="flex justify-between items-center">
+            <label className="text-xs text-gray-500">{lang === 'ar' ? 'العنوان (إنجليزي)' : 'Title (EN)'}</label>
+            <button onClick={handleAutoTranslatePost} disabled={isTranslating} className="text-[10px] text-blue-400 hover:text-blue-300 disabled:opacity-50">
+              {isTranslating ? <Loader2 size={10} className="animate-spin inline" /> : (lang === 'ar' ? 'ترجمة تلقائية للكل' : 'Auto Translate All')}
+            </button>
+          </div>
+          <input type="text" value={data.title_en || ''} onChange={(e) => handleChange('title_en', e.target.value)} className="w-full bg-slate-900 border border-slate-700 rounded p-2 text-sm text-white" />
+        </div>
+        <div><label className="text-xs text-gray-500">{lang === 'ar' ? 'التصنيف (عربي)' : 'Category (AR)'}</label><input type="text" value={data.category} onChange={(e) => handleChange('category', e.target.value)} className="w-full bg-slate-900 border border-slate-700 rounded p-2 text-sm text-white" /></div>
+        <div><label className="text-xs text-gray-500">{lang === 'ar' ? 'التصنيف (إنجليزي)' : 'Category (EN)'}</label><input type="text" value={data.category_en || ''} onChange={(e) => handleChange('category_en', e.target.value)} className="w-full bg-slate-900 border border-slate-700 rounded p-2 text-sm text-white" /></div>
         <div><label className="text-xs text-gray-500">{lang === 'ar' ? 'التاريخ' : 'Date'}</label><input type="date" value={data.date} onChange={(e) => handleChange('date', e.target.value)} className="w-full bg-slate-900 border border-slate-700 rounded p-2 text-sm text-white" /></div>
         <div><label className="text-xs text-gray-500">{lang === 'ar' ? 'رابط الصورة' : 'Image URL'}</label><input type="text" value={data.image} onChange={(e) => handleChange('image', e.target.value)} className="w-full bg-slate-900 border border-slate-700 rounded p-2 text-sm text-white" /></div>
-        <div className="col-span-1 md:col-span-2"><label className="text-xs text-gray-500">{lang === 'ar' ? 'مقتطف' : 'Excerpt'}</label><textarea value={data.excerpt} onChange={(e) => handleChange('excerpt', e.target.value)} rows={2} className="w-full bg-slate-900 border border-slate-700 rounded p-2 text-sm text-white"></textarea></div>
-        <div className="col-span-1 md:col-span-2"><label className="text-xs text-gray-500">{lang === 'ar' ? 'المحتوى' : 'Content'}</label><textarea value={data.content} onChange={(e) => handleChange('content', e.target.value)} rows={5} className="w-full bg-slate-900 border border-slate-700 rounded p-2 text-sm text-white"></textarea></div>
+        <div className="col-span-1 md:col-span-2"><label className="text-xs text-gray-500">{lang === 'ar' ? 'مقتطف (عربي)' : 'Excerpt (AR)'}</label><textarea value={data.excerpt} onChange={(e) => handleChange('excerpt', e.target.value)} rows={2} className="w-full bg-slate-900 border border-slate-700 rounded p-2 text-sm text-white"></textarea></div>
+        <div className="col-span-1 md:col-span-2"><label className="text-xs text-gray-500">{lang === 'ar' ? 'مقتطف (إنجليزي)' : 'Excerpt (EN)'}</label><textarea value={data.excerpt_en || ''} onChange={(e) => handleChange('excerpt_en', e.target.value)} rows={2} className="w-full bg-slate-900 border border-slate-700 rounded p-2 text-sm text-white"></textarea></div>
+        <div className="col-span-1 md:col-span-2"><label className="text-xs text-gray-500">{lang === 'ar' ? 'المحتوى (عربي)' : 'Content (AR)'}</label><textarea value={data.content} onChange={(e) => handleChange('content', e.target.value)} rows={5} className="w-full bg-slate-900 border border-slate-700 rounded p-2 text-sm text-white"></textarea></div>
+        <div className="col-span-1 md:col-span-2"><label className="text-xs text-gray-500">{lang === 'ar' ? 'المحتوى (إنجليزي)' : 'Content (EN)'}</label><textarea value={data.content_en || ''} onChange={(e) => handleChange('content_en', e.target.value)} rows={5} className="w-full bg-slate-900 border border-slate-700 rounded p-2 text-sm text-white"></textarea></div>
       </div>
       <div className="absolute top-4 right-4 flex gap-2 z-10">
         {showConfirmSave && (
@@ -232,10 +379,8 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang, onBack }) 
   };
 
   useEffect(() => {
-    const savedUser = localStorage.getItem('adminUser');
-    if (savedUser) {
-      setUser(JSON.parse(savedUser));
-    }
+    // Always require login on mount for security
+    setUser(null);
     setLoading(false);
   }, [lang]);
 
@@ -287,7 +432,6 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang, onBack }) 
     try {
       const loggedUser = { email: normalizedEmail };
       setUser(loggedUser);
-      localStorage.setItem('adminUser', JSON.stringify(loggedUser));
     } catch (e: any) {
       setLoginError(e.message);
     } finally {
@@ -298,7 +442,9 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang, onBack }) 
   const handleCreateProduct = async () => {
     const defaultProduct = {
       name: 'نوع بطارية جديد',
+      name_en: 'New Battery Type',
       description: 'وصف البطارية هنا...',
+      description_en: 'Battery description here...',
       capacity: '60 Ah',
       image: 'https://images.unsplash.com/photo-1542281286-9e0a16bb7366?auto=format&fit=crop&w=500&q=60',
       type: 'local'
@@ -337,11 +483,15 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang, onBack }) 
   const handleCreatePost = async () => {
     const defaultPost = {
       title: 'عنوان المقال الجديد',
+      title_en: 'New Article Title',
       excerpt: 'مقتطف قصير عن المقال',
+      excerpt_en: 'Short excerpt about the article',
       content: 'المحتوى الكامل للمقال هنا...',
+      content_en: 'Full article content here...',
       date: new Date().toISOString().split('T')[0],
       image: 'https://images.unsplash.com/photo-1542281286-9e0a16bb7366?auto=format&fit=crop&w=500&q=60',
-      category: 'نصائح'
+      category: 'نصائح',
+      category_en: 'Tips'
     };
     try {
       const newId = Date.now().toString();
@@ -466,7 +616,6 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang, onBack }) 
           <div className="flex items-center gap-4">
             <span className="text-sm text-gray-400 max-w-[150px] truncate md:max-w-none">{user.email}</span>
             <button onClick={() => {
-              localStorage.removeItem('adminUser');
               setUser(null);
             }} className="flex items-center gap-2 bg-slate-800 hover:bg-slate-700 px-3 py-2 rounded-lg text-sm transition text-white">
               <LogOut size={16} /> {lang === 'ar' ? 'خروج' : 'Sign out'}

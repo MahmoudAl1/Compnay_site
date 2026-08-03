@@ -11,7 +11,9 @@ const PRODUCTS_DATA: Product[] = [
   {
     id: 1,
     name: "بطارية فولستارك (Fullstark)",
+    name_en: "Fullstark Battery",
     description: "بطارية محلية بمواصفات عالمية. تتميز باللون الأزرق وقوة تحمل عالية لدرجات الحرارة المرتفعة وتكنولوجيا شبك متطورة.",
+    description_en: "A local battery with global specifications. Characterized by its blue color, high heat resistance, and advanced grid technology.",
     capacity: "جميع السعات (35Ah - 200Ah)",
     image: "/images/fullstark.png",
     type: "local"
@@ -19,7 +21,9 @@ const PRODUCTS_DATA: Product[] = [
   {
     id: 2,
     name: "بطارية جرمن (German)",
+    name_en: "German Battery",
     description: "البطارية الاقتصادية الأولى. تجمع بين السعر المناسب والأداء الموثوق. متوفرة لجميع أنواع السيارات الملاكي والنقل.",
+    description_en: "The top economical battery. Combines an affordable price with reliable performance. Available for all types of passenger and commercial vehicles.",
     capacity: "جميع السعات (55Ah - 100Ah)",
     image: "/images/german.png",
     type: "local"
@@ -27,7 +31,9 @@ const PRODUCTS_DATA: Product[] = [
   {
     id: 3,
     name: "بطارية سي دي ماكس (ACD Max)",
+    name_en: "ACD Max Battery",
     description: "مصممة للخدمة الشاقة. خيار مثالي لسيارات العمل وسيارات الأجرة بفضل قدرتها العالية على إعادة الشحن السريع.",
+    description_en: "Designed for heavy duty. An ideal choice for work and taxi vehicles thanks to its high fast-recharging capability.",
     capacity: "جميع السعات (70Ah - 150Ah)",
     image: "/images/acdmax.png",
     type: "local"
@@ -35,7 +41,9 @@ const PRODUCTS_DATA: Product[] = [
   {
     id: 4,
     name: "بطارية فولدا (Fulda)",
+    name_en: "Fulda Battery",
     description: "أداء مستقر وعمر افتراضي طويل. تكنولوجيا ألمانية مجمعة محلياً لضمان أفضل جودة مقابل السعر.",
+    description_en: "Stable performance and long lifespan. German technology assembled locally to ensure the best quality for the price.",
     capacity: "جميع السعات (35Ah - 200Ah)",
     image: "/images/fulda.png",
     type: "local"
@@ -43,7 +51,9 @@ const PRODUCTS_DATA: Product[] = [
   {
     id: 5,
     name: "بطارية أوتولايت (Autolite)",
+    name_en: "Autolite Battery",
     description: "بطارية اعتمادية بتكنولوجيا أمريكية. توفر طاقة بدء تشغيل قوية (CCA) حتى في أبرد أيام الشتاء.",
+    description_en: "A reliable battery with American technology. Provides strong Cold Cranking Amps (CCA) even on the coldest winter days.",
     capacity: "جميع السعات متوفرة",
     image: "https://www.germanbatteries.com/Products/Brands/03.png",
     type: "local"
@@ -51,7 +61,9 @@ const PRODUCTS_DATA: Product[] = [
   {
     id: 6,
     name: "بطارية تايجر (Tiger)",
+    name_en: "Tiger Battery",
     description: "وحش الطاقة المصري. مصممة خصيصاً لتتحمل ظروف الطرق والطقس في مصر. قوية التحمل والاهتزازات.",
+    description_en: "The Egyptian energy beast. Specifically designed to withstand road and weather conditions in Egypt. Highly resistant to endurance and vibrations.",
     capacity: "جميع السعات (40Ah - 220Ah)",
     image: "https://germanbatteries.com/Products/Images/D31.jpg",
     type: "local"
@@ -61,7 +73,9 @@ const PRODUCTS_DATA: Product[] = [
   {
     id: 7,
     name: "بطارية توب لايت (TopLite)",
+    name_en: "TopLite Battery",
     description: "بطارية اتحاد أوروبي فائقة الجودة. تكنولوجيا يواسا (Yuasa) العالمية. متوفرة لجميع التطبيقات من الموتوسيكلات وحتى السيارات الفارهة.",
+    description_en: "Ultra-high quality European Union battery. Global Yuasa technology. Available for all applications from motorcycles to luxury cars.",
     capacity: "جميع السعات (سيارات وموتوسيكلات)",
     image: "/images/toplite.png",
     type: "imported"
@@ -69,7 +83,9 @@ const PRODUCTS_DATA: Product[] = [
   {
     id: 8,
     name: "بطارية فارتا (Varta)",
+    name_en: "Varta Battery",
     description: "عملاق الطاقة الألماني (Clarios). الخيار الأول لأغلب مصنعي السيارات الأوروبية. تكنولوجيا PowerFrame لأداء استثنائي وعمر طويل.",
+    description_en: "The German energy giant (Clarios). The first choice for most European car manufacturers. PowerFrame technology for exceptional performance and long life.",
     capacity: "جميع السعات (40Ah - 220Ah)",
     image: "https://ghataty.com/web/image/1407/ProMotive%20Super%20Heavy%20Duty.jpg",
     type: "imported"
@@ -77,7 +93,9 @@ const PRODUCTS_DATA: Product[] = [
   {
     id: 9,
     name: "بطارية بوش (Bosch)",
+    name_en: "Bosch Battery",
     description: "الألمانية رقم 1 في العالم. توفر أعلى معدلات الأمان والأداء. تكنولوجيا PowerFrame لتدفق تيار مثالي.",
+    description_en: "The world's number 1 German battery. Provides the highest safety and performance rates. PowerFrame technology for optimal current flow.",
     capacity: "جميع السعات متوفرة",
     image: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Bosch-logo.svg/500px-Bosch-logo.svg.png?_=20221203224029",
     type: "imported"
@@ -85,7 +103,9 @@ const PRODUCTS_DATA: Product[] = [
   {
     id: 10,
     name: "بطارية فولترونك (Voltronic)",
+    name_en: "Voltronic Battery",
     description: "هندسة ألمانية دقيقة. مثالية للسيارات الحديثة المزودة بأنظمة Start-Stop والأنظمة الإلكترونية المعقدة.",
+    description_en: "Precise German engineering. Ideal for modern cars equipped with Start-Stop systems and complex electronic systems.",
     capacity: "جميع السعات (DIN & JIS)",
     image: "https://5.imimg.com/data5/EK/YX/EV/SELLER-2825475/amaze-2048stj-150ah-tubular-battery.jpg",
     type: "imported"
@@ -161,7 +181,7 @@ export const Products: React.FC<ProductsProps> = ({ lang, title, subtitle, onInq
               }
             </span>
             <h1 className="text-3xl md:text-5xl font-extrabold text-white mb-4 leading-tight">
-              {activeProduct.name}
+              {lang === 'ar' ? activeProduct.name : (activeProduct.name_en || activeProduct.name)}
             </h1>
             <div className="flex items-center gap-2">
                 <div className="flex text-yellow-500">
@@ -172,7 +192,7 @@ export const Products: React.FC<ProductsProps> = ({ lang, title, subtitle, onInq
           </div>
 
           <div className="prose prose-lg prose-invert max-w-none text-gray-300 leading-loose animate-fade-in-up" style={{ animationDelay: '100ms' }}>
-            <p className="font-bold text-xl text-white mb-6 leading-relaxed opacity-90 whitespace-pre-line">{activeProduct.description}</p>
+            <p className="font-bold text-xl text-white mb-6 leading-relaxed opacity-90 whitespace-pre-line">{lang === 'ar' ? activeProduct.description : (activeProduct.description_en || activeProduct.description)}</p>
             <div className="w-20 h-1 bg-blue-500/50 rounded-full mb-10"></div>
 
             {/* Specs Grid */}
@@ -255,7 +275,7 @@ export const Products: React.FC<ProductsProps> = ({ lang, title, subtitle, onInq
               </div>
               <div className="p-6">
                 <div className="flex justify-between items-start mb-3">
-                  <h3 className="text-xl font-bold text-white group-hover:text-blue-400 transition-colors">{product.name}</h3>
+                  <h3 className="text-xl font-bold text-white group-hover:text-blue-400 transition-colors">{lang === 'ar' ? product.name : (product.name_en || product.name)}</h3>
                   <div className="flex text-yellow-500">
                     <Star size={14} fill="currentColor" />
                     <Star size={14} fill="currentColor" />
@@ -265,7 +285,7 @@ export const Products: React.FC<ProductsProps> = ({ lang, title, subtitle, onInq
                   </div>
                 </div>
                 <p className="text-gray-400 text-sm line-clamp-2">
-                  {product.description}
+                  {lang === 'ar' ? product.description : (product.description_en || product.description)}
                 </p>
                 <div className="mt-4 flex items-center gap-2 text-xs font-bold text-gray-500 uppercase tracking-wider group-hover:text-blue-400 transition-colors">
                   {lang === 'ar' ? 'عرض التفاصيل' : 'View Details'}

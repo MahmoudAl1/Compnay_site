@@ -1,12 +1,6 @@
-import 'dotenv/config';
-import express from 'express';
-import path from 'path';
-import { createServer as createViteServer } from 'vite';
 import { GoogleGenAI } from '@google/genai';
-import cors from 'cors';
 
-const SYSTEM_INSTRUCTION = `
-أنت المساعد الذكي والخبير التقني لشركة "السرجاني للبطاريات" (El Sergany Batteries).
+const SYSTEM_INSTRUCTION = `أنت المساعد الذكي والخبير التقني لشركة "السرجاني للبطاريات" (El Sergany Batteries).
 مهمتك هي مساعدة العملاء في اختيار البطارية المناسبة لسياراتهم أو دراجاتهم النارية من *قائمة منتجاتنا المتاحة فقط*.
 
 🛑 **قواعد صارمة جداً (Inventory Rules):**
@@ -45,63 +39,18 @@ Bosch, Varta, TopLite, Fullstark, German, ACD Max, Fulda, Autolite, Tiger, Voltr
 - تحدث بلهجة مصرية بيضاء مهذبة ومحترفة.
 - إذا سأل العميل عن بطارية سيارة، رشح له الأنواع المحلية (فولستارك، جرمن، تايجر، إلخ) أو المستوردة (بوش، فارتا، فولترونك).
 - إذا سأل عن موتوسيكل، رشح له المستوردة (توب لايت).
-- اختم دائماً بدعوة العميل للاتصال بنا أو زيارة الفرع للكشف المجاني.
-`;
+- اختم دائماً بدعوة العميل للاتصال بنا أو زيارة الفرع للكشف المجاني.`;
 
-let ai: GoogleGenAI | null = null;
-
-const app = express();
-const PORT = 3000;
-
-app.use(cors());
-app.use(express.json());
-
-// API route for translation
-app.post('/api/translate', async (req, res) => {
-  const { text, targetLang } = req.body;
-  
-  if (!text) {
-    return res.status(400).json({ error: 'Text is required' });
-  }
-  
-  const apiKey = process.env.API_KEY || process.env.GEMINI_API_KEY || process.env.VITE_GEMINI_API_KEY || '';
-  if (!apiKey) {
-    return res.status(500).json({ error: 'API key is missing.' });
+export default async function handler(req: any, res: any) {
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  try {
-    const aiClient = new GoogleGenAI({ 
-      apiKey,
-      httpOptions: {
-        headers: {
-          'User-Agent': 'aistudio-build',
-        }
-      }
-    });
-
-    const response = await aiClient.models.generateContent({
-      model: 'gemini-2.5-flash',
-      contents: `Translate the following text to ${targetLang}. Return ONLY the translated text, without any additional comments or quotes:\n\n${text}`,
-      config: {
-        temperature: 0.1,
-      }
-    });
-    
-    res.json({ translatedText: (response.text || '').trim() });
-  } catch (error: any) {
-    console.error("Gemini Translation Error:", error.message || error);
-    res.status(500).json({ error: 'Translation failed.' });
-  }
-});
-
-// API route for chat
-app.post('/api/chat', async (req, res) => {
   const { message } = req.body;
-  
   if (!message) {
     return res.status(400).json({ error: 'Message is required' });
   }
-  
+
   const apiKey = process.env.API_KEY || process.env.GEMINI_API_KEY || process.env.VITE_GEMINI_API_KEY || '';
   if (!apiKey) {
     return res.status(500).json({ error: 'عذراً، لم يتم إعداد مفتاح API. يرجى التأكد من الإعدادات.' });
@@ -111,9 +60,7 @@ app.post('/api/chat', async (req, res) => {
     const aiClient = new GoogleGenAI({ 
       apiKey,
       httpOptions: {
-        headers: {
-          'User-Agent': 'aistudio-build',
-        }
+        headers: { 'User-Agent': 'aistudio-build' }
       }
     });
 
@@ -125,32 +72,10 @@ app.post('/api/chat', async (req, res) => {
         temperature: 0.3,
       }
     });
-    
+
     res.json({ text: response.text || "عذراً، لم أستطع فهم طلبك." });
   } catch (error: any) {
     console.error("Gemini API Error:", error.message || error);
     res.status(500).json({ error: 'حدث خطأ أثناء معالجة طلبك. يرجى المحاولة لاحقاً.' });
   }
-});
-
-async function startServer() {
-  if (process.env.NODE_ENV !== "production") {
-    const vite = await createViteServer({
-      server: { middlewareMode: true },
-      appType: "spa",
-    });
-    app.use(vite.middlewares);
-  } else {
-    const distPath = path.join(process.cwd(), 'dist');
-    app.use(express.static(distPath));
-    app.use((req, res) => {
-      res.sendFile(path.join(distPath, 'index.html'));
-    });
-  }
-
-  app.listen(PORT, "0.0.0.0", () => {
-    console.log(`Server listening on port ${PORT}`);
-  });
 }
-
-startServer();

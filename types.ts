@@ -3,17 +3,23 @@ export type Language = 'ar' | 'en';
 export interface BlogPost {
   id: number;
   title: string;
+  title_en?: string;
   excerpt: string;
+  excerpt_en?: string;
   content: string;
+  content_en?: string;
   date: string;
   image: string;
   category: string;
+  category_en?: string;
 }
 
 export interface Product {
   id: number;
   name: string;
+  name_en?: string;
   description: string;
+  description_en?: string;
   capacity: string;
   image: string;
   type: 'local' | 'imported';

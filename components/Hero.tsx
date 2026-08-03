@@ -28,66 +28,70 @@ const BRANDS = [
   { 
     name: "BOSCH", 
     color: "#dc2626", 
-    logo: "/images/Bosch-logo.svg" 
+    logo: "/images/bosch.png" 
   },
   { 
     name: "VARTA", 
     color: "#2563eb", 
-    logo: "/images/330px-Varta-Logo.svg.png" 
+    logo: "/images/varta.png" 
   },
   { 
     name: "TopLite", 
     color: "#16a34a", 
-    logo: "/images/2.png"
+    logo: "/images/toplite.png"
   },
   { 
     name: "Fullstark", 
     color: "#3b82f6", 
-    logo: "/images/1.png"
+    logo: "/images/fullstark.png"
   },
   { 
     name: "GERMAN", 
     color: "#ca8a04", 
-    logo: "/images/ger.png"
+    logo: "/images/german.png"
   },
   { 
     name: "Autolite", 
     color: "#f97316", 
-    logo: "/images/tesla.png" 
+    logo: "/images/autolite.png" 
   },
   { 
     name: "Voltronic", 
     color: "#06b6d4", 
-    logo: "/images/4.png"
+    logo: "/images/voltronic.png"
   },
   {
     name: "FULDA",
     color: "#000080",
-    logo: "/images/f.png"
-  },
-    {
-    name: "FULDA",
-    color: "#000080",
-    logo: "/images/3.png"
-  },
-    {
-    name: "FULDA",
-    color: "#000080",
-    logo: "/images/max.png"
+    logo: "/images/fulda.png"
   }
 ];
 
 const BrandItem = ({ brand }: { brand: any }) => {
   return (
-    <div className="relative w-40 h-20 flex items-center justify-center transition-transform duration-500 overflow-hidden rounded-lg">
+    <div className="relative w-40 h-20 flex items-center justify-center transition-transform duration-500 rounded-lg group">
       <img 
         src={brand.logo} 
         alt={brand.name} 
         referrerPolicy="no-referrer"
         className="relative z-0 w-full h-full object-contain transition-transform duration-300"
       />
-      {/* Shine Effect */}
-      <div className="absolute top-0 -left-[150%] h-full w-[50%] bg-gradient-to-r from-transparent via-white/40 to-transparent skew-x-[30deg] blur-[2px] animate-shine pointer-events-none z-10" />
+      {/* Shine Effect Masked to Image Shape */}
+      <div 
+        className="absolute inset-0 z-10 pointer-events-none"
+        style={{
+          WebkitMaskImage: `url(${brand.logo})`,
+          maskImage: `url(${brand.logo})`,
+          WebkitMaskSize: 'contain',
+          maskSize: 'contain',
+          WebkitMaskRepeat: 'no-repeat',
+          maskRepeat: 'no-repeat',
+          WebkitMaskPosition: 'center',
+          maskPosition: 'center'
+        }}
+      >
+        <div className="absolute top-0 -left-[150%] h-full w-[50%] bg-gradient-to-r from-transparent via-white/50 to-transparent skew-x-[30deg] blur-[2px] animate-shine" />
+      </div>
     </div>
   );
 };
@@ -123,27 +127,32 @@ export const Hero: React.FC<HeroProps> = ({ onAction, lang, translations }) => {
   return (
     <div className="relative bg-slate-950 overflow-hidden flex flex-col">
       {/* Slider Section */}
-      <div className="relative h-[600px] md:h-[700px] w-full">
+      <div className="relative h-[300px] sm:h-[400px] md:h-[550px] lg:h-[700px] w-full bg-slate-950 overflow-hidden">
         {heroImages.map((img, index) => (
           <div 
             key={index}
-            className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
-              index === currentSlide ? 'opacity-100' : 'opacity-0'
+            className={`absolute inset-0 transition-opacity duration-1000 ease-in-out flex items-center justify-center ${
+              index === currentSlide ? 'opacity-100 z-10' : 'opacity-0 z-0'
             }`}
           >
+            {/* Blurred background layer to prevent empty black spaces */}
+            <div 
+               className="absolute inset-0 bg-cover bg-center blur-2xl opacity-40 transform scale-110"
+               style={{ backgroundImage: `url(${img})` }}
+            ></div>
+            
             <img 
               src={img} 
               alt={`Slide ${index}`} 
-              className="w-full h-full object-cover"
+              className="relative w-full h-full object-contain object-center z-10 drop-shadow-2xl"
+              style={{ imageRendering: 'high-quality' }}
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/70 to-transparent"></div>
+            <div className="absolute inset-0 z-20 bg-gradient-to-t from-slate-950 via-transparent to-transparent"></div>
           </div>
         ))}
 
-        {/* Hero Content Replaced with empty space or removed completely */}
-
         {/* Slide Indicators */}
-        <div className="absolute bottom-32 left-1/2 transform -translate-x-1/2 flex gap-2 z-20">
+        <div className="absolute bottom-6 md:bottom-12 left-1/2 transform -translate-x-1/2 flex gap-2 z-30">
           {heroImages.map((_, idx) => (
             <button
               key={idx}

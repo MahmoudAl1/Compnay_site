@@ -32,8 +32,8 @@ export const Contact: React.FC<ContactProps> = ({ lang, title, subtitle }) => {
       ? `رسالة جديدة من الموقع\n\nالاسم: ${formData.name}\nرقم الهاتف: ${formData.phone}\nالبريد الإلكتروني: ${formData.email}\nالموضوع: ${subject}\nالرسالة: ${formData.message}`
       : `New Website Message\n\nName: ${formData.name}\nPhone: ${formData.phone}\nEmail: ${formData.email}\nSubject: ${subject}\nMessage: ${formData.message}`;
 
-    const url = `mailto:elserganycompany@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(emailBody)}`;
-    window.open(url, '_self');
+    const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=elserganycompany@gmail.com&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(emailBody)}`;
+    window.open(gmailUrl, '_blank');
   };
 
   return (
@@ -71,7 +71,17 @@ export const Contact: React.FC<ContactProps> = ({ lang, title, subtitle }) => {
                   <MapPin size={24} />
                 </div>
                 <div>
-                  <h4 className="font-bold text-white text-lg mb-2">{lang === 'ar' ? 'العنوان' : 'Address'}</h4>
+                  <h4 className="font-bold text-white text-lg mb-2">{lang === 'ar' ? 'الفرع الرئيسي' : 'Main Branch'}</h4>
+                  <p className="text-gray-400 leading-relaxed">{lang === 'ar' ? 'دمياط، دمياط الجديدة، أمام نادي المستقبل' : 'Damietta, New Damietta, In front of Future Club'}</p>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-6 group">
+                <div className="bg-slate-800 p-4 rounded-2xl text-blue-500 group-hover:scale-110 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300 shadow-lg shadow-black/20">
+                  <MapPin size={24} />
+                </div>
+                <div>
+                  <h4 className="font-bold text-white text-lg mb-2">{lang === 'ar' ? 'الفرع الآخر' : 'The Other Branch'}</h4>
                   <p className="text-gray-400 leading-relaxed">{lang === 'ar' ? 'الدقهلية، المنزلة، شارع عبد المنعم رياض' : 'Dakahlia, El Manzala, Abdel Moneim Riad St'}</p>
                 </div>
               </div>
@@ -83,16 +93,6 @@ export const Contact: React.FC<ContactProps> = ({ lang, title, subtitle }) => {
                 <div>
                   <h4 className="font-bold text-white text-lg mb-2">{lang === 'ar' ? 'البريد الإلكتروني' : 'Email'}</h4>
                   <p className="text-gray-400">elserganycompany@gmail.com</p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-6 group">
-                <div className="bg-slate-800 p-4 rounded-2xl text-blue-500 group-hover:scale-110 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300 shadow-lg shadow-black/20">
-                  <Clock size={24} />
-                </div>
-                <div>
-                  <h4 className="font-bold text-white text-lg mb-2">{lang === 'ar' ? 'ساعات العمل' : 'Working Hours'}</h4>
-                  <p className="text-gray-400">{lang === 'ar' ? 'يومياً من 9 صباحاً حتى 11 مساءً' : 'Daily 9:00 AM - 11:00 PM'}</p>
                 </div>
               </div>
             </div>

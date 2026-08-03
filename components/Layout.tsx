@@ -256,7 +256,16 @@ export const Footer: React.FC<FooterProps> = ({ lang, onChangeView }) => {
                    <MapPin size={20} />
                 </div>
                 <div>
-                  <h4 className="text-white text-sm font-bold mb-1">{lang === 'ar' ? 'المقر الرئيسي' : 'Headquarters'}</h4>
+                  <h4 className="text-white text-sm font-bold mb-1">{lang === 'ar' ? 'الفرع الرئيسي' : 'Main Branch'}</h4>
+                  <span className="text-sm">{lang === 'ar' ? 'دمياط، دمياط الجديدة، أمام نادي المستقبل' : 'Damietta, New Damietta, In front of Future Club'}</span>
+                </div>
+              </li>
+              <li className="flex items-start gap-4 text-gray-400 group">
+                <div className="bg-slate-900 p-2 rounded-lg text-gray-500 group-hover:text-blue-400 transition-colors">
+                   <MapPin size={20} />
+                </div>
+                <div>
+                  <h4 className="text-white text-sm font-bold mb-1">{lang === 'ar' ? 'الفرع الآخر' : 'The Other Branch'}</h4>
                   <span className="text-sm">{lang === 'ar' ? 'الدقهلية، المنزلة، شارع عبد المنعم رياض' : 'Dakahlia, El Manzala, Abdel Moneim Riad St'}</span>
                 </div>
               </li>
