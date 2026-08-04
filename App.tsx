@@ -129,7 +129,7 @@ const ProductWrapper = ({ lang, translations, onInquire }: any) => {
 };
 
 const BlogWrapper = ({ lang, translations }: any) => {
-  const { id } = useParams();
+  const { slug } = useParams();
   const navigate = useNavigate();
   const activePost = { id: slug } as any;
 
