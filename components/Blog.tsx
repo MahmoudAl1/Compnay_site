@@ -1,6 +1,7 @@
 
 import React, { useRef, useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
+import { Link } from 'react-router-dom';
 import { BlogPost, Language } from '../types';
 import { generateSlug } from '../slugify';
 import { Calendar, ChevronLeft, ChevronRight, User, ArrowRight, ArrowLeft, Clock } from 'lucide-react';
@@ -236,8 +237,8 @@ const BlogPostCard: React.FC<BlogPostCardProps> = ({ post, index, onReadMore, la
         <p className="text-gray-400 text-sm mb-6 line-clamp-3 flex-1 leading-relaxed">
           {lang === 'ar' ? post.excerpt : (post.excerpt_en || post.excerpt)}
         </p>
-        <button
-          onClick={() => onReadMore(post)}
+        <Link
+          to={`/blog/${generateSlug(lang === 'ar' ? post.title : (post.title_en || post.title))}`}
           className="group/btn w-full bg-slate-800 hover:bg-blue-600 text-white font-bold text-sm py-3 px-6 rounded-xl flex items-center justify-center gap-2 transition-all duration-300 shadow-lg hover:shadow-blue-500/25 hover:-translate-y-0.5"
         >
           {lang === 'ar' ? 'اقرأ المقال' : 'Read Article'}
@@ -245,7 +246,7 @@ const BlogPostCard: React.FC<BlogPostCardProps> = ({ post, index, onReadMore, la
             size={16}
             className={`transition-transform duration-300 ${lang === 'ar' ? 'group-hover/btn:-translate-x-1' : 'rotate-180 group-hover/btn:translate-x-1'}`}
           />
-        </button>
+        </Link>
       </div>
     </div>
   );

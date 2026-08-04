@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import fs from 'fs';
+
+const appCode = `import React, { useState, useEffect } from 'react';
 import { Routes, Route, useNavigate, useLocation, useParams } from 'react-router-dom';
 import { Header } from './components/Layout';
 import { Hero } from './components/Hero';
@@ -27,7 +29,7 @@ const TRANSLATIONS = {
     },
     hero: {
       badge: 'Over 70 Years Experience',
-      title1: 'Your Vehicle\'s',
+      title1: 'Your Vehicle\\'s',
       title2: 'Beating Heart',
       subtitle: 'Specialized in Car and Motorcycle batteries. Testing, installation, and replacement service wherever you are by professional technicians.',
       ctaPrimary: 'Choose Battery',
@@ -54,7 +56,7 @@ const TRANSLATIONS = {
       whoWeAreTitle: 'Who We Are',
       whoWeAreDesc: 'El Sergany Company was established in 1951. Thanks to innovation and decades of experience, the company has become one of the prominent entities in Egypt in the field of battery distribution. Over the years, we have succeeded in building a strong reputation based on trust, quality, and meeting market needs. We currently distribute a wide range of batteries through a network of clients and partners. Our headquarters is located in El Manzala (Dakahlia), with a second branch in New Damietta.',
       visionTitle: 'Our Vision',
-      visionDesc: 'We are proud of our achievements since the company\'s inception and look forward with ambitious plans to expand and reach new horizons. Through our network of distributors and partners and our strong market presence, we aim to be the premier and safe reference for every driver, providing an effective sales channel for leading auto parts suppliers.'
+      visionDesc: 'We are proud of our achievements since the company\\'s inception and look forward with ambitious plans to expand and reach new horizons. Through our network of distributors and partners and our strong market presence, we aim to be the premier and safe reference for every driver, providing an effective sales channel for leading auto parts suppliers.'
     }
   },
   ar: {
@@ -118,7 +120,7 @@ const ProductWrapper = ({ lang, translations, onInquire }: any) => {
         onInquire={onInquire} 
         activeProduct={activeProduct} 
         onBack={() => navigate('/products')} 
-        onProductSelect={(p) => navigate(`/product/${generateSlug(lang === 'ar' ? p.name : (p.name_en || p.name))}`)} 
+        onProductSelect={(p) => navigate(\`/product/\${generateSlug(lang === 'ar' ? p.name : (p.name_en || p.name))}\`)} 
       />
     </>
   );
@@ -132,7 +134,7 @@ const BlogWrapper = ({ lang, translations }: any) => {
   return (
     <>
       <Blog 
-        onReadMore={(p) => navigate(`/blog/${generateSlug(lang === 'ar' ? p.title : (p.title_en || p.title))}`)} 
+        onReadMore={(p) => navigate(\`/blog/\${generateSlug(lang === 'ar' ? p.title : (p.title_en || p.title))}\`)} 
         activePost={activePost} 
         onBack={() => navigate('/blog')} 
         lang={lang} 
@@ -179,7 +181,7 @@ function App() {
   };
 
   return (
-    <div className={`min-h-screen flex flex-col font-sans ${lang === 'ar' ? 'font-sans' : 'font-sans'}`} dir={lang === 'ar' ? 'rtl' : 'ltr'}>
+    <div className={\`min-h-screen flex flex-col font-sans \${lang === 'ar' ? 'font-sans' : 'font-sans'}\`} dir={lang === 'ar' ? 'rtl' : 'ltr'}>
       <Helmet>
         <title>Elsergany Company</title>
         <meta name="description" content="Elsergany Company - The leading provider of car and motorcycle batteries in Egypt. Authorized dealer for top global brands." />
@@ -198,11 +200,11 @@ function App() {
                   title={TRANSLATIONS[lang].sectionTitles.products} 
                   subtitle={TRANSLATIONS[lang].sectionTitles.productsDesc} 
                   onInquire={() => navigate('/contact')} 
-                  onProductSelect={(p) => navigate(`/product/${generateSlug(lang === 'ar' ? p.name : (p.name_en || p.name))}`)} 
+                  onProductSelect={(p) => navigate(\`/product/\${generateSlug(lang === 'ar' ? p.name : (p.name_en || p.name))}\`)} 
               />
               <Clients lang={lang} />
               <Blog 
-                  onReadMore={(p) => navigate(`/blog/${generateSlug(lang === 'ar' ? p.title : (p.title_en || p.title))}`)} 
+                  onReadMore={(p) => navigate(\`/blog/\${generateSlug(lang === 'ar' ? p.title : (p.title_en || p.title))}\`)} 
                   activePost={null} 
                   onBack={() => {}} 
                   lang={lang} 
@@ -228,7 +230,7 @@ function App() {
                   title={TRANSLATIONS[lang].sectionTitles.products} 
                   subtitle={TRANSLATIONS[lang].sectionTitles.productsDesc} 
                   onInquire={() => navigate('/contact')} 
-                  onProductSelect={(p) => navigate(`/product/${generateSlug(lang === 'ar' ? p.name : (p.name_en || p.name))}`)} 
+                  onProductSelect={(p) => navigate(\`/product/\${generateSlug(lang === 'ar' ? p.name : (p.name_en || p.name))}\`)} 
               />
             </>
           } />
@@ -244,7 +246,7 @@ function App() {
             <>
               <Helmet><title>{lang === 'ar' ? 'المدونة | السرجاني' : 'Blog | Elsergany Company'}</title></Helmet>
               <Blog 
-                  onReadMore={(p) => navigate(`/blog/${generateSlug(lang === 'ar' ? p.title : (p.title_en || p.title))}`)} 
+                  onReadMore={(p) => navigate(\`/blog/\${generateSlug(lang === 'ar' ? p.title : (p.title_en || p.title))}\`)} 
                   activePost={null} 
                   onBack={() => {}} 
                   lang={lang} 
@@ -274,3 +276,6 @@ function App() {
 }
 
 export default App;
+`;
+
+fs.writeFileSync('App.tsx', appCode);

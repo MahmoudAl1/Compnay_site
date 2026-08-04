@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { Product, Language } from '../types';
 import { generateSlug } from '../slugify';
@@ -271,10 +272,10 @@ export const Products: React.FC<ProductsProps> = ({ lang, title, subtitle, onInq
         {/* Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {filteredProducts.map((product) => (
-            <div 
+            <Link 
               key={product.id} 
-              onClick={() => onProductSelect ? onProductSelect(product) : undefined}
-              className="group cursor-pointer bg-slate-900 rounded-2xl overflow-hidden border border-slate-800 shadow-lg hover:shadow-2xl hover:shadow-blue-500/10 hover:border-blue-500/30 transition-all duration-300 transform hover:-translate-y-2"
+              to={`/product/${generateSlug(lang === 'ar' ? product.name : (product.name_en || product.name))}`}
+              className="group cursor-pointer bg-slate-900 rounded-2xl overflow-hidden border border-slate-800 shadow-lg hover:shadow-2xl hover:shadow-blue-500/10 hover:border-blue-500/30 transition-all duration-300 transform hover:-translate-y-2 block"
             >
               <div className="relative h-64 overflow-hidden bg-slate-800">
                 <img 
@@ -315,7 +316,7 @@ export const Products: React.FC<ProductsProps> = ({ lang, title, subtitle, onInq
                   <div className="h-px bg-current flex-1 opacity-20"></div>
                 </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>
