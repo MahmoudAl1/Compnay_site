@@ -52,7 +52,7 @@ const TRANSLATIONS = {
       title: 'El Sergany Battery Services',
       subtitle: 'The leading name in Car and Motorcycle batteries in Egypt',
       whoWeAreTitle: 'Who We Are',
-      whoWeAreDesc: 'El Sergany Company was established in 1951. Thanks to innovation and decades of experience, the company has become one of the prominent entities in Egypt in the field of battery distribution. Over the years, we have succeeded in building a strong reputation based on trust, quality, and meeting market needs. We currently distribute a wide range of batteries through a network of clients and partners. Our headquarters is located in El Manzala (Dakahlia), with a second branch in New Damietta.',
+      whoWeAreDesc: 'El Sergany Company was established in 1951. Thanks to innovation and decades of experience, the company has become one of the prominent entities in Egypt in the field of battery distribution. Over the years, we have succeeded in building a strong reputation based on trust, quality, and meeting market needs. We currently distribute a wide range of batteries through a network of clients and partners. We are a leading company in the field of car and motorcycle batteries in Egypt, providing the best services to our customers.',
       visionTitle: 'Our Vision',
       visionDesc: 'We are proud of our achievements since the company\'s inception and look forward with ambitious plans to expand and reach new horizons. Through our network of distributors and partners and our strong market presence, we aim to be the premier and safe reference for every driver, providing an effective sales channel for leading auto parts suppliers.'
     }
@@ -94,7 +94,7 @@ const TRANSLATIONS = {
       title: 'خدمات السرجاني للبطاريات',
       subtitle: 'الاسم الأول في عالم بطاريات السيارات والموتوسيكلات في مصر',
       whoWeAreTitle: 'من نحن',
-      whoWeAreDesc: 'تأسست شركة السرجاني في عام 1951. بفضل الابتكار وعقود من الخبرة، أصبحت الشركة واحدة من الكيانات البارزة في مصر في مجال توزيع البطاريات. على مر السنين، نجحنا في بناء سمعة قوية مبنية على الثقة والجودة وتلبية احتياجات السوق. نقوم حالياً بتوزيع مجموعة واسعة من البطاريات عبر شبكة من العملاء والشركاء. يقع المقر الرئيسي في المنزلة (الدقهلية)، مع فرع ثانٍ في دمياط الجديدة.',
+      whoWeAreDesc: 'تأسست شركة السرجاني في عام 1951. بفضل الابتكار وعقود من الخبرة، أصبحت الشركة واحدة من الكيانات البارزة في مصر في مجال توزيع البطاريات. على مر السنين، نجحنا في بناء سمعة قوية مبنية على الثقة والجودة وتلبية احتياجات السوق. نقوم حالياً بتوزيع مجموعة واسعة من البطاريات عبر شبكة من العملاء والشركاء. نحن شركة رائدة في مجال بطاريات السيارات والموتوسيكلات في مصر، ونقدم أفضل الخدمات لعملائنا.',
       visionTitle: 'رؤيتنا',
       visionDesc: 'نفتخر بما حققناه منذ تأسيس الشركة ونتطلع بخطط طموحة للتوسع والوصول إلى آفاق جديدة. من خلال شبكة موزعينا وشركائنا وتواجدنا القوي في السوق، نهدف إلى أن نكون المرجع الأول والآمن لكل سائق، مع توفير قناة بيع فعالة لكبار موردي قطع غيار السيارات.'
     }
@@ -182,7 +182,7 @@ function App() {
     <div className={`min-h-screen flex flex-col font-sans ${lang === 'ar' ? 'font-sans' : 'font-sans'}`} dir={lang === 'ar' ? 'rtl' : 'ltr'}>
       <Helmet>
         <title>Elsergany Company</title>
-        <meta name="description" content="Elsergany Company - The leading provider of car and motorcycle batteries in Egypt. Authorized dealer for top global brands." />
+        <meta name="description" content="Elsergany Company - A leading company in the field of car and motorcycle batteries in Egypt. Authorized dealer for top global brands. شركة رائدة في عالم بطاريات السيارات والموتوسيكلات في مصر." />
       </Helmet>
       
       <Header currentView={activeNavView} onChangeView={handleNavClick} lang={lang} setLang={setLang} translations={TRANSLATIONS} />
@@ -215,14 +215,14 @@ function App() {
           
           <Route path="/about" element={
             <>
-              <Helmet><title>{lang === 'ar' ? 'من نحن | السرجاني' : 'About Us | Elsergany Company'}</title></Helmet>
+              <Helmet><title>{lang === 'ar' ? 'من نحن | Elsergany Company' : 'About Us | Elsergany Company'}</title></Helmet>
               <About lang={lang} translations={TRANSLATIONS} />
             </>
           } />
 
           <Route path="/products" element={
             <>
-              <Helmet><title>{lang === 'ar' ? 'منتجاتنا | السرجاني' : 'Products | Elsergany Company'}</title></Helmet>
+              <Helmet><title>{lang === 'ar' ? 'منتجاتنا | Elsergany Company' : 'Products | Elsergany Company'}</title></Helmet>
               <Products 
                   lang={lang} 
                   title={TRANSLATIONS[lang].sectionTitles.products} 
@@ -235,14 +235,14 @@ function App() {
 
           <Route path="/clients" element={
             <>
-              <Helmet><title>{lang === 'ar' ? 'عملائنا | السرجاني' : 'Clients | Elsergany Company'}</title></Helmet>
+              <Helmet><title>{lang === 'ar' ? 'عملائنا | Elsergany Company' : 'Clients | Elsergany Company'}</title></Helmet>
               <Clients lang={lang} />
             </>
           } />
 
           <Route path="/blog" element={
             <>
-              <Helmet><title>{lang === 'ar' ? 'المدونة | السرجاني' : 'Blog | Elsergany Company'}</title></Helmet>
+              <Helmet><title>{lang === 'ar' ? 'المدونة | Elsergany Company' : 'Blog | Elsergany Company'}</title></Helmet>
               <Blog 
                   onReadMore={(p) => navigate(`/blog/${generateSlug(lang === 'ar' ? p.title : (p.title_en || p.title))}`)} 
                   activePost={null} 
@@ -256,7 +256,7 @@ function App() {
 
           <Route path="/contact" element={
             <>
-              <Helmet><title>{lang === 'ar' ? 'اتصل بنا | السرجاني' : 'Contact Us | Elsergany Company'}</title></Helmet>
+              <Helmet><title>{lang === 'ar' ? 'اتصل بنا | Elsergany Company' : 'Contact Us | Elsergany Company'}</title></Helmet>
               <Contact lang={lang} title={TRANSLATIONS[lang].sectionTitles.contact} subtitle={TRANSLATIONS[lang].sectionTitles.contactDesc} />
             </>
           } />
