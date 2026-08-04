@@ -273,7 +273,24 @@ export const Blog: React.FC<BlogProps> = ({ onReadMore, activePost, onBack, lang
   if (fullActivePost && fullActivePost.title) {
     return (
       <>
-      <Helmet><title>{lang === 'ar' ? fullActivePost.title : (fullActivePost.title_en || fullActivePost.title)} | Elsergany Company</title></Helmet>
+      <Helmet>
+        <title>{lang === 'ar' ? fullActivePost.title : (fullActivePost.title_en || fullActivePost.title)} | Elsergany Company</title>
+        <meta name="description" content={lang === 'ar' ? fullActivePost.excerpt : (fullActivePost.excerpt_en || fullActivePost.excerpt)} />
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": lang === 'ar' ? fullActivePost.title : (fullActivePost.title_en || fullActivePost.title),
+            "image": fullActivePost.image.startsWith('http') ? fullActivePost.image : `https://elserganycompany.com${fullActivePost.image}`,
+            "datePublished": fullActivePost.date,
+            "description": lang === 'ar' ? fullActivePost.excerpt : (fullActivePost.excerpt_en || fullActivePost.excerpt),
+            "author": {
+              "@type": "Organization",
+              "name": "Elsergany Company"
+            }
+          })}
+        </script>
+      </Helmet>
       <div className="py-24 min-h-screen bg-slate-950 text-gray-100">
         <div className="container mx-auto px-4 md:px-6 max-w-4xl">
           <button 

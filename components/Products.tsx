@@ -157,7 +157,23 @@ export const Products: React.FC<ProductsProps> = ({ lang, title, subtitle, onInq
   if (fullActiveProduct && fullActiveProduct.name) {
     return (
       <>
-      <Helmet><title>{lang === 'ar' ? fullActiveProduct.name : (fullActiveProduct.name_en || fullActiveProduct.name)} | Elsergany Company</title></Helmet>
+      <Helmet>
+        <title>{lang === 'ar' ? fullActiveProduct.name : (fullActiveProduct.name_en || fullActiveProduct.name)} | Elsergany Company</title>
+        <meta name="description" content={lang === 'ar' ? fullActiveProduct.description : (fullActiveProduct.description_en || fullActiveProduct.description)} />
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org/",
+            "@type": "Product",
+            "name": lang === 'ar' ? fullActiveProduct.name : (fullActiveProduct.name_en || fullActiveProduct.name),
+            "image": fullActiveProduct.image.startsWith('http') ? fullActiveProduct.image : `https://elserganycompany.com${fullActiveProduct.image}`,
+            "description": lang === 'ar' ? fullActiveProduct.description : (fullActiveProduct.description_en || fullActiveProduct.description),
+            "brand": {
+              "@type": "Brand",
+              "name": "Elsergany"
+            }
+          })}
+        </script>
+      </Helmet>
       <div className="py-24 min-h-screen bg-slate-950 text-gray-100">
         <div className="container mx-auto px-4 md:px-6 max-w-4xl">
           <button 
