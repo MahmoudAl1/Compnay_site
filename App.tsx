@@ -1,60 +1,19 @@
-
-import { useState, useEffect } from 'react';
-import { Header, Footer } from './components/Layout';
+import React, { useState, useEffect } from 'react';
+import { Routes, Route, useNavigate, useLocation, useParams } from 'react-router-dom';
+import { Header } from './components/Layout';
 import { Hero } from './components/Hero';
 import { Products } from './components/Products';
-import { Blog } from './components/Blog';
+import { Clients } from './components/Clients';
+import { Footer } from './components/Layout';
 import { Contact } from './components/Contact';
 import { About } from './components/About';
-import { Clients } from './components/Clients';
-import { ChatAssistant } from './components/ChatAssistant';
+import { Blog } from './components/Blog';
 import { AdminDashboard } from './components/AdminDashboard';
-import { ViewState, BlogPost, Language } from './types';
+import { ChatAssistant } from './components/ChatAssistant';
+import { ViewState, BlogPost, Language, Product } from './types';
+import { Helmet } from 'react-helmet-async';
 
-// Simple translation dictionary
 const TRANSLATIONS = {
-  ar: {
-    nav: {
-      home: 'الرئيسية',
-      about: 'من نحن',
-      products: 'المنتجات',
-      clients: 'عملائنا',
-      blog: 'المدونة',
-      contact: 'اتصل بنا',
-      orderNow: 'اطلب الآن'
-    },
-    hero: {
-      badge: 'خبرة أكثر من 70 عاماً',
-      title1: 'قلب سيارتك',
-      title2: 'النابض بالحياة',
-      subtitle: 'متخصصون في بطاريات السيارات والموتوسيكلات. خدمة كشف وتركيب واستبدال البطارية أينما كنت بأيدي فنيين محترفين.',
-      ctaPrimary: 'اختر بطاريتك',
-      ctaSecondary: 'خدمة الإنقاذ',
-      brandsTitle: 'وكلاء كبرى الشركات العالمية',
-      feature1Title: 'كشف مجاني',
-      feature1Desc: 'فحص الدينامو والبطارية',
-      feature2Title: 'تركيب فوري',
-      feature2Desc: 'خدمة ديليفري وتركيب',
-      feature3Title: 'ضمان معتمد',
-      feature3Desc: 'استبدال فوري في الضمان'
-    },
-    sectionTitles: {
-      products: 'أفضل أنواع البطاريات',
-      productsDesc: '',
-      blog: 'اعرف اكتر عن بطاريتك',
-      blogDesc: 'معلومات تهمك للحفاظ على كهرباء سيارتك وإطالة عمر البطارية.',
-      contact: 'تواصل معنا',
-      contactDesc: 'خدمة عملاء طوال أيام الأسبوع. تواصل معنا لطلب بطارية أو خدمة إنقاذ.'
-    },
-    about: {
-      title: 'السرجاني لخدمات البطاريات',
-      subtitle: 'الاسم الأول في عالم بطاريات السيارات والموتوسيكلات في مصر',
-      whoWeAreTitle: 'من نحن',
-      whoWeAreDesc: 'تأسست شركة السرجاني عام 1951، وبفضل الابتكار والخبرة الممتدة لعقود طويلة، أصبحت الشركة واحدة من الكيانات البارزة في مصر في مجال توزيع البطاريات. وعلى مدار سنوات عملنا، نجحنا في بناء سمعة قوية قائمة على الثقة والجودة وتلبية احتياجات السوق. توزع شركة السرجاني حالياً تشكيلة واسعة من قطع البطاريات عبر شبكة من العملاء والشركاء، ونسعى باستمرار إلى توسيع محفظة العلامات التجارية التي نمثلها وزيادة حصتنا السوقية، مستندين إلى خبرتنا العميقة في السوق المصرية. شركة السرجاني هي موزّع متخصص ذو قيمة مضافة، ويقع مقرها الرئيسي في مدينة المنزلة – محافظة الدقهلية، والفرع الثاني في محافظة دمياط الجديدة.',
-      visionTitle: 'رؤيتنا',
-      visionDesc: 'نفتخر بما حققناه من إنجازات منذ تأسيس الشركة، ونتطلع بخطط طموحة إلى التوسع والوصول إلى آفاق جديدة في أعمالنا. من خلال شبكتنا من الموزعين والشركاء ووجودنا القوي في السوق، نسعى لأن نكون المرجع الأول والآمن لكل قائد سيارة، ونوفر قناة مبيعات فعّالة لموردي قطع غيار السيارات الرائدين.'
-    }
-  },
   en: {
     nav: {
       home: 'Home',
@@ -96,18 +55,110 @@ const TRANSLATIONS = {
       visionTitle: 'Our Vision',
       visionDesc: 'We are proud of our achievements since the company\'s inception and look forward with ambitious plans to expand and reach new horizons. Through our network of distributors and partners and our strong market presence, we aim to be the premier and safe reference for every driver, providing an effective sales channel for leading auto parts suppliers.'
     }
+  },
+  ar: {
+    nav: {
+      home: 'الرئيسية',
+      about: 'من نحن',
+      products: 'منتجاتنا',
+      clients: 'عملائنا',
+      blog: 'المدونة',
+      contact: 'اتصل بنا',
+      orderNow: 'اطلب الآن'
+    },
+    hero: {
+      badge: 'خبرة أكثر من ٧٠ عاماً',
+      title1: 'القلب النابض',
+      title2: 'لسيارتك',
+      subtitle: 'متخصصون في بطاريات السيارات والموتوسيكلات. كشف، تركيب، وخدمة استبدال أينما كنت بأيدي فنيين محترفين.',
+      ctaPrimary: 'اختر بطاريتك',
+      ctaSecondary: 'خدمة الإنقاذ',
+      brandsTitle: 'وكلاء معتمدون لكبرى الشركات',
+      feature1Title: 'كشف مجاني',
+      feature1Desc: 'فحص الدينامو والبطارية',
+      feature2Title: 'تركيب فوري',
+      feature2Desc: 'توصيل وتركيب أينما كنت',
+      feature3Title: 'ضمان معتمد',
+      feature3Desc: 'استبدال فوري داخل الضمان'
+    },
+    sectionTitles: {
+      products: 'أفضل ماركات البطاريات',
+      productsDesc: 'تشكيلة واسعة من البطاريات الجافة والسائلة تناسب جميع السيارات والموتوسيكلات.',
+      blog: 'نصائح السرجاني',
+      blogDesc: 'معلومات هامة للحفاظ على كهرباء سيارتك وإطالة عمر البطارية.',
+      contact: 'اتصل بنا',
+      contactDesc: 'خدمة العملاء طوال أيام الأسبوع. تواصل معنا لطلب بطارية أو طلب خدمة إنقاذ.'
+    },
+    about: {
+      title: 'خدمات السرجاني للبطاريات',
+      subtitle: 'الاسم الأول في عالم بطاريات السيارات والموتوسيكلات في مصر',
+      whoWeAreTitle: 'من نحن',
+      whoWeAreDesc: 'تأسست شركة السرجاني في عام 1951. بفضل الابتكار وعقود من الخبرة، أصبحت الشركة واحدة من الكيانات البارزة في مصر في مجال توزيع البطاريات. على مر السنين، نجحنا في بناء سمعة قوية مبنية على الثقة والجودة وتلبية احتياجات السوق. نقوم حالياً بتوزيع مجموعة واسعة من البطاريات عبر شبكة من العملاء والشركاء. يقع المقر الرئيسي في المنزلة (الدقهلية)، مع فرع ثانٍ في دمياط الجديدة.',
+      visionTitle: 'رؤيتنا',
+      visionDesc: 'نفتخر بما حققناه منذ تأسيس الشركة ونتطلع بخطط طموحة للتوسع والوصول إلى آفاق جديدة. من خلال شبكة موزعينا وشركائنا وتواجدنا القوي في السوق، نهدف إلى أن نكون المرجع الأول والآمن لكل سائق، مع توفير قناة بيع فعالة لكبار موردي قطع غيار السيارات.'
+    }
   }
 };
 
+const ProductWrapper = ({ lang, translations, onInquire }: any) => {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  
+  // Fake a product object to trigger detail view in Products component
+  // Products component will find the actual product using this ID
+  const activeProduct = { id: Number(id) } as any;
+
+  return (
+    <>
+      <Helmet>
+        <title>{`Elsergany Company | Product ${id}`}</title>
+        <meta name="description" content={`Check out this product from Elsergany Company.`} />
+      </Helmet>
+      <Products 
+        lang={lang} 
+        title={translations[lang].sectionTitles.products} 
+        subtitle={translations[lang].sectionTitles.productsDesc} 
+        onInquire={onInquire} 
+        activeProduct={activeProduct} 
+        onBack={() => navigate('/')} 
+        onProductSelect={(p) => navigate(`/product/${p.id}`)} 
+      />
+    </>
+  );
+};
+
+const BlogWrapper = ({ lang, translations }: any) => {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const activePost = { id } as any;
+
+  return (
+    <>
+      <Helmet>
+        <title>{`Elsergany Company | Blog Post ${id}`}</title>
+        <meta name="description" content={`Read this post on Elsergany Company's blog.`} />
+      </Helmet>
+      <Blog 
+        onReadMore={(p) => navigate(`/blog/${p.id}`)} 
+        activePost={activePost} 
+        onBack={() => navigate('/')} 
+        lang={lang} 
+        title={translations[lang].sectionTitles.blog} 
+        subtitle={translations[lang].sectionTitles.blogDesc} 
+      />
+    </>
+  );
+};
+
 function App() {
-  const [currentView, setCurrentView] = useState<ViewState>(ViewState.HOME);
   const [activeNavView, setActiveNavView] = useState<ViewState>(ViewState.HOME);
-  const [activeBlogPost, setActiveBlogPost] = useState<BlogPost | null>(null);
-  const [activeProduct, setActiveProduct] = useState<Product | null>(null);
+  const [lang, setLang] = useState<Language>('ar');
+  const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
-      if (currentView === ViewState.POST_DETAIL || currentView === ViewState.PRODUCT_DETAIL || currentView === ViewState.ADMIN_DASHBOARD) return;
+      if (location.pathname !== '/') return;
       
       const sections = [
         { id: 'contact', view: ViewState.CONTACT },
@@ -122,7 +173,6 @@ function App() {
         const el = document.getElementById(section.id);
         if (el) {
           const rect = el.getBoundingClientRect();
-          // Check if top is past half screen
           if (rect.top <= window.innerHeight / 2 - 50) {
             setActiveNavView(section.view);
             return;
@@ -132,43 +182,30 @@ function App() {
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
-    // Trigger once
     handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [currentView]);
-  const [lang, setLang] = useState<Language>('ar');
+  }, [location]);
 
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, [currentView, activeBlogPost, activeProduct]);
-
-  const handleReadMore = (post: BlogPost) => {
-    setActiveBlogPost(post);
-    setCurrentView(ViewState.POST_DETAIL);
-  };
-
-  const handleProductSelect = (product: Product) => {
-    setActiveProduct(product);
-    setCurrentView(ViewState.PRODUCT_DETAIL);
-  };
+    if (location.pathname !== '/') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }, [location.pathname]);
 
   const scrollToSection = (id: string, view: ViewState) => {
-    // If not on HOME, switch to HOME first then scroll
-    if (currentView !== ViewState.HOME && view !== ViewState.POST_DETAIL && view !== ViewState.PRODUCT_DETAIL && view !== ViewState.ADMIN_DASHBOARD) {
-      setCurrentView(ViewState.HOME);
+    if (location.pathname !== '/') {
+      navigate('/');
       setTimeout(() => {
         const element = document.getElementById(id);
         if (element) {
-          const y = element.getBoundingClientRect().top + window.scrollY - 80; // Header offset
+          const y = element.getBoundingClientRect().top + window.scrollY - 80;
           window.scrollTo({ top: y, behavior: 'smooth' });
         }
       }, 100);
-    } else if (view === ViewState.POST_DETAIL || view === ViewState.PRODUCT_DETAIL || view === ViewState.ADMIN_DASHBOARD) {
-      setCurrentView(view);
     } else {
       const element = document.getElementById(id);
       if (element) {
-        const y = element.getBoundingClientRect().top + window.scrollY - 80; // Header offset
+        const y = element.getBoundingClientRect().top + window.scrollY - 80;
         window.scrollTo({ top: y, behavior: 'smooth' });
       }
     }
@@ -186,48 +223,55 @@ function App() {
     scrollToSection(sectionId, view);
   };
 
-  const renderView = () => {
-    switch (currentView) {
-      case ViewState.HOME:
-        return (
-          <>
-            <div id="hero"><Hero onAction={handleNavClick} lang={lang} translations={TRANSLATIONS} /></div>
-            <div id="about"><About lang={lang} translations={TRANSLATIONS} /></div>
-            <div id="products"><Products lang={lang} title={TRANSLATIONS[lang].sectionTitles.products} subtitle={TRANSLATIONS[lang].sectionTitles.productsDesc} onInquire={() => handleNavClick(ViewState.CONTACT)} onProductSelect={handleProductSelect} /></div>
-            <div id="clients"><Clients lang={lang} /></div>
-            <div id="blog"><Blog onReadMore={handleReadMore} activePost={null} onBack={() => {}} lang={lang} title={TRANSLATIONS[lang].sectionTitles.blog} subtitle={TRANSLATIONS[lang].sectionTitles.blogDesc} /></div>
-            <div id="contact"><Contact lang={lang} title={TRANSLATIONS[lang].sectionTitles.contact} subtitle={TRANSLATIONS[lang].sectionTitles.contactDesc} /></div>
-          </>
-        );
-      case ViewState.ABOUT:
-         return <About lang={lang} translations={TRANSLATIONS} />;
-      case ViewState.PRODUCTS:
-        return <Products lang={lang} title={TRANSLATIONS[lang].sectionTitles.products} subtitle={TRANSLATIONS[lang].sectionTitles.productsDesc} onInquire={() => handleNavClick(ViewState.CONTACT)} onProductSelect={handleProductSelect} />
-      case ViewState.PRODUCT_DETAIL:
-        return <Products lang={lang} title={TRANSLATIONS[lang].sectionTitles.products} subtitle={TRANSLATIONS[lang].sectionTitles.productsDesc} onInquire={() => handleNavClick(ViewState.CONTACT)} activeProduct={activeProduct} onBack={() => setCurrentView(ViewState.PRODUCTS)} onProductSelect={handleProductSelect} />
-      case ViewState.BLOG:
-        return <Blog onReadMore={handleReadMore} activePost={null} onBack={() => {}} lang={lang} title={TRANSLATIONS[lang].sectionTitles.blog} subtitle={TRANSLATIONS[lang].sectionTitles.blogDesc} />;
-      case ViewState.POST_DETAIL:
-        return <Blog onReadMore={handleReadMore} activePost={activeBlogPost} onBack={() => setCurrentView(ViewState.BLOG)} lang={lang} title={TRANSLATIONS[lang].sectionTitles.blog} subtitle={TRANSLATIONS[lang].sectionTitles.blogDesc} />;
-      case ViewState.CONTACT:
-        return <Contact lang={lang} title={TRANSLATIONS[lang].sectionTitles.contact} subtitle={TRANSLATIONS[lang].sectionTitles.contactDesc} />;
-      case ViewState.ADMIN_DASHBOARD:
-        return <AdminDashboard lang={lang} onBack={() => setCurrentView(ViewState.HOME)} />;
-      default:
-        return <Hero onAction={handleNavClick} lang={lang} translations={TRANSLATIONS} />;
-    }
-  };
-
   return (
     <div className={`min-h-screen flex flex-col font-sans ${lang === 'ar' ? 'font-sans' : 'font-sans'}`} dir={lang === 'ar' ? 'rtl' : 'ltr'}>
+      <Helmet>
+        <title>Elsergany Company</title>
+        <meta name="description" content="Elsergany Company - The leading provider of car and motorcycle batteries in Egypt. Authorized dealer for top global brands." />
+      </Helmet>
+      
       <Header currentView={activeNavView} onChangeView={handleNavClick} lang={lang} setLang={setLang} translations={TRANSLATIONS} />
       
       <main className="flex-grow">
-        {renderView()}
+        <Routes>
+          <Route path="/" element={
+            <>
+              <div id="hero"><Hero onAction={handleNavClick} lang={lang} translations={TRANSLATIONS} /></div>
+              <div id="about"><About lang={lang} translations={TRANSLATIONS} /></div>
+              <div id="products">
+                <Products 
+                  lang={lang} 
+                  title={TRANSLATIONS[lang].sectionTitles.products} 
+                  subtitle={TRANSLATIONS[lang].sectionTitles.productsDesc} 
+                  onInquire={() => handleNavClick(ViewState.CONTACT)} 
+                  onProductSelect={(p) => navigate(`/product/${p.id}`)} 
+                />
+              </div>
+              <div id="clients"><Clients lang={lang} /></div>
+              <div id="blog">
+                <Blog 
+                  onReadMore={(p) => navigate(`/blog/${p.id}`)} 
+                  activePost={null} 
+                  onBack={() => {}} 
+                  lang={lang} 
+                  title={TRANSLATIONS[lang].sectionTitles.blog} 
+                  subtitle={TRANSLATIONS[lang].sectionTitles.blogDesc} 
+                />
+              </div>
+              <div id="contact">
+                <Contact lang={lang} title={TRANSLATIONS[lang].sectionTitles.contact} subtitle={TRANSLATIONS[lang].sectionTitles.contactDesc} />
+              </div>
+            </>
+          } />
+          
+          <Route path="/product/:id" element={<ProductWrapper lang={lang} translations={TRANSLATIONS} onInquire={() => handleNavClick(ViewState.CONTACT)} />} />
+          <Route path="/blog/:id" element={<BlogWrapper lang={lang} translations={TRANSLATIONS} />} />
+          <Route path="/admin" element={<AdminDashboard lang={lang} onBack={() => navigate('/')} />} />
+        </Routes>
       </main>
 
       <Footer lang={lang} onChangeView={handleNavClick} />
-      <ChatAssistant lang={lang} onAdminAccess={() => setCurrentView(ViewState.ADMIN_DASHBOARD)} />
+      <ChatAssistant lang={lang} onAdminAccess={() => navigate('/admin')} />
     </div>
   );
 }

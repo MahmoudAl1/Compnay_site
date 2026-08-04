@@ -266,7 +266,9 @@ export const Blog: React.FC<BlogProps> = ({ onReadMore, activePost, onBack, lang
     return () => unsub();
   }, []);
 
-  if (activePost) {
+  const fullActivePost = activePost ? (posts.find(p => p.id == activePost.id) || activePost) : null;
+
+  if (fullActivePost && fullActivePost.title) {
     return (
       <div className="py-24 min-h-screen bg-slate-950 text-gray-100">
         <div className="container mx-auto px-4 md:px-6 max-w-4xl">
@@ -281,14 +283,14 @@ export const Blog: React.FC<BlogProps> = ({ onReadMore, activePost, onBack, lang
           </button>
           
           <div className="rounded-3xl overflow-hidden mb-8 shadow-2xl shadow-black/50 border border-slate-800 relative animate-fade-in-up">
-            <img src={activePost.image} alt={activePost.title} className="w-full h-64 md:h-[400px] object-cover" />
+            <img src={fullActivePost.image} alt={fullActivePost.title} className="w-full h-64 md:h-[400px] object-cover" />
             <div className="absolute inset-0 bg-gradient-to-t from-slate-900 to-transparent opacity-80"></div>
             <div className="absolute bottom-6 right-6 md:right-8 left-6 md:left-8">
                <span className="inline-block bg-blue-600 text-white px-3 py-1 rounded-full text-xs font-bold mb-4">
-                  {lang === 'ar' ? activePost.category : (activePost.category_en || activePost.category)}
+                  {lang === 'ar' ? fullActivePost.category : (fullActivePost.category_en || fullActivePost.category)}
                 </span>
                 <h1 className="text-3xl md:text-5xl font-extrabold text-white leading-tight drop-shadow-lg">
-                  {lang === 'ar' ? activePost.title : (activePost.title_en || activePost.title)}
+                  {lang === 'ar' ? fullActivePost.title : (fullActivePost.title_en || fullActivePost.title)}
                 </h1>
             </div>
           </div>
@@ -296,7 +298,7 @@ export const Blog: React.FC<BlogProps> = ({ onReadMore, activePost, onBack, lang
           <div className="flex items-center gap-6 text-sm text-gray-400 mb-8 border-b border-slate-800 pb-6 animate-fade-in-up" style={{ animationDelay: '100ms' }}>
             <span className="flex items-center gap-2">
               <Calendar size={18} className="text-blue-500" />
-              {activePost.date}
+              {fullActivePost.date}
             </span>
              <span className="flex items-center gap-2">
               <User size={18} className="text-blue-500" />
@@ -309,9 +311,9 @@ export const Blog: React.FC<BlogProps> = ({ onReadMore, activePost, onBack, lang
           </div>
 
           <div className="prose prose-lg prose-invert max-w-none text-gray-300 leading-loose animate-fade-in-up" style={{ animationDelay: '200ms' }}>
-            <p className="font-bold text-xl text-white mb-6 leading-relaxed opacity-90">{lang === 'ar' ? activePost.excerpt : (activePost.excerpt_en || activePost.excerpt)}</p>
+            <p className="font-bold text-xl text-white mb-6 leading-relaxed opacity-90">{lang === 'ar' ? fullActivePost.excerpt : (fullActivePost.excerpt_en || fullActivePost.excerpt)}</p>
             <div className="w-20 h-1 bg-blue-500/50 rounded-full mb-8"></div>
-            <p className="whitespace-pre-wrap opacity-80 text-lg leading-9">{lang === 'ar' ? activePost.content : (activePost.content_en || activePost.content)}</p>
+            <p className="whitespace-pre-wrap opacity-80 text-lg leading-9">{lang === 'ar' ? fullActivePost.content : (fullActivePost.content_en || fullActivePost.content)}</p>
             
             <div className="mt-12 p-6 bg-slate-900 rounded-2xl border border-slate-800 flex items-start gap-4">
                <div className="bg-blue-500/10 p-3 rounded-full text-blue-500 shrink-0">

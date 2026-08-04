@@ -150,7 +150,9 @@ export const Products: React.FC<ProductsProps> = ({ lang, title, subtitle, onInq
     { id: 'imported', label: lang === 'ar' ? 'بطاريات مستوردة' : 'Imported Batteries' },
   ];
 
-  if (activeProduct) {
+  const fullActiveProduct = activeProduct ? (products.find(p => p.id == activeProduct.id) || activeProduct) : null;
+
+  if (fullActiveProduct && fullActiveProduct.name) {
     return (
       <div className="py-24 min-h-screen bg-slate-950 text-gray-100">
         <div className="container mx-auto px-4 md:px-6 max-w-4xl">
@@ -164,8 +166,8 @@ export const Products: React.FC<ProductsProps> = ({ lang, title, subtitle, onInq
           
           <div className="rounded-3xl overflow-hidden mb-8 shadow-2xl shadow-black/50 border border-slate-800 relative bg-slate-800 flex items-center justify-center">
             <img 
-              src={activeProduct.image} 
-              alt={activeProduct.name} 
+              src={fullActiveProduct.image} 
+              alt={fullActiveProduct.name} 
               className="w-full h-64 md:h-[400px] object-contain p-8"
               onError={(e) => {
                 (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?auto=format&fit=crop&w=800&q=80';
@@ -175,13 +177,13 @@ export const Products: React.FC<ProductsProps> = ({ lang, title, subtitle, onInq
 
           <div className="mb-8 border-b border-slate-800 pb-6 animate-fade-in-up">
             <span className="inline-block bg-blue-600/20 text-blue-400 px-4 py-1.5 rounded-full text-sm font-bold mb-4 border border-blue-500/20">
-              {activeProduct.type === 'local' 
+              {fullActiveProduct.type === 'local' 
                 ? (lang === 'ar' ? 'بطارية محلية' : 'Local Battery')
                 : (lang === 'ar' ? 'بطارية مستوردة' : 'Imported Battery')
               }
             </span>
             <h1 className="text-3xl md:text-5xl font-extrabold text-white mb-4 leading-tight">
-              {lang === 'ar' ? activeProduct.name : (activeProduct.name_en || activeProduct.name)}
+              {lang === 'ar' ? fullActiveProduct.name : (fullActiveProduct.name_en || fullActiveProduct.name)}
             </h1>
             <div className="flex items-center gap-2">
                 <div className="flex text-yellow-500">
@@ -192,7 +194,7 @@ export const Products: React.FC<ProductsProps> = ({ lang, title, subtitle, onInq
           </div>
 
           <div className="prose prose-lg prose-invert max-w-none text-gray-300 leading-loose animate-fade-in-up" style={{ animationDelay: '100ms' }}>
-            <p className="font-bold text-xl text-white mb-6 leading-relaxed opacity-90 whitespace-pre-line">{lang === 'ar' ? activeProduct.description : (activeProduct.description_en || activeProduct.description)}</p>
+            <p className="font-bold text-xl text-white mb-6 leading-relaxed opacity-90 whitespace-pre-line">{lang === 'ar' ? fullActiveProduct.description : (fullActiveProduct.description_en || fullActiveProduct.description)}</p>
             <div className="w-20 h-1 bg-blue-500/50 rounded-full mb-10"></div>
 
             {/* Specs Grid */}
@@ -209,7 +211,7 @@ export const Products: React.FC<ProductsProps> = ({ lang, title, subtitle, onInq
                   <Battery size={16} className="text-blue-500" />
                   {lang === 'ar' ? 'السعة' : 'Capacity'}
                 </div>
-                <div className="text-white font-black text-2xl">{activeProduct.capacity}</div>
+                <div className="text-white font-black text-2xl">{fullActiveProduct.capacity}</div>
               </div>
               <div className="bg-slate-900 p-6 rounded-2xl border border-slate-800 sm:col-span-2 hover:border-blue-500/30 transition-colors">
                 <div className="flex items-center gap-2 text-gray-400 text-sm font-bold uppercase mb-2">
