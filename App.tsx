@@ -12,6 +12,7 @@ import { AdminDashboard } from './components/AdminDashboard';
 import { ChatAssistant } from './components/ChatAssistant';
 import { ViewState, BlogPost, Language, Product } from './types';
 import { Helmet } from 'react-helmet-async';
+import { generateSlug } from './slugify';
 
 const TRANSLATIONS = {
   en: {
@@ -101,17 +102,17 @@ const TRANSLATIONS = {
 };
 
 const ProductWrapper = ({ lang, translations, onInquire }: any) => {
-  const { id } = useParams();
+  const { slug } = useParams();
   const navigate = useNavigate();
   
   // Fake a product object to trigger detail view in Products component
   // Products component will find the actual product using this ID
-  const activeProduct = { id: Number(id) } as any;
+  const activeProduct = { id: slug } as any;
 
   return (
     <>
       <Helmet>
-        <title>{`Elsergany Company | Product ${id}`}</title>
+        <title>{`Elsergany Company | Product`}</title>
         <meta name="description" content={`Check out this product from Elsergany Company.`} />
       </Helmet>
       <Products 
@@ -121,7 +122,7 @@ const ProductWrapper = ({ lang, translations, onInquire }: any) => {
         onInquire={onInquire} 
         activeProduct={activeProduct} 
         onBack={() => navigate('/')} 
-        onProductSelect={(p) => navigate(`/product/${p.id}`)} 
+        onProductSelect={(p) => navigate(`/product/${generateSlug(lang === 'ar' ? p.name : (p.name_en || p.name))}`)} 
       />
     </>
   );
@@ -130,16 +131,16 @@ const ProductWrapper = ({ lang, translations, onInquire }: any) => {
 const BlogWrapper = ({ lang, translations }: any) => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const activePost = { id } as any;
+  const activePost = { id: slug } as any;
 
   return (
     <>
       <Helmet>
-        <title>{`Elsergany Company | Blog Post ${id}`}</title>
+        <title>{`Elsergany Company | Blog Post`}</title>
         <meta name="description" content={`Read this post on Elsergany Company's blog.`} />
       </Helmet>
       <Blog 
-        onReadMore={(p) => navigate(`/blog/${p.id}`)} 
+        onReadMore={(p) => navigate(`/blog/${generateSlug(lang === 'ar' ? p.title : (p.title_en || p.title))}`)} 
         activePost={activePost} 
         onBack={() => navigate('/')} 
         lang={lang} 
@@ -244,13 +245,13 @@ function App() {
                   title={TRANSLATIONS[lang].sectionTitles.products} 
                   subtitle={TRANSLATIONS[lang].sectionTitles.productsDesc} 
                   onInquire={() => handleNavClick(ViewState.CONTACT)} 
-                  onProductSelect={(p) => navigate(`/product/${p.id}`)} 
+                  onProductSelect={(p) => navigate(`/product/${generateSlug(lang === 'ar' ? p.name : (p.name_en || p.name))}`)} 
                 />
               </div>
               <div id="clients"><Clients lang={lang} /></div>
               <div id="blog">
                 <Blog 
-                  onReadMore={(p) => navigate(`/blog/${p.id}`)} 
+                  onReadMore={(p) => navigate(`/blog/${generateSlug(lang === 'ar' ? p.title : (p.title_en || p.title))}`)} 
                   activePost={null} 
                   onBack={() => {}} 
                   lang={lang} 
@@ -264,8 +265,8 @@ function App() {
             </>
           } />
           
-          <Route path="/product/:id" element={<ProductWrapper lang={lang} translations={TRANSLATIONS} onInquire={() => handleNavClick(ViewState.CONTACT)} />} />
-          <Route path="/blog/:id" element={<BlogWrapper lang={lang} translations={TRANSLATIONS} />} />
+          <Route path="/product/:slug" element={<ProductWrapper lang={lang} translations={TRANSLATIONS} onInquire={() => handleNavClick(ViewState.CONTACT)} />} />
+          <Route path="/blog/:slug" element={<BlogWrapper lang={lang} translations={TRANSLATIONS} />} />
           <Route path="/admin" element={<AdminDashboard lang={lang} onBack={() => navigate('/')} />} />
         </Routes>
       </main>

@@ -1,6 +1,8 @@
 
 import React, { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { Product, Language } from '../types';
+import { generateSlug } from '../slugify';
 import { Star, Eye, X, Battery, Zap, ShieldCheck, PenTool as Tool, ArrowRight, ArrowLeft } from 'lucide-react';
 import { collection, onSnapshot } from 'firebase/firestore';
 import { db } from '../firebase';
@@ -150,10 +152,12 @@ export const Products: React.FC<ProductsProps> = ({ lang, title, subtitle, onInq
     { id: 'imported', label: lang === 'ar' ? 'بطاريات مستوردة' : 'Imported Batteries' },
   ];
 
-  const fullActiveProduct = activeProduct ? (products.find(p => p.id == activeProduct.id) || activeProduct) : null;
+  const fullActiveProduct = activeProduct ? (products.find(p => String(p.id) === String(activeProduct.id) || generateSlug(p.name) === activeProduct.id || generateSlug(p.name_en || '') === activeProduct.id) || activeProduct) : null;
 
   if (fullActiveProduct && fullActiveProduct.name) {
     return (
+      <>
+      <Helmet><title>{lang === 'ar' ? fullActiveProduct.name : (fullActiveProduct.name_en || fullActiveProduct.name)} | Elsergany Company</title></Helmet>
       <div className="py-24 min-h-screen bg-slate-950 text-gray-100">
         <div className="container mx-auto px-4 md:px-6 max-w-4xl">
           <button 
@@ -232,6 +236,7 @@ export const Products: React.FC<ProductsProps> = ({ lang, title, subtitle, onInq
           </div>
         </div>
       </div>
+    </>
     );
   }
 

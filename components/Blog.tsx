@@ -1,6 +1,8 @@
 
 import React, { useRef, useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { BlogPost, Language } from '../types';
+import { generateSlug } from '../slugify';
 import { Calendar, ChevronLeft, ChevronRight, User, ArrowRight, ArrowLeft, Clock } from 'lucide-react';
 import { collection, onSnapshot } from 'firebase/firestore';
 import { db } from '../firebase';
@@ -266,10 +268,12 @@ export const Blog: React.FC<BlogProps> = ({ onReadMore, activePost, onBack, lang
     return () => unsub();
   }, []);
 
-  const fullActivePost = activePost ? (posts.find(p => p.id == activePost.id) || activePost) : null;
+  const fullActivePost = activePost ? (posts.find(p => String(p.id) === String(activePost.id) || generateSlug(p.title) === activePost.id || generateSlug(p.title_en || '') === activePost.id) || activePost) : null;
 
   if (fullActivePost && fullActivePost.title) {
     return (
+      <>
+      <Helmet><title>{lang === 'ar' ? fullActivePost.title : (fullActivePost.title_en || fullActivePost.title)} | Elsergany Company</title></Helmet>
       <div className="py-24 min-h-screen bg-slate-950 text-gray-100">
         <div className="container mx-auto px-4 md:px-6 max-w-4xl">
           <button 
@@ -333,6 +337,7 @@ export const Blog: React.FC<BlogProps> = ({ onReadMore, activePost, onBack, lang
           </div>
         </div>
       </div>
+    </>
     );
   }
 
