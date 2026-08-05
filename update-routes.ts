@@ -54,7 +54,7 @@ const TRANSLATIONS = {
       title: 'El Sergany Battery Services',
       subtitle: 'The leading name in Car and Motorcycle batteries in Egypt',
       whoWeAreTitle: 'Who We Are',
-      whoWeAreDesc: 'El Sergany Company was established in 1951. Thanks to innovation and decades of experience, the company has become one of the prominent entities in Egypt in the field of battery distribution. Over the years, we have succeeded in building a strong reputation based on trust, quality, and meeting market needs. We currently distribute a wide range of batteries through a network of clients and partners. Our headquarters is located in El Manzala (Dakahlia), with a second branch in New Damietta.',
+      whoWeAreDesc: 'El Sergany Company was established in 2008. Thanks to innovation and decades of experience, the company has become one of the prominent entities in Egypt in the field of battery distribution. Over the years, we have succeeded in building a strong reputation based on trust, quality, and meeting market needs. We currently distribute a wide range of batteries through a network of clients and partners. Our headquarters is located in El Manzala (Dakahlia), with a second branch in New Damietta.',
       visionTitle: 'Our Vision',
       visionDesc: 'We are proud of our achievements since the company\\'s inception and look forward with ambitious plans to expand and reach new horizons. Through our network of distributors and partners and our strong market presence, we aim to be the premier and safe reference for every driver, providing an effective sales channel for leading auto parts suppliers.'
     }
@@ -70,7 +70,7 @@ const TRANSLATIONS = {
       orderNow: 'اطلب الآن'
     },
     hero: {
-      badge: 'خبرة أكثر من ٧٠ عاماً',
+      badge: 'خبرة أكثر من 15 عاماً',
       title1: 'القلب النابض',
       title2: 'لسيارتك',
       subtitle: 'متخصصون في بطاريات السيارات والموتوسيكلات. كشف، تركيب، وخدمة استبدال أينما كنت بأيدي فنيين محترفين.',
@@ -96,7 +96,7 @@ const TRANSLATIONS = {
       title: 'خدمات السرجاني للبطاريات',
       subtitle: 'الاسم الأول في عالم بطاريات السيارات والموتوسيكلات في مصر',
       whoWeAreTitle: 'من نحن',
-      whoWeAreDesc: 'تأسست شركة السرجاني في عام 1951. بفضل الابتكار وعقود من الخبرة، أصبحت الشركة واحدة من الكيانات البارزة في مصر في مجال توزيع البطاريات. على مر السنين، نجحنا في بناء سمعة قوية مبنية على الثقة والجودة وتلبية احتياجات السوق. نقوم حالياً بتوزيع مجموعة واسعة من البطاريات عبر شبكة من العملاء والشركاء. يقع المقر الرئيسي في المنزلة (الدقهلية)، مع فرع ثانٍ في دمياط الجديدة.',
+      whoWeAreDesc: 'تأسست شركة السرجاني في عام 2008. بفضل الابتكار وعقود من الخبرة، أصبحت الشركة واحدة من الكيانات البارزة في مصر في مجال توزيع البطاريات. على مر السنين، نجحنا في بناء سمعة قوية مبنية على الثقة والجودة وتلبية احتياجات السوق. نقوم حالياً بتوزيع مجموعة واسعة من البطاريات عبر شبكة من العملاء والشركاء. يقع المقر الرئيسي في المنزلة (الدقهلية)، مع فرع ثانٍ في دمياط الجديدة.',
       visionTitle: 'رؤيتنا',
       visionDesc: 'نفتخر بما حققناه منذ تأسيس الشركة ونتطلع بخطط طموحة للتوسع والوصول إلى آفاق جديدة. من خلال شبكة موزعينا وشركائنا وتواجدنا القوي في السوق، نهدف إلى أن نكون المرجع الأول والآمن لكل سائق، مع توفير قناة بيع فعالة لكبار موردي قطع غيار السيارات.'
     }
