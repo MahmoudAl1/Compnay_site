@@ -159,7 +159,7 @@ export const Products: React.FC<ProductsProps> = ({ lang, title, subtitle, onInq
     return (
       <>
       <Helmet>
-        <title>{lang === 'ar' ? fullActiveProduct.name : (fullActiveProduct.name_en || fullActiveProduct.name)} | Elsergany Company</title>
+        <title>{lang === 'ar' ? fullActiveProduct.name : (fullActiveProduct.name_en || fullActiveProduct.name)} | El Sergany Company</title>
         <meta name="description" content={lang === 'ar' ? fullActiveProduct.description : (fullActiveProduct.description_en || fullActiveProduct.description)} />
         <script type="application/ld+json">
           {JSON.stringify({

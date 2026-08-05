@@ -23,47 +23,59 @@ export const IMAGES = [
   "https://images.unsplash.com/photo-1507136566006-cfc505b114fc?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80", // Clean Engine Bay / Maintenance
 ];
 
-// Brand data with specific hex colors and logos
-const BRANDS = [
+// اللوجوهات المستوردة (السطر الأول)
+const IMPORTED_BRANDS = [
   { 
-    name: "BOSCH", 
+    name: "Brand 1", 
     color: "#dc2626", 
-    logo: "/images/Bosch-logo.svg" 
+    // ضع مسار الصورة للوجو المستورد الأول هنا
+    logo: "/images/bosch.png" 
   },
   { 
-    name: "VARTA", 
+    name: "Brand 2", 
     color: "#2563eb", 
-    logo: "/images/max.png" 
+    // ضع مسار الصورة للوجو المستورد الثاني هنا
+    logo: "/images/varta.png" 
   },
   { 
-    name: "TopLite", 
+    name: "Brand 3", 
     color: "#16a34a", 
-    logo: "/images/1.png"
+    // ضع مسار الصورة للوجو المستورد الثالث هنا
+    logo: "/images/toplite.png"
   },
   { 
-    name: "Fullstark", 
+    name: "Brand 4", 
     color: "#3b82f6", 
-    logo: "/images/2.png"
-  },
+    // ضع مسار الصورة للوجو المستورد الرابع هنا
+    logo: "/images/fullstark.png"
+  }
+];
+
+// اللوجوهات المحلية (السطر الثاني)
+const LOCAL_BRANDS = [
   { 
-    name: "GERMAN", 
+    name: "Brand 5", 
     color: "#ca8a04", 
-    logo: "/images/3.png"
+    // ضع مسار الصورة للوجو المحلي الأول هنا
+    logo: "/images/german.png"
   },
   { 
-    name: "Autolite", 
+    name: "Brand 6", 
     color: "#f97316", 
-    logo: "/images/4.png" 
+    // ضع مسار الصورة للوجو المحلي الثاني هنا
+    logo: "/images/autolite.png" 
   },
   { 
-    name: "Voltronic", 
+    name: "Brand 7", 
     color: "#06b6d4", 
-    logo: "/images/f.png"
+    // ضع مسار الصورة للوجو المحلي الثالث هنا
+    logo: "/images/voltronic.png"
   },
   {
-    name: "FULDA",
+    name: "Brand 8",
     color: "#000080",
-    logo: "/images/ger.png"
+    // ضع مسار الصورة للوجو المحلي الرابع هنا
+    logo: "/images/fulda.png"
   }
 ];
 
@@ -74,7 +86,7 @@ const BrandItem = ({ brand }: { brand: any }) => {
         src={brand.logo} 
         alt={brand.name} 
         referrerPolicy="no-referrer"
-        className="relative z-0 w-full h-full object-contain transition-transform duration-300"
+        className="relative z-0 w-full h-full object-cover transition-transform duration-300"
       />
       {/* Shine Effect Masked to Image Shape */}
       <div 
@@ -127,7 +139,7 @@ export const Hero: React.FC<HeroProps> = ({ onAction, lang, translations }) => {
   return (
     <div className="relative bg-slate-950 overflow-hidden flex flex-col">
       {/* Slider Section */}
-      <div className="relative h-[300px] sm:h-[400px] md:h-[550px] lg:h-[700px] w-full bg-slate-950 overflow-hidden">
+      <div className="relative h-screen min-h-[500px] w-full bg-slate-950 overflow-hidden">
         {heroImages.map((img, index) => (
           <div 
             key={index}
@@ -144,7 +156,7 @@ export const Hero: React.FC<HeroProps> = ({ onAction, lang, translations }) => {
             <img 
               src={img} 
               alt={`Slide ${index}`} 
-              className="relative w-full h-full object-contain object-center z-10 drop-shadow-2xl"
+              className="relative w-full h-full object-cover object-center z-10 drop-shadow-2xl"
               style={{ imageRendering: 'high-quality' }}
             />
             <div className="absolute inset-0 z-20 bg-gradient-to-t from-slate-950 via-transparent to-transparent"></div>
@@ -170,7 +182,7 @@ export const Hero: React.FC<HeroProps> = ({ onAction, lang, translations }) => {
         {/* First scrolling container - Moves left */}
         <div dir="ltr" className="w-full inline-flex flex-nowrap overflow-hidden [mask-image:_linear-gradient(to_right,transparent_0,_black_128px,_black_calc(100%-128px),transparent_100%)]">
           <ul className="flex items-center w-max [&_li]:mx-6 animate-scroll">
-            {[...BRANDS, ...BRANDS, ...BRANDS, ...BRANDS].map((brand, index) => (
+            {[...IMPORTED_BRANDS, ...IMPORTED_BRANDS, ...IMPORTED_BRANDS, ...IMPORTED_BRANDS, ...IMPORTED_BRANDS, ...IMPORTED_BRANDS].map((brand, index) => (
               <li key={`top-${index}`} className="flex items-center">
                  <BrandItem brand={brand} />
               </li>
@@ -181,7 +193,7 @@ export const Hero: React.FC<HeroProps> = ({ onAction, lang, translations }) => {
         {/* Second scrolling container - Moves right */}
         <div dir="ltr" className="w-full inline-flex flex-nowrap overflow-hidden [mask-image:_linear-gradient(to_right,transparent_0,_black_128px,_black_calc(100%-128px),transparent_100%)] mt-2">
           <ul className="flex items-center w-max [&_li]:mx-6 animate-scroll-reverse">
-            {[...BRANDS].reverse().concat([...BRANDS].reverse(), [...BRANDS].reverse(), [...BRANDS].reverse()).map((brand, index) => (
+            {[...LOCAL_BRANDS, ...LOCAL_BRANDS, ...LOCAL_BRANDS, ...LOCAL_BRANDS, ...LOCAL_BRANDS, ...LOCAL_BRANDS].map((brand, index) => (
               <li key={`bottom-${index}`} className="flex items-center">
                  <BrandItem brand={brand} />
               </li>

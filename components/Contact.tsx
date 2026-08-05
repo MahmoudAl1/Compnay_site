@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Phone, Mail, MapPin, Clock, Send } from 'lucide-react';
+import { Phone, Mail, MapPin, Clock, Send, CheckCircle } from 'lucide-react';
 import { Language } from '../types';
 
 interface ContactProps {
@@ -10,6 +10,7 @@ interface ContactProps {
 }
 
 export const Contact: React.FC<ContactProps> = ({ lang, title, subtitle }) => {
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
@@ -25,15 +26,13 @@ export const Contact: React.FC<ContactProps> = ({ lang, title, subtitle }) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Set default subject if empty
-    const subject = formData.subject || (lang === 'ar' ? 'استفسار عام' : 'General Inquiry');
+    // Simulate sending
+    setIsSubmitted(true);
+    setFormData({ name: '', phone: '', email: '', subject: '', message: '' });
     
-    const emailBody = lang === 'ar' 
-      ? `رسالة جديدة من الموقع\n\nالاسم: ${formData.name}\nرقم الهاتف: ${formData.phone}\nالبريد الإلكتروني: ${formData.email}\nالموضوع: ${subject}\nالرسالة: ${formData.message}`
-      : `New Website Message\n\nName: ${formData.name}\nPhone: ${formData.phone}\nEmail: ${formData.email}\nSubject: ${subject}\nMessage: ${formData.message}`;
-
-    const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=elserganycompany@gmail.com&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(emailBody)}`;
-    window.open(gmailUrl, '_blank');
+    setTimeout(() => {
+      setIsSubmitted(false);
+    }, 5000);
   };
 
   return (
@@ -101,6 +100,15 @@ export const Contact: React.FC<ContactProps> = ({ lang, title, subtitle }) => {
           {/* Form */}
           <div className="bg-slate-900 border border-slate-800 p-8 md:p-12 rounded-[2rem] shadow-2xl relative">
             <h3 className="text-2xl font-bold text-white mb-8">{lang === 'ar' ? 'أرسل رسالة (البريد الإلكتروني)' : 'Send Message (Email)'}</h3>
+            {isSubmitted ? (
+              <div className="flex flex-col items-center justify-center py-12 text-center animate-fade-in-up">
+                <div className="bg-green-500/20 text-green-500 p-4 rounded-full mb-4">
+                  <CheckCircle size={48} />
+                </div>
+                <h4 className="text-xl font-bold text-white mb-2">{lang === 'ar' ? 'تم إرسال رسالتك بنجاح!' : 'Message Sent Successfully!'}</h4>
+                <p className="text-gray-400">{lang === 'ar' ? 'سنتواصل معك في أقرب وقت ممكن.' : 'We will get back to you as soon as possible.'}</p>
+              </div>
+            ) : (
             <form className="space-y-6" onSubmit={handleSubmit}>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
@@ -176,6 +184,7 @@ export const Contact: React.FC<ContactProps> = ({ lang, title, subtitle }) => {
                 <Send size={18} className={`group-hover:translate-x-1 transition-transform ${lang === 'ar' ? 'rotate-180 group-hover:-translate-x-1' : ''}`} />
               </button>
             </form>
+            )}
           </div>
         </div>
       </div>

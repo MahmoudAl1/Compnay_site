@@ -181,8 +181,8 @@ function App() {
   return (
     <div className={`min-h-screen flex flex-col font-sans ${lang === 'ar' ? 'font-sans' : 'font-sans'}`} dir={lang === 'ar' ? 'rtl' : 'ltr'}>
       <Helmet>
-        <title>Elsergany Company</title>
-        <meta name="description" content="Elsergany Company - A leading company in the field of car and motorcycle batteries in Egypt. Authorized dealer for top global brands. شركة رائدة في عالم بطاريات السيارات والموتوسيكلات في مصر." />
+        <title>El Sergany Company</title>
+        <meta name="description" content="El Sergany Company - A leading company in the field of car and motorcycle batteries in Egypt. Authorized dealer for top global brands. شركة رائدة في عالم بطاريات السيارات والموتوسيكلات في مصر." />
       </Helmet>
       
       <Header currentView={activeNavView} onChangeView={handleNavClick} lang={lang} setLang={setLang} translations={TRANSLATIONS} />
@@ -215,14 +215,14 @@ function App() {
           
           <Route path="/about" element={
             <>
-              <Helmet><title>{lang === 'ar' ? 'من نحن | Elsergany Company' : 'About Us | Elsergany Company'}</title></Helmet>
+              <Helmet><title>{lang === 'ar' ? 'من نحن | El Sergany Company' : 'About Us | El Sergany Company'}</title></Helmet>
               <About lang={lang} translations={TRANSLATIONS} />
             </>
           } />
 
           <Route path="/products" element={
             <>
-              <Helmet><title>{lang === 'ar' ? 'منتجاتنا | Elsergany Company' : 'Products | Elsergany Company'}</title></Helmet>
+              <Helmet><title>{lang === 'ar' ? 'منتجاتنا | El Sergany Company' : 'Products | El Sergany Company'}</title></Helmet>
               <Products 
                   lang={lang} 
                   title={TRANSLATIONS[lang].sectionTitles.products} 
@@ -235,14 +235,14 @@ function App() {
 
           <Route path="/clients" element={
             <>
-              <Helmet><title>{lang === 'ar' ? 'عملائنا | Elsergany Company' : 'Clients | Elsergany Company'}</title></Helmet>
+              <Helmet><title>{lang === 'ar' ? 'عملائنا | El Sergany Company' : 'Clients | El Sergany Company'}</title></Helmet>
               <Clients lang={lang} />
             </>
           } />
 
           <Route path="/blog" element={
             <>
-              <Helmet><title>{lang === 'ar' ? 'المدونة | Elsergany Company' : 'Blog | Elsergany Company'}</title></Helmet>
+              <Helmet><title>{lang === 'ar' ? 'المدونة | El Sergany Company' : 'Blog | El Sergany Company'}</title></Helmet>
               <Blog 
                   onReadMore={(p) => navigate(`/blog/${generateSlug(lang === 'ar' ? p.title : (p.title_en || p.title))}`)} 
                   activePost={null} 
@@ -256,7 +256,7 @@ function App() {
 
           <Route path="/contact" element={
             <>
-              <Helmet><title>{lang === 'ar' ? 'اتصل بنا | Elsergany Company' : 'Contact Us | Elsergany Company'}</title></Helmet>
+              <Helmet><title>{lang === 'ar' ? 'اتصل بنا | El Sergany Company' : 'Contact Us | El Sergany Company'}</title></Helmet>
               <Contact lang={lang} title={TRANSLATIONS[lang].sectionTitles.contact} subtitle={TRANSLATIONS[lang].sectionTitles.contactDesc} />
             </>
           } />

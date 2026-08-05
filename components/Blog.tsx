@@ -275,7 +275,7 @@ export const Blog: React.FC<BlogProps> = ({ onReadMore, activePost, onBack, lang
     return (
       <>
       <Helmet>
-        <title>{lang === 'ar' ? fullActivePost.title : (fullActivePost.title_en || fullActivePost.title)} | Elsergany Company</title>
+        <title>{lang === 'ar' ? fullActivePost.title : (fullActivePost.title_en || fullActivePost.title)} | El Sergany Company</title>
         <meta name="description" content={lang === 'ar' ? fullActivePost.excerpt : (fullActivePost.excerpt_en || fullActivePost.excerpt)} />
         <script type="application/ld+json">
           {JSON.stringify({
@@ -287,7 +287,7 @@ export const Blog: React.FC<BlogProps> = ({ onReadMore, activePost, onBack, lang
             "description": lang === 'ar' ? fullActivePost.excerpt : (fullActivePost.excerpt_en || fullActivePost.excerpt),
             "author": {
               "@type": "Organization",
-              "name": "Elsergany Company"
+              "name": "El Sergany Company"
             }
           })}
         </script>
