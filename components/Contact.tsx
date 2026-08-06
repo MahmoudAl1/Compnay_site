@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Phone, Mail, MapPin, Clock, Send, CheckCircle } from 'lucide-react';
+import { Phone, Mail, MapPin, Clock, Send, CheckCircle, Loader2 } from 'lucide-react';
 import { Language } from '../types';
 
 interface ContactProps {
@@ -11,6 +11,7 @@ interface ContactProps {
 
 export const Contact: React.FC<ContactProps> = ({ lang, title, subtitle }) => {
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
@@ -23,16 +24,42 @@ export const Contact: React.FC<ContactProps> = ({ lang, title, subtitle }) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsLoading(true);
     
-    // Simulate sending
-    setIsSubmitted(true);
-    setFormData({ name: '', phone: '', email: '', subject: '', message: '' });
-    
-    setTimeout(() => {
-      setIsSubmitted(false);
-    }, 5000);
+    const subject = formData.subject || (lang === 'ar' ? 'استفسار عام' : 'General Inquiry');
+
+    try {
+      await fetch("https://formsubmit.co/ajax/elserganycompany@gmail.com", {
+        method: "POST",
+        headers: { 
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+            _subject: `New message from El Sergany Website: ${subject}`,
+            _template: "box",
+            name: formData.name,
+            email: formData.email,
+            Phone: formData.phone,
+            Subject: subject,
+            Message: formData.message
+        })
+      });
+
+      setIsSubmitted(true);
+      setFormData({ name: '', phone: '', email: '', subject: '', message: '' });
+      
+      setTimeout(() => {
+        setIsSubmitted(false);
+      }, 5000);
+    } catch (error) {
+      console.error("Error sending message:", error);
+      alert(lang === 'ar' ? 'حدث خطأ أثناء إرسال الرسالة. يرجى المحاولة مرة أخرى.' : 'Error sending message. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -179,9 +206,15 @@ export const Contact: React.FC<ContactProps> = ({ lang, title, subtitle }) => {
                 ></textarea>
               </div>
 
-              <button type="submit" className="w-full bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-black py-4 rounded-xl hover:from-blue-500 hover:to-cyan-400 transition duration-300 shadow-lg shadow-blue-500/20 flex items-center justify-center gap-2 group">
-                {lang === 'ar' ? 'إرسال الرسالة' : 'Send Message'}
-                <Send size={18} className={`group-hover:translate-x-1 transition-transform ${lang === 'ar' ? 'rotate-180 group-hover:-translate-x-1' : ''}`} />
+              <button disabled={isLoading} type="submit" className="w-full bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-black py-4 rounded-xl hover:from-blue-500 hover:to-cyan-400 transition duration-300 shadow-lg shadow-blue-500/20 flex items-center justify-center gap-2 group disabled:opacity-70 disabled:cursor-not-allowed">
+                {isLoading ? (
+                  <Loader2 size={18} className="animate-spin" />
+                ) : (
+                  <>
+                    {lang === 'ar' ? 'إرسال الرسالة' : 'Send Message'}
+                    <Send size={18} className={`group-hover:translate-x-1 transition-transform ${lang === 'ar' ? 'rotate-180 group-hover:-translate-x-1' : ''}`} />
+                  </>
+                )}
               </button>
             </form>
             )}

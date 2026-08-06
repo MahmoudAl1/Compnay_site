@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ViewState, Language, Product, BlogPost } from '../types';
 import { db, auth } from '../firebase';
-import { collection, onSnapshot, doc, setDoc, deleteDoc, getDocs } from 'firebase/firestore';
+import { collection, onSnapshot, doc, setDoc, deleteDoc, getDocs, writeBatch, deleteField, query, orderBy } from 'firebase/firestore';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import { handleFirestoreError, OperationType } from '../firebaseHelper';
 import { Settings, Image, FileText, Battery, Plus, Trash2, LogOut, Loader2, Save } from 'lucide-react';
@@ -15,8 +15,8 @@ const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>, cb: (dataUrl:
       const img = new window.Image();
       img.onload = () => {
         const canvas = document.createElement('canvas');
-        const MAX_WIDTH = 1024;
-        const MAX_HEIGHT = 1024;
+        const MAX_WIDTH = 1920;
+        const MAX_HEIGHT = 1920;
         let width = img.width;
         let height = img.height;
         if (width > height) {
@@ -28,7 +28,7 @@ const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>, cb: (dataUrl:
         canvas.height = height;
         const ctx = canvas.getContext('2d');
         ctx?.drawImage(img, 0, 0, width, height);
-        cb(canvas.toDataURL('image/jpeg', 0.6));
+        cb(canvas.toDataURL('image/webp', 0.75));
       };
       img.src = event.target?.result as string;
     };
@@ -403,14 +403,23 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang, onBack }) 
       if (!settingsModifiedRef.current) {
         if (snapshot.exists()) {
           const data = snapshot.data();
-          setHeroImages(data?.heroImages !== undefined ? data.heroImages : IMAGES);
+          if (data?.heroImages) {
+             setHeroImages(data.heroImages.length > 0 ? data.heroImages : IMAGES);
+          }
         } else {
           setHeroImages(IMAGES);
         }
       }
     }, (error) => handleFirestoreError(error, OperationType.GET, 'settings/global'));
 
-    return () => { unsubProducts(); unsubPosts(); unsubSettings(); };
+    const unsubHeroImages = onSnapshot(query(collection(db, 'heroImages'), orderBy('order')), snapshot => {
+      if (!settingsModifiedRef.current && !snapshot.empty) {
+           const images = snapshot.docs.map(doc => doc.data().url as string);
+           setHeroImages(images);
+      }
+    });
+
+    return () => { unsubProducts(); unsubPosts(); unsubSettings(); unsubHeroImages(); };
   }, [user]);
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -535,11 +544,15 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang, onBack }) 
   const handleSaveSettings = async () => {
     setSaveError('');
     try {
-      const payloadSize = JSON.stringify(heroImages).length;
-      if (payloadSize > 850000) {
-         throw new Error(lang === 'ar' ? 'حجم الصور كبير جداً. يرجى تقليل عدد الصور أو حجمها.' : 'Images size is too large. Please reduce the number or size of images.');
-      }
-      await setDoc(doc(db, 'settings', 'global'), { heroImages }, { merge: true });
+      const snapshot = await getDocs(collection(db, "heroImages"));
+      const batch = writeBatch(db);
+      snapshot.docs.forEach(doc => batch.delete(doc.ref));
+      heroImages.forEach((url, idx) => {
+        const newRef = doc(collection(db, "heroImages"));
+        batch.set(newRef, { url, order: idx });
+      });
+      batch.set(doc(db, "settings", "global"), { heroImages: deleteField() }, { merge: true });
+      await batch.commit();
       updateSettingsModified(false);
       setShowConfirmSaveSettings(false);
       setSaveSuccess(true);
@@ -707,6 +720,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang, onBack }) 
               {saveError && (
                 <div className="mb-6 p-4 bg-red-900/50 border border-red-500 rounded-xl text-red-200 text-sm">{saveError}</div>
               )}
+              <p className="text-xs text-gray-400 mb-4">{lang === 'ar' ? 'لأفضل نتيجة استخدم صور بدقة 1920x1080. سيتم عرض الصور بالكامل بدون قص بحيث تملأ عرض الشاشة بالكامل.' : 'For best results use 1920x1080 images. Images are shown fully without cropping (filling the entire screen width).'}</p>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {heroImages.length === 0 && <p className="text-gray-500 italic col-span-3 p-4 bg-slate-950 rounded-lg border border-slate-800">{lang === 'ar' ? 'لا توجد صور. سيتم استخدام الصور الافتراضية.' : 'No hero images. Main slider might be empty.'}</p>}
                 {heroImages.map((url, idx) => (

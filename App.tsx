@@ -179,7 +179,7 @@ function App() {
   };
 
   return (
-    <div className={`min-h-screen flex flex-col font-sans ${lang === 'ar' ? 'font-sans' : 'font-sans'}`} dir={lang === 'ar' ? 'rtl' : 'ltr'}>
+    <div className={`min-h-screen flex flex-col  font-sans ${lang === 'ar' ? 'font-sans' : 'font-sans'}`} dir={lang === 'ar' ? 'rtl' : 'ltr'}>
       <Helmet>
         <title>El Sergany Company</title>
         <meta name="description" content="El Sergany Company - A leading company in the field of car and motorcycle batteries in Egypt. Authorized dealer for top global brands. شركة رائدة في عالم بطاريات السيارات والموتوسيكلات في مصر." />

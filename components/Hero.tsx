@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { ViewState, Language } from '../types';
 import { ArrowLeft, ArrowRight, ShieldCheck, Truck, Zap, Mail, Phone } from 'lucide-react';
-import { doc, onSnapshot } from 'firebase/firestore';
+import { doc, onSnapshot, collection, query, orderBy } from 'firebase/firestore';
 import { db } from '../firebase';
 import { handleFirestoreError, OperationType } from '../firebaseHelper';
 
@@ -110,23 +110,52 @@ const BrandItem = ({ brand }: { brand: any }) => {
 
 export const Hero: React.FC<HeroProps> = ({ onAction, lang, translations }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [heroImages, setHeroImages] = useState<string[]>(IMAGES);
+  const [heroImages, setHeroImages] = useState<string[]>([]);
+  const [isLoadingImages, setIsLoadingImages] = useState(true);
 
   useEffect(() => {
-    const unsub = onSnapshot(doc(db, 'settings', 'global'), snapshot => {
+    let hasLoadedCollection = false;
+
+    const unsubHeroImages = onSnapshot(query(collection(db, 'heroImages'), orderBy('order')), snapshot => {
+      if (!snapshot.empty) {
+        hasLoadedCollection = true;
+        setHeroImages(snapshot.docs.map(doc => doc.data().url));
+        setIsLoadingImages(false);
+      }
+    }, (error) => {
+      handleFirestoreError(error, OperationType.LIST, 'heroImages');
+    });
+
+    const unsubSettings = onSnapshot(doc(db, 'settings', 'global'), snapshot => {
       if (snapshot.exists()) {
         const data = snapshot.data();
-        if (data.heroImages !== undefined) {
-          setHeroImages(data.heroImages);
-        } else {
-          setHeroImages(IMAGES);
+        if (!hasLoadedCollection) {
+          if (data.heroImages && data.heroImages.length > 0) {
+            setHeroImages(data.heroImages);
+          } else {
+            setHeroImages(IMAGES);
+          }
         }
+      } else {
+        if (!hasLoadedCollection) setHeroImages(IMAGES);
       }
-    }, (error) => handleFirestoreError(error, OperationType.GET, 'settings/global'));
-    return () => unsub();
+      if (!hasLoadedCollection) setIsLoadingImages(false);
+    }, (error) => {
+      handleFirestoreError(error, OperationType.GET, 'settings/global');
+      if (!hasLoadedCollection) {
+        setHeroImages(IMAGES);
+        setIsLoadingImages(false);
+      }
+    });
+
+    return () => {
+      unsubHeroImages();
+      unsubSettings();
+    };
   }, []);
 
   useEffect(() => {
+    if (heroImages.length === 0) return;
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % heroImages.length);
     }, 5000);
@@ -139,30 +168,22 @@ export const Hero: React.FC<HeroProps> = ({ onAction, lang, translations }) => {
   return (
     <div className="relative bg-slate-950 overflow-hidden flex flex-col">
       {/* Slider Section */}
-      <div className="relative h-screen min-h-[500px] w-full bg-slate-950 overflow-hidden">
+      <div className="relative w-full bg-slate-950 overflow-hidden">
         {heroImages.map((img, index) => (
           <div 
             key={index}
-            className={`absolute inset-0 transition-opacity duration-1000 ease-in-out flex items-center justify-center ${
-              index === currentSlide ? 'opacity-100 z-10' : 'opacity-0 z-0'
+            className={`transition-opacity duration-1000 ease-in-out w-full ${
+              index === currentSlide ? "opacity-100 relative z-10" : "opacity-0 absolute top-0 left-0 z-0"
             }`}
           >
-            {/* Blurred background layer to prevent empty black spaces */}
-            <div 
-               className="absolute inset-0 bg-cover bg-center blur-2xl opacity-40 transform scale-110"
-               style={{ backgroundImage: `url(${img})` }}
-            ></div>
-            
             <img 
               src={img} 
               alt={`Slide ${index}`} 
-              className="relative w-full h-full object-cover object-center z-10 drop-shadow-2xl"
-              style={{ imageRendering: 'high-quality' }}
+              className="w-full h-auto block"
             />
-            <div className="absolute inset-0 z-20 bg-gradient-to-t from-slate-950 via-transparent to-transparent"></div>
+            <div className="absolute inset-0 z-20 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent"></div>
           </div>
         ))}
-
         {/* Slide Indicators */}
         <div className="absolute bottom-6 md:bottom-12 left-1/2 transform -translate-x-1/2 flex gap-2 z-30">
           {heroImages.map((_, idx) => (
@@ -180,7 +201,7 @@ export const Hero: React.FC<HeroProps> = ({ onAction, lang, translations }) => {
       {/* Brand Marquee Section - Logos & High Contrast */}
       <div className="bg-slate-950 py-12 overflow-hidden relative z-20">
         {/* First scrolling container - Moves left */}
-        <div dir="ltr" className="w-full inline-flex flex-nowrap overflow-hidden [mask-image:_linear-gradient(to_right,transparent_0,_black_128px,_black_calc(100%-128px),transparent_100%)]">
+        <div dir="ltr" className="w-full inline-flex flex-nowrap overflow-hidden ">
           <ul className="flex items-center w-max [&_li]:mx-6 animate-scroll">
             {[...IMPORTED_BRANDS, ...IMPORTED_BRANDS, ...IMPORTED_BRANDS, ...IMPORTED_BRANDS, ...IMPORTED_BRANDS, ...IMPORTED_BRANDS].map((brand, index) => (
               <li key={`top-${index}`} className="flex items-center">
@@ -191,7 +212,7 @@ export const Hero: React.FC<HeroProps> = ({ onAction, lang, translations }) => {
         </div>
 
         {/* Second scrolling container - Moves right */}
-        <div dir="ltr" className="w-full inline-flex flex-nowrap overflow-hidden [mask-image:_linear-gradient(to_right,transparent_0,_black_128px,_black_calc(100%-128px),transparent_100%)] mt-2">
+        <div dir="ltr" className="w-full inline-flex flex-nowrap overflow-hidden  mt-2">
           <ul className="flex items-center w-max [&_li]:mx-6 animate-scroll-reverse">
             {[...LOCAL_BRANDS, ...LOCAL_BRANDS, ...LOCAL_BRANDS, ...LOCAL_BRANDS, ...LOCAL_BRANDS, ...LOCAL_BRANDS].map((brand, index) => (
               <li key={`bottom-${index}`} className="flex items-center">
