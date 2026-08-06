@@ -29,13 +29,13 @@ const IMPORTED_BRANDS = [
     name: "Brand 1", 
     color: "#dc2626", 
     // ضع مسار الصورة للوجو المستورد الأول هنا
-    logo: "/images/bosh.png" 
+    logo: "/images/1bosh.png" 
   },
   { 
     name: "Brand 2", 
     color: "#2563eb", 
     // ضع مسار الصورة للوجو المستورد الثاني هنا
-    logo: "/images/varta.png" 
+    logo: "/images/1varta.png" 
   },
   { 
     name: "Brand 3", 
@@ -57,7 +57,7 @@ const LOCAL_BRANDS = [
     name: "Brand 5", 
     color: "#ca8a04", 
     // ضع مسار الصورة للوجو المحلي الأول هنا
-    logo: "/images/german.png"
+    logo: "/images/1german.png"
   },
   { 
     name: "Brand 6", 
@@ -75,7 +75,7 @@ const LOCAL_BRANDS = [
     name: "Brand 8",
     color: "#000080",
     // ضع مسار الصورة للوجو المحلي الرابع هنا
-    logo: "/images/fulda.png"
+    logo: "/images/1fulda.png"
   }
 ];
 
