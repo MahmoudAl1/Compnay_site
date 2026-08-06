@@ -29,7 +29,7 @@ const IMPORTED_BRANDS = [
     name: "Brand 1", 
     color: "#dc2626", 
     // ضع مسار الصورة للوجو المستورد الأول هنا
-    logo: "/images/bosch.png" 
+    logo: "/images/bosh.png" 
   },
   { 
     name: "Brand 2", 
