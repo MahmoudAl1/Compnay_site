@@ -430,8 +430,8 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ lang, onBack }) 
     
     const normalizedEmail = email.toLowerCase().trim();
     if (
-      (normalizedEmail !== 'hossamhossam@gmail.com' && normalizedEmail !== 'mahmo6866u@gmail.com') ||
-      password !== 'Lmno_1234E$'
+      normalizedEmail !== 'aboans778@gmail.com' ||
+      password !== '01280242179'
     ) {
       setLoginError(lang === 'ar' ? 'البريد الإلكتروني أو كلمة المرور غير صحيحة' : 'Invalid email or password');
       setIsLoggingIn(false);
