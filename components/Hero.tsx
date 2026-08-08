@@ -70,7 +70,7 @@ const LOCAL_BRANDS = [
     logo: "/images/1.png"
   },
   {
-    name: "Brand 8",
+    name: "Brand 10",
     color: "#000080",
     // ضع مسار الصورة للوجو المحلي الرابع هنا
     logo: "/images/3.png"
