@@ -64,36 +64,8 @@ export const Header: React.FC<HeaderProps> = ({ currentView, onChangeView, lang,
             className="flex items-center gap-3 cursor-pointer group focus:outline-none" 
             onClick={handleLogoClick}
           >
-            <div className={`relative w-12 h-12 flex items-center justify-center transition-transform duration-700 ${isAnimating ? 'scale-125 rotate-[360deg]' : ''}`}>
-              <div className={`absolute inset-0 bg-gradient-to-tr from-blue-600 to-cyan-400 rounded-xl rotate-6 group-hover:rotate-12 transition-transform duration-300 shadow-[0_0_15px_rgba(59,130,246,0.5)] ${isAnimating ? 'animate-pulse bg-blue-400' : ''}`}></div>
-              <div className="absolute inset-0 bg-slate-900 rounded-xl -rotate-3 group-hover:-rotate-6 transition-transform duration-300 border border-slate-700 flex items-center justify-center">
-                 <svg 
-                  viewBox="0 0 24 24" 
-                  className={`w-7 h-7 text-blue-500 transition-colors duration-300 ${isAnimating ? 'text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.8)]' : ''}`}
-                  fill="none" 
-                  stroke="currentColor" 
-                  strokeWidth="2.5" 
-                  strokeLinecap="round" 
-                  strokeLinejoin="round"
-                >
-                  <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
-                </svg>
-              </div>
-              {/* Electric spark effect on click */}
-              {isAnimating && (
-                <div className="absolute inset-0 rounded-xl ring-4 ring-blue-400 opacity-0 animate-[ping_0.5s_ease-out]"></div>
-              )}
-            </div>
-            <div className="flex flex-col items-start">
-              <h1 className={`text-2xl font-black text-white leading-none tracking-tight font-sans transition-all duration-300 ${isAnimating ? 'text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-white' : ''}`}>
-                {lang === 'ar' ? 'السرجاني' : 'EL SERGANY'}
-              </h1>
-              <div className="flex items-center gap-1">
-                <div className={`h-0.5 bg-blue-500 rounded-full transition-all duration-300 ${isAnimating ? 'w-full shadow-[0_0_10px_#3b82f6]' : 'w-4'}`}></div>
-                <span className="text-[10px] font-bold text-gray-400 tracking-widest uppercase">
-                  {lang === 'ar' ? 'للبطاريات' : 'BATTERIES'}
-                </span>
-              </div>
+            <div className={`relative flex items-center justify-center transition-transform duration-700 ${isAnimating ? 'scale-110' : ''}`}>
+               <img src="/images/logo.png" alt="Hatem El Sergany" className="h-10 md:h-12 w-auto object-contain" />
             </div>
           </button>
 
@@ -197,13 +169,8 @@ export const Footer: React.FC<FooterProps> = ({ lang, onChangeView }) => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-16">
           {/* About */}
           <div>
-            <div className="flex items-center gap-3 mb-6">
-              <div className="bg-gradient-to-br from-blue-600 to-cyan-500 p-2.5 rounded-xl text-white shadow-lg shadow-blue-500/20">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
-                </svg>
-              </div>
-              <h2 className="text-2xl font-black tracking-tight">{lang === 'ar' ? 'السرجاني' : 'EL SERGANY'}</h2>
+            <div className="flex items-center mb-6">
+              <img src="/images/logo.png" alt="Hatem El Sergany" className="h-12 w-auto object-contain" />
             </div>
             <p className="text-gray-400 leading-relaxed mb-8 border-l-2 border-slate-800 pl-4">
               {lang === 'ar' 

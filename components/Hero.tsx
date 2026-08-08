@@ -13,15 +13,7 @@ interface HeroProps {
 }
 
 // Updated Images: Ensure all links are high-quality and reliable
-export const IMAGES = [
-  "https://images.unsplash.com/photo-1487754180451-c456f719a1fc?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80", // Mechanic looking at engine
-  "https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80", // Big Heavy Truck (New Request)
-  "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80", // Car close up dark
-  "https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80", // Car hood open
-  "https://images.unsplash.com/photo-1558981403-c5f9899a28bc?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80", // Motorcycle
-  "https://images.unsplash.com/photo-1530046339160-ce3e530c7d2f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80", // Mechanic working under hood
-  "https://images.unsplash.com/photo-1507136566006-cfc505b114fc?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80", // Clean Engine Bay / Maintenance
-];
+export const IMAGES: string[] = [];
 
 // اللوجوهات المستوردة (السطر الأول)
 const IMPORTED_BRANDS = [
@@ -29,13 +21,13 @@ const IMPORTED_BRANDS = [
     name: "Brand 1", 
     color: "#dc2626", 
     // ضع مسار الصورة للوجو المستورد الأول هنا
-    logo: "/images/1bosh.png" 
+    logo: "/images/bosch.png" 
   },
   { 
     name: "Brand 2", 
     color: "#2563eb", 
     // ضع مسار الصورة للوجو المستورد الثاني هنا
-    logo: "/images/1varta.png" 
+    logo: "/images/varta.png" 
   },
   { 
     name: "Brand 3", 
@@ -57,7 +49,7 @@ const LOCAL_BRANDS = [
     name: "Brand 5", 
     color: "#ca8a04", 
     // ضع مسار الصورة للوجو المحلي الأول هنا
-    logo: "/images/1german.png"
+    logo: "/images/german.png"
   },
   { 
     name: "Brand 6", 
@@ -75,7 +67,7 @@ const LOCAL_BRANDS = [
     name: "Brand 8",
     color: "#000080",
     // ضع مسار الصورة للوجو المحلي الرابع هنا
-    logo: "/images/1fulda.png"
+    logo: "/images/fulda.png"
   }
 ];
 
@@ -86,7 +78,7 @@ const BrandItem = ({ brand }: { brand: any }) => {
         src={brand.logo} 
         alt={brand.name} 
         referrerPolicy="no-referrer"
-        className="relative z-0 w-full h-full object-cover transition-transform duration-300"
+        className="relative z-0 max-w-full max-h-full object-contain transition-transform duration-300"
       />
       {/* Shine Effect Masked to Image Shape */}
       <div 
@@ -110,7 +102,7 @@ const BrandItem = ({ brand }: { brand: any }) => {
 
 export const Hero: React.FC<HeroProps> = ({ onAction, lang, translations }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [heroImages, setHeroImages] = useState<string[]>([]);
+  const [heroImages, setHeroImages] = useState<string[]>(IMAGES);
   const [isLoadingImages, setIsLoadingImages] = useState(true);
 
   useEffect(() => {
@@ -168,20 +160,20 @@ export const Hero: React.FC<HeroProps> = ({ onAction, lang, translations }) => {
   return (
     <div className="relative bg-slate-950 overflow-hidden flex flex-col">
       {/* Slider Section */}
-      <div className="relative w-full bg-slate-950 overflow-hidden">
+      <div className="relative w-full h-[40vh] md:h-[60vh] lg:h-[75vh] min-h-[300px] bg-slate-900 overflow-hidden">
         {heroImages.map((img, index) => (
           <div 
             key={index}
-            className={`transition-opacity duration-1000 ease-in-out w-full ${
-              index === currentSlide ? "opacity-100 relative z-10" : "opacity-0 absolute top-0 left-0 z-0"
+            className={`absolute inset-0 transition-opacity duration-1000 ease-in-out w-full h-full ${
+              index === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0"
             }`}
           >
             <img 
               src={img} 
               alt={`Slide ${index}`} 
-              className="w-full h-auto block"
+              className="w-full h-full object-cover"
             />
-            <div className="absolute inset-0 z-20 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent"></div>
+            <div className="absolute inset-0 z-20 bg-gradient-to-t from-slate-950 via-slate-950/20 to-slate-900/10"></div>
           </div>
         ))}
         {/* Slide Indicators */}
