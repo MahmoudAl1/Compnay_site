@@ -82,15 +82,7 @@ export const Contact: React.FC<ContactProps> = ({ lang, title, subtitle }) => {
             <h3 className="text-2xl font-bold text-white mb-10 border-b border-slate-800 pb-4">{lang === 'ar' ? 'بيانات الاتصال' : 'Contact Info'}</h3>
             
             <div className="space-y-10">
-              <div className="flex items-start gap-6 group">
-                <div className="bg-slate-800 p-4 rounded-2xl text-blue-500 group-hover:scale-110 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300 shadow-lg shadow-black/20">
-                  <Phone size={24} />
-                </div>
-                <div>
-                  <h4 className="font-bold text-white text-lg mb-2">{lang === 'ar' ? 'الهاتف' : 'Phone'}</h4>
-                  <p className="text-gray-400 mb-1 font-mono text-sm" dir="ltr">+20 120 400 2646</p>
-                </div>
-              </div>
+
 
               <div className="flex items-start gap-6 group">
                 <div className="bg-slate-800 p-4 rounded-2xl text-blue-500 group-hover:scale-110 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300 shadow-lg shadow-black/20">
@@ -119,6 +111,15 @@ export const Contact: React.FC<ContactProps> = ({ lang, title, subtitle }) => {
                 <div>
                   <h4 className="font-bold text-white text-lg mb-2">{lang === 'ar' ? 'البريد الإلكتروني' : 'Email'}</h4>
                   <p className="text-gray-400">elserganycompany@gmail.com</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-6 group">
+                <div className="bg-slate-800 p-4 rounded-2xl text-blue-500 group-hover:scale-110 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300 shadow-lg shadow-black/20">
+                  <Phone size={24} />
+                </div>
+                <div>
+                  <h4 className="font-bold text-white text-lg mb-2">{lang === 'ar' ? 'الهاتف' : 'Phone'}</h4>
+                  <p className="text-gray-400 mb-1 font-mono text-sm" dir="ltr">+201014137107</p>
                 </div>
               </div>
             </div>

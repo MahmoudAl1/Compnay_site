@@ -85,7 +85,7 @@ export const Products: React.FC<ProductsProps> = ({ lang, title, subtitle, onInq
             <img 
               src={fullActiveProduct.image} 
               alt={fullActiveProduct.name} 
-              className="w-full h-64 md:h-[400px] object-contain p-8"
+              className="w-full h-auto object-cover"
               onError={(e) => {
                 (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?auto=format&fit=crop&w=800&q=80';
               }}

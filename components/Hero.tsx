@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { ViewState, Language } from '../types';
-import { ArrowLeft, ArrowRight, ShieldCheck, Truck, Zap, Mail, Phone } from 'lucide-react';
+import { ArrowLeft, ArrowRight, ShieldCheck, Truck, Zap, Mail, Phone, Car } from 'lucide-react';
 import { doc, onSnapshot, collection, query, orderBy } from 'firebase/firestore';
 import { db } from '../firebase';
 import { handleFirestoreError, OperationType } from '../firebaseHelper';
@@ -21,7 +21,7 @@ const IMPORTED_BRANDS = [
     name: "Brand 1", 
     color: "#dc2626", 
     // ضع مسار الصورة للوجو المستورد الأول هنا
-    logo: "/images/bosh.png" 
+    logo: "/images/bosch.png" 
   },
   { 
     name: "Brand 2", 
@@ -33,19 +33,13 @@ const IMPORTED_BRANDS = [
     name: "Brand 3", 
     color: "#16a34a", 
     // ضع مسار الصورة للوجو المستورد الثالث هنا
-    logo: "/images/2.png"
+    logo: "/images/toplite.png"
   },
   { 
     name: "Brand 4", 
     color: "#3b82f6", 
     // ضع مسار الصورة للوجو المستورد الرابع هنا
-    logo: "/images/vol.png"
-  },
-   { 
-    name: "Brand 9", 
-    color: "#3b82f6", 
-    // ضع مسار الصورة للوجو المستورد الرابع هنا
-    logo: "/images/asya.png"
+    logo: "/images/fullstark.png"
   }
 ];
 
@@ -61,25 +55,19 @@ const LOCAL_BRANDS = [
     name: "Brand 6", 
     color: "#f97316", 
     // ضع مسار الصورة للوجو المحلي الثاني هنا
-    logo: "/images/fulda.png" 
+    logo: "/images/autolite.png" 
   },
   { 
     name: "Brand 7", 
     color: "#06b6d4", 
     // ضع مسار الصورة للوجو المحلي الثالث هنا
-    logo: "/images/1.png"
+    logo: "/images/voltronic.png"
   },
   {
-    name: "Brand 10",
-    color: "#000080",
-    // ضع مسار الصورة للوجو المحلي الرابع هنا
-    logo: "/images/3.png"
-  },
-    {
     name: "Brand 8",
     color: "#000080",
     // ضع مسار الصورة للوجو المحلي الرابع هنا
-    logo: "/images/feza.png"
+    logo: "/images/fulda.png"
   }
 ];
 
@@ -114,7 +102,13 @@ const BrandItem = ({ brand }: { brand: any }) => {
 
 export const Hero: React.FC<HeroProps> = ({ onAction, lang, translations }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [heroImages, setHeroImages] = useState<string[]>(IMAGES);
+  const [heroImages, setHeroImages] = useState<string[]>(() => {
+    try {
+      const cached = localStorage.getItem('heroImages_cache');
+      if (cached) return JSON.parse(cached);
+    } catch (e) {}
+    return IMAGES;
+  });
   const [isLoadingImages, setIsLoadingImages] = useState(true);
 
   useEffect(() => {
@@ -123,7 +117,9 @@ export const Hero: React.FC<HeroProps> = ({ onAction, lang, translations }) => {
     const unsubHeroImages = onSnapshot(query(collection(db, 'heroImages'), orderBy('order')), snapshot => {
       if (!snapshot.empty) {
         hasLoadedCollection = true;
-        setHeroImages(snapshot.docs.map(doc => doc.data().url));
+        const newImages = snapshot.docs.map(doc => doc.data().url);
+        setHeroImages(newImages);
+        localStorage.setItem('heroImages_cache', JSON.stringify(newImages));
         setIsLoadingImages(false);
       }
     }, (error) => {
@@ -136,6 +132,7 @@ export const Hero: React.FC<HeroProps> = ({ onAction, lang, translations }) => {
         if (!hasLoadedCollection) {
           if (data.heroImages && data.heroImages.length > 0) {
             setHeroImages(data.heroImages);
+            localStorage.setItem('heroImages_cache', JSON.stringify(data.heroImages));
           } else {
             setHeroImages(IMAGES);
           }
@@ -172,20 +169,29 @@ export const Hero: React.FC<HeroProps> = ({ onAction, lang, translations }) => {
   return (
     <div className="relative bg-slate-950 overflow-hidden flex flex-col">
       {/* Slider Section */}
-      <div className="relative w-full h-[40vh] md:h-[60vh] lg:h-[75vh] min-h-[300px] bg-slate-900 overflow-hidden">
+      <div className="relative w-full bg-slate-900 overflow-hidden flex items-center justify-center min-h-[40vh]">
+        {isLoadingImages && heroImages.length === 0 && (
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="animate-pulse w-full h-full bg-slate-800"></div>
+            <div className="absolute flex flex-col items-center">
+              <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+            </div>
+          </div>
+        )}
         {heroImages.map((img, index) => (
           <div 
             key={index}
-            className={`absolute inset-0 transition-opacity duration-1000 ease-in-out w-full h-full ${
+            className={`${index === 0 ? "relative" : "absolute inset-0"} transition-opacity duration-1000 ease-in-out w-full h-full ${
               index === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0"
             }`}
           >
             <img 
               src={img} 
               alt={`Slide ${index}`} 
-              className="w-full h-full object-cover"
+              className="w-full h-auto block"
+              fetchpriority={index === 0 ? "high" : "auto"}
             />
-            <div className="absolute inset-0 z-20 bg-gradient-to-t from-slate-950 via-slate-950/20 to-slate-900/10"></div>
+            <div className="absolute inset-0 z-20 bg-gradient-to-t from-slate-950 via-transparent to-transparent pointer-events-none"></div>
           </div>
         ))}
         {/* Slide Indicators */}
@@ -230,7 +236,7 @@ export const Hero: React.FC<HeroProps> = ({ onAction, lang, translations }) => {
       {/* Features Strip */}
       <div className="bg-slate-900 py-8 border-t border-slate-800">
         <div className="container mx-auto px-4 md:px-6">
-           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             <div className="flex items-center gap-4 text-white group hover:bg-slate-800/50 p-4 rounded-xl transition">
               <div className="bg-slate-800 p-3 rounded-full text-blue-500 group-hover:scale-110 transition-transform shadow-lg shadow-blue-500/10">
                 <Zap size={24} />
@@ -256,6 +262,15 @@ export const Hero: React.FC<HeroProps> = ({ onAction, lang, translations }) => {
               <div>
                 <h4 className="font-bold">{t.hero.feature3Title}</h4>
                 <p className="text-sm text-gray-400">{t.hero.feature3Desc}</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-4 text-white group hover:bg-slate-800/50 p-4 rounded-xl transition">
+              <div className="bg-slate-800 p-3 rounded-full text-blue-500 group-hover:scale-110 transition-transform shadow-lg shadow-blue-500/10">
+                <Car size={24} />
+              </div>
+              <div>
+                <h4 className="font-bold">{t.hero.feature4Title || (lang === 'ar' ? 'جميع الموديلات' : 'All Models')}</h4>
+                <p className="text-sm text-gray-400">{t.hero.feature4Desc || (lang === 'ar' ? 'حلول بطاريات تناسب مختلف احتياجاتك' : 'Battery solutions to fit your needs')}</p>
               </div>
             </div>
           </div>

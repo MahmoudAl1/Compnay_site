@@ -33,12 +33,14 @@ const TRANSLATIONS = {
       ctaPrimary: 'Choose Battery',
       ctaSecondary: 'Rescue Service',
       brandsTitle: 'Authorized Dealers for Top Brands',
-      feature1Title: 'Free Testing',
-      feature1Desc: 'Alternator & Battery check',
+      feature1Title: 'Authorized Distribution',
+      feature1Desc: 'Original products from reliable sources',
       feature2Title: 'Instant Install',
       feature2Desc: 'Delivery & Installation',
       feature3Title: 'Certified Warranty',
-      feature3Desc: 'Instant replacement in warranty'
+      feature3Desc: 'Instant replacement in warranty',
+      feature4Title: 'All Models',
+      feature4Desc: 'Battery solutions to fit your needs'
     },
     sectionTitles: {
       products: 'Best Battery Brands',
@@ -71,30 +73,32 @@ const TRANSLATIONS = {
       badge: 'خبرة أكثر من 15 عاماً',
       title1: 'القلب النابض',
       title2: 'لسيارتك',
-      subtitle: 'متخصصون في بطاريات السيارات والموتوسيكلات. كشف، تركيب، وخدمة استبدال أينما كنت بأيدي فنيين محترفين.',
+      subtitle: 'متخصصون في بطاريات السيارات والدراجات النارية. كشف، تركيب، وخدمة استبدال أينما كنت بأيدي فنيين محترفين.',
       ctaPrimary: 'اختر بطاريتك',
       ctaSecondary: 'خدمة الإنقاذ',
       brandsTitle: 'وكلاء معتمدون لكبرى الشركات',
-      feature1Title: 'كشف مجاني',
-      feature1Desc: 'فحص الدينامو والبطارية',
+      feature1Title: 'توزيع معتمد',
+      feature1Desc: 'منتجات اصليه من مصادر موثوقه',
       feature2Title: 'تركيب فوري',
       feature2Desc: 'توصيل وتركيب أينما كنت',
       feature3Title: 'ضمان معتمد',
-      feature3Desc: 'استبدال فوري داخل الضمان'
+      feature3Desc: 'استبدال فوري داخل الضمان',
+      feature4Title: 'جميع الموديلات',
+      feature4Desc: 'حلول بطاريات تناسب مختلف احتياجاتك'
     },
     sectionTitles: {
-      products: 'أفضل ماركات البطاريات',
-      productsDesc: 'تشكيلة واسعة من البطاريات الجافة والسائلة تناسب جميع السيارات والموتوسيكلات.',
+      products: 'منتجاتنا',
+      productsDesc: 'تشكيلة واسعة من البطاريات الجافة والسائلة تناسب جميع السيارات والدراجات النارية.',
       blog: 'نصائح السرجاني',
       blogDesc: 'معلومات هامة للحفاظ على كهرباء سيارتك وإطالة عمر البطارية.',
       contact: 'اتصل بنا',
       contactDesc: 'خدمة العملاء طوال أيام الأسبوع. تواصل معنا لطلب بطارية أو طلب خدمة إنقاذ.'
     },
     about: {
-      title: 'خدمات السرجاني للبطاريات',
-      subtitle: 'الاسم الأول في عالم بطاريات السيارات والموتوسيكلات في مصر',
+      title: 'السرجاني للبطاريات',
+      subtitle: 'الاسم الأول في عالم بطاريات السيارات والدراجات النارية في مصر',
       whoWeAreTitle: 'من نحن',
-      whoWeAreDesc: 'تأسست شركة السرجاني في عام 2008. بفضل الابتكار وعقود من الخبرة، أصبحت الشركة واحدة من الكيانات البارزة في مصر في مجال توزيع البطاريات. على مر السنين، نجحنا في بناء سمعة قوية مبنية على الثقة والجودة وتلبية احتياجات السوق. نقوم حالياً بتوزيع مجموعة واسعة من البطاريات عبر شبكة من العملاء والشركاء. نحن شركة رائدة في مجال بطاريات السيارات والموتوسيكلات في مصر، ونقدم أفضل الخدمات لعملائنا.',
+      whoWeAreDesc: 'تأسست شركة السرجاني في عام 2008. أصبحت الشركة واحدة من الكيانات البارزة في مصر في مجال توزيع البطاريات. على مر السنين، نجحنا في بناء سمعة قوية مبنية على الثقة والجودة وتلبية احتياجات السوق. نقوم حالياً بتوزيع مجموعة واسعة من البطاريات عبر شبكة من العملاء والشركاء. نحن شركة رائدة في مجال بطاريات السيارات والدراجات النارية في مصر، ونقدم أفضل الخدمات لعملائنا.',
       visionTitle: 'رؤيتنا',
       visionDesc: 'نفتخر بما حققناه منذ تأسيس الشركة ونتطلع بخطط طموحة للتوسع والوصول إلى آفاق جديدة. من خلال شبكة موزعينا وشركائنا وتواجدنا القوي في السوق، نهدف إلى أن نكون المرجع الأول والآمن لكل سائق، مع توفير قناة بيع فعالة لكبار موردي قطع غيار السيارات.'
     }
@@ -182,12 +186,12 @@ function App() {
     <div className={`min-h-screen flex flex-col  font-sans ${lang === 'ar' ? 'font-sans' : 'font-sans'}`} dir={lang === 'ar' ? 'rtl' : 'ltr'}>
       <Helmet>
         <title>El Sergany Company</title>
-        <meta name="description" content="El Sergany Company - A leading company in the field of car and motorcycle batteries in Egypt. Authorized dealer for top global brands. شركة رائدة في عالم بطاريات السيارات والموتوسيكلات في مصر." />
+        <meta name="description" content="El Sergany Company - A leading company in the field of car and motorcycle batteries in Egypt. Authorized dealer for top global brands. شركة رائدة في عالم بطاريات السيارات والدراجات النارية في مصر." />
       </Helmet>
       
       <Header currentView={activeNavView} onChangeView={handleNavClick} lang={lang} setLang={setLang} translations={TRANSLATIONS} />
       
-      <main className="flex-grow">
+      <main className="flex-grow ">
         <Routes>
           <Route path="/" element={
             <>

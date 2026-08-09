@@ -52,10 +52,10 @@ export const Header: React.FC<HeaderProps> = ({ currentView, onChangeView, lang,
   return (
     <>
       <header 
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b ${
+        className={`sticky top-0 left-0 right-0 z-50 transition-all duration-300 border-b ${
           scrolled 
-            ? 'bg-slate-950/80 backdrop-blur-xl border-white/10 py-3 shadow-lg shadow-black/50' 
-            : 'bg-transparent border-transparent py-5'
+            ? 'bg-slate-950/90 backdrop-blur-xl border-slate-800 py-3 shadow-lg shadow-black/50' 
+            : 'bg-slate-950/90 backdrop-blur-xl border-slate-800 py-5'
         }`}
       >
         <div className="container mx-auto px-4 md:px-6 flex items-center justify-between">
@@ -140,8 +140,6 @@ export const Header: React.FC<HeaderProps> = ({ currentView, onChangeView, lang,
           </div>
         </div>
       </header>
-      {/* Spacer to prevent content overlap */}
-      <div className="h-24 hidden md:block"></div> 
     </>
   );
 };
@@ -242,7 +240,7 @@ export const Footer: React.FC<FooterProps> = ({ lang, onChangeView }) => {
                 </div>
                 <div>
                    <h4 className="text-white text-sm font-bold mb-1">{lang === 'ar' ? 'اتصل بنا' : 'Call Us'}</h4>
-                   <a href="tel:+201204002646" dir="ltr" className="text-sm hover:text-white transition">+20 120 400 2646</a>
+                   <a href="tel:+20 120 400 2646" dir="ltr" className="text-sm hover:text-white transition">+20 120 400 2646</a>
                 </div>
               </li>
               <li className="flex items-center gap-4 text-gray-400 group">
