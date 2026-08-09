@@ -21,13 +21,13 @@ const IMPORTED_BRANDS = [
     name: "Brand 1", 
     color: "#dc2626", 
     // ضع مسار الصورة للوجو المستورد الأول هنا
-    logo: "/images/bosch.png" 
+    logo: "/images/vol.png" 
   },
   { 
     name: "Brand 2", 
     color: "#2563eb", 
     // ضع مسار الصورة للوجو المستورد الثاني هنا
-    logo: "/images/varta.png" 
+    logo: "/images/2.png" 
   },
   { 
     name: "Brand 3", 
@@ -39,12 +39,24 @@ const IMPORTED_BRANDS = [
     name: "Brand 4", 
     color: "#3b82f6", 
     // ضع مسار الصورة للوجو المستورد الرابع هنا
-    logo: "/images/fullstark.png"
+    logo: "/images/feza.png"
+  },
+   { 
+    name: "Brand 10", 
+    color: "#3b82f6", 
+    // ضع مسار الصورة للوجو المستورد الرابع هنا
+    logo: "/images/asya.png"
   }
 ];
 
 // اللوجوهات المحلية (السطر الثاني)
 const LOCAL_BRANDS = [
+   { 
+    name: "Brand 9", 
+    color: "#ca8a04", 
+    // ضع مسار الصورة للوجو المحلي الأول هنا
+    logo: "/images/1.png"
+  },
   { 
     name: "Brand 5", 
     color: "#ca8a04", 
@@ -55,19 +67,25 @@ const LOCAL_BRANDS = [
     name: "Brand 6", 
     color: "#f97316", 
     // ضع مسار الصورة للوجو المحلي الثاني هنا
-    logo: "/images/autolite.png" 
+    logo: "/images/fulda.png" 
   },
   { 
     name: "Brand 7", 
     color: "#06b6d4", 
     // ضع مسار الصورة للوجو المحلي الثالث هنا
-    logo: "/images/voltronic.png"
+    logo: "/images/bosh.png"
   },
   {
     name: "Brand 8",
     color: "#000080",
     // ضع مسار الصورة للوجو المحلي الرابع هنا
-    logo: "/images/fulda.png"
+    logo: "/images/varta.png"
+  },
+  { 
+    name: "Brand 9", 
+    color: "#ca8a04", 
+    // ضع مسار الصورة للوجو المحلي الأول هنا
+    logo: "/images/3.png"
   }
 ];
 
