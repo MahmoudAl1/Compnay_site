@@ -240,7 +240,7 @@ export const Footer: React.FC<FooterProps> = ({ lang, onChangeView }) => {
                 </div>
                 <div>
                    <h4 className="text-white text-sm font-bold mb-1">{lang === 'ar' ? 'اتصل بنا' : 'Call Us'}</h4>
-                   <a href="tel:+20 120 400 2646" dir="ltr" className="text-sm hover:text-white transition">+20 120 400 2646</a>
+                   <a href="tel:+201014137107" dir="ltr" className="text-sm hover:text-white transition">+201014137107</a>
                 </div>
               </li>
               <li className="flex items-center gap-4 text-gray-400 group">

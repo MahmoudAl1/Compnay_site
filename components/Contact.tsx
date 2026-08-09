@@ -106,6 +106,15 @@ export const Contact: React.FC<ContactProps> = ({ lang, title, subtitle }) => {
 
               <div className="flex items-start gap-6 group">
                 <div className="bg-slate-800 p-4 rounded-2xl text-blue-500 group-hover:scale-110 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300 shadow-lg shadow-black/20">
+                  <Phone size={24} />
+                </div>
+                <div>
+                  <h4 className="font-bold text-white text-lg mb-2">{lang === 'ar' ? 'اتصل بنا' : 'Phone'}</h4>
+                  <p className="text-gray-400 mb-1 font-mono text-sm" dir="ltr">+201014137107</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-6 group">
+                <div className="bg-slate-800 p-4 rounded-2xl text-blue-500 group-hover:scale-110 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300 shadow-lg shadow-black/20">
                   <Mail size={24} />
                 </div>
                 <div>
@@ -113,15 +122,7 @@ export const Contact: React.FC<ContactProps> = ({ lang, title, subtitle }) => {
                   <p className="text-gray-400">elserganycompany@gmail.com</p>
                 </div>
               </div>
-              <div className="flex items-start gap-6 group">
-                <div className="bg-slate-800 p-4 rounded-2xl text-blue-500 group-hover:scale-110 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300 shadow-lg shadow-black/20">
-                  <Phone size={24} />
-                </div>
-                <div>
-                  <h4 className="font-bold text-white text-lg mb-2">{lang === 'ar' ? 'الهاتف' : 'Phone'}</h4>
-                  <p className="text-gray-400 mb-1 font-mono text-sm" dir="ltr">+201014137107</p>
-                </div>
-              </div>
+
             </div>
           </div>
 

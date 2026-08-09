@@ -5,5 +5,4 @@ dist-ssr/
 .env
 .env.*
 !.env.example
-firebase-applet-config.json
 .DS_Store
