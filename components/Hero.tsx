@@ -98,7 +98,6 @@ const BrandItem = ({ brand }: { brand: any }) => {
         referrerPolicy="no-referrer"
         className="relative z-0 max-w-full max-h-full object-contain transition-transform duration-300"
       />
-      {/* Shine Effect Masked to Image Shape */}
       <div 
         className="absolute inset-0 z-10 pointer-events-none"
         style={{
