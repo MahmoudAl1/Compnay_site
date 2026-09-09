@@ -39,10 +39,10 @@ export const Clients = ({ lang }: ClientsProps) => {
               <img 
                 src={client.logo} 
                 alt={client.name} 
-                className={`max-h-16 max-w-[80%] object-contain transition-all duration-500 opacity-60 ${
+                className={`max-h-16 max-w-[80%] object-contain transition-all duration-500 opacity-100 ${
                   client.isDark 
-                    ? 'brightness-0 invert group-hover:opacity-100 group-hover:drop-shadow-[0_0_10px_rgba(255,255,255,0.4)]' 
-                    : 'grayscale group-hover:grayscale-0 group-hover:opacity-100'
+                    ? 'brightness-0 invert drop-shadow-[0_0_10px_rgba(255,255,255,0.2)]' 
+                    : ''
                 }`}
               />
             </div>

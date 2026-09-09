@@ -90,7 +90,7 @@ export const Contact: React.FC<ContactProps> = ({ lang, title, subtitle }) => {
                 </div>
                 <div>
                   <h4 className="font-bold text-white text-lg mb-2">{lang === 'ar' ? 'الفرع الرئيسي' : 'Main Branch'}</h4>
-                  <p className="text-gray-400 leading-relaxed">{lang === 'ar' ? 'دمياط، دمياط الجديدة، أمام نادي المستقبل' : 'Damietta, New Damietta, In front of Future Club'}</p>
+                  <p className="text-gray-400 leading-relaxed">{lang === 'ar' ? 'الدقهلية، المنزلة، شارع عبد المنعم رياض' : 'Dakahlia, El Manzala, Abdel Moneim Riad St'}</p>
                 </div>
               </div>
 
@@ -100,7 +100,7 @@ export const Contact: React.FC<ContactProps> = ({ lang, title, subtitle }) => {
                 </div>
                 <div>
                   <h4 className="font-bold text-white text-lg mb-2">{lang === 'ar' ? 'الفرع الآخر' : 'The Other Branch'}</h4>
-                  <p className="text-gray-400 leading-relaxed">{lang === 'ar' ? 'الدقهلية، المنزلة، شارع عبد المنعم رياض' : 'Dakahlia, El Manzala, Abdel Moneim Riad St'}</p>
+                  <p className="text-gray-400 leading-relaxed">{lang === 'ar' ? 'دمياط، دمياط الجديدة، أمام نادي المستقبل' : 'Damietta, New Damietta, In front of Future Club'}</p>
                 </div>
               </div>
 

@@ -222,7 +222,7 @@ export const Footer: React.FC<FooterProps> = ({ lang, onChangeView }) => {
                 </div>
                 <div>
                   <h4 className="text-white text-sm font-bold mb-1">{lang === 'ar' ? 'الفرع الرئيسي' : 'Main Branch'}</h4>
-                  <span className="text-sm">{lang === 'ar' ? 'دمياط، دمياط الجديدة، أمام نادي المستقبل' : 'Damietta, New Damietta, In front of Future Club'}</span>
+                  <span className="text-sm">{lang === 'ar' ? 'الدقهلية، المنزلة، شارع عبد المنعم رياض' : 'Dakahlia, El Manzala, Abdel Moneim Riad St'}</span>
                 </div>
               </li>
               <li className="flex items-start gap-4 text-gray-400 group">
@@ -231,7 +231,7 @@ export const Footer: React.FC<FooterProps> = ({ lang, onChangeView }) => {
                 </div>
                 <div>
                   <h4 className="text-white text-sm font-bold mb-1">{lang === 'ar' ? 'الفرع الآخر' : 'The Other Branch'}</h4>
-                  <span className="text-sm">{lang === 'ar' ? 'الدقهلية، المنزلة، شارع عبد المنعم رياض' : 'Dakahlia, El Manzala, Abdel Moneim Riad St'}</span>
+                  <span className="text-sm">{lang === 'ar' ? 'دمياط، دمياط الجديدة، أمام نادي المستقبل' : 'Damietta, New Damietta, In front of Future Club'}</span>
                 </div>
               </li>
               <li className="flex items-center gap-4 text-gray-400 group">

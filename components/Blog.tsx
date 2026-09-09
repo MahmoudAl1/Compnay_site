@@ -205,21 +205,6 @@ export const Blog: React.FC<BlogProps> = ({ onReadMore, activePost, onBack, lang
             <div className="w-20 h-1 bg-blue-500/50 rounded-full mb-8"></div>
             <p className="whitespace-pre-wrap opacity-80 text-lg leading-9">{lang === 'ar' ? fullActivePost.content : (fullActivePost.content_en || fullActivePost.content)}</p>
             
-            <div className="mt-12 p-6 bg-slate-900 rounded-2xl border border-slate-800 flex items-start gap-4">
-               <div className="bg-blue-500/10 p-3 rounded-full text-blue-500 shrink-0">
-                  <Clock size={24} />
-               </div>
-               <div>
-                  <h4 className="font-bold text-white mb-2">
-                    {lang === 'ar' ? 'هل لديك استفسار تقني؟' : 'Have a technical question?'}
-                  </h4>
-                  <p className="text-sm text-gray-400">
-                    {lang === 'ar' 
-                      ? 'للحصول على مزيد من المعلومات التقنية الدقيقة، يمكنك دائماً سؤال "مساعد السرجاني" الموجود أسفل الشاشة!'
-                      : 'For more precise technical information, you can always ask "El Sergany Assistant" at the bottom of the screen!'}
-                  </p>
-               </div>
-            </div>
           </div>
         </div>
       </div>
